@@ -75,7 +75,9 @@ export const UploadModal: React.FC<UploadModalProps> = ({
 
         if (errors.length > 0) {
             toast.error(
-                `${t('Some files were rejected:')}\n${errors.join('\n')}`,
+                t('Some files were rejected:\n{{errors}}', {
+                    errors: errors.join('\n'),
+                }),
             );
         }
 

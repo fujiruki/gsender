@@ -6,6 +6,7 @@ import { GRBLHAL } from 'app/constants';
 import delay from 'lodash/delay';
 import { Confirm } from 'app/components/ConfirmationDialog/ConfirmationDialogLib.ts';
 import autoSpinIcon from 'app/features/Config/assets/images/autospin.svg';
+import { t } from 'app/i18n';
 
 function startSpindle() {
     controller.command('gcode', 'M3 S1000');
@@ -74,10 +75,11 @@ function autospinSetup(firmwareType: string = null) {
 
     delay(() => {
         Confirm({
-            title: 'Restart your Controller',
-            content:
+            title: t('Restart your Controller'),
+            content: t(
                 'Please manually restart your CNC controller (power cycle) and reconnect to gSender for these settings to take effect.',
-            confirmLabel: 'OK',
+            ),
+            confirmLabel: t('OK'),
             hideClose: true,
         });
     }, 500);

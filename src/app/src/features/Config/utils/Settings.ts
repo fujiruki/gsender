@@ -9,6 +9,7 @@ import pubsub from 'pubsub-js';
 import { EEPROM, FilteredEEPROM } from 'app/definitions/firmware';
 import { gSenderSetting, gSenderSettingsValues } from '../assets/SettingsMenu';
 import { State } from 'app/store/definitions';
+import { t } from 'app/i18n';
 
 export function exportFirmwareSettings(settings: object) {
     const output = JSON.stringify(settings);
@@ -95,7 +96,9 @@ const onImportConfirm = (file: File) => {
             } catch (error) {
                 console.error('Import error:', error);
                 toast.error(
-                    'Failed to import settings. Please check the file format.',
+                    t(
+                        'Failed to import settings. Please check the file format.',
+                    ),
                     {
                         position: 'bottom-right',
                     },
@@ -112,20 +115,22 @@ export function importSettings(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files[0];
 
     Confirm({
-        title: 'Import Settings',
-        content:
+        title: t('Import Settings'),
+        content: t(
             'All your current settings will be replaced. Are you sure you want to import your settings on gSender?',
-        confirmLabel: 'Import Settings',
+        ),
+        confirmLabel: t('Import Settings'),
         onConfirm: () => onImportConfirm(file),
     });
 }
 
 export function handleRestoreDefaultClick() {
     Confirm({
-        title: 'Restore Settings',
-        content:
+        title: t('Restore Settings'),
+        content: t(
             'All your current settings will be removed. Are you sure you want to restore default settings on gSender?',
-        confirmLabel: 'Restore Settings',
+        ),
+        confirmLabel: t('Restore Settings'),
         onConfirm: restoreDefault,
     });
 }
@@ -171,9 +176,12 @@ export function updateAllSettings(
         );
         changedSettings.push('$$');
         controller.command('gcode', changedSettings);
-        toast.success(`Updated ${eepromNumber} EEPROM values.`, {
-            position: 'bottom-right',
-        });
+        toast.success(
+            t('Updated {{count}} EEPROM values.', { count: eepromNumber }),
+            {
+                position: 'bottom-right',
+            },
+        );
     }
 
     const settingsToUpdate = generateSenderSettings(settings);
@@ -188,9 +196,14 @@ export function updateAllSettings(
                 settingsToUpdate[k].onApply();
             }
         });
-        toast.success(`Updated ${updateableSettingsNumber} settings.`, {
-            position: 'bottom-right',
-        });
+        toast.success(
+            t('Updated {{count}} settings.', {
+                count: updateableSettingsNumber,
+            }),
+            {
+                position: 'bottom-right',
+            },
+        );
     }
 
     pubsub.publish('config:saved', settingsToUpdate);

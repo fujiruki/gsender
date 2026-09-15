@@ -6,14 +6,16 @@ import autoSpinIcon from '../../assets/images/autospin.svg';
 import delay from 'lodash/delay';
 import { Confirm } from 'app/components/ConfirmationDialog/ConfirmationDialogLib.ts';
 import { GRBLHAL } from 'app/constants';
+import { t } from 'app/i18n';
 
 function longmillAutospinSetup() {
     delay(() => {
         Confirm({
-            title: 'Restart your Controller',
-            content:
+            title: t('Restart your Controller'),
+            content: t(
                 'Please manually restart your CNC controller (power cycle) and reconnect to gSender for these settings to take effect.',
-            confirmLabel: 'OK',
+            ),
+            confirmLabel: t('OK'),
             hideClose: true,
         });
     }, 500);
@@ -76,10 +78,11 @@ function autospinSetup(firmwareType: string = null) {
 
     delay(() => {
         Confirm({
-            title: 'Restart your Controller',
-            content:
+            title: t('Restart your Controller'),
+            content: t(
                 'Please manually restart your CNC controller (power cycle) and reconnect to gSender for these settings to take effect.',
-            confirmLabel: 'OK',
+            ),
+            confirmLabel: t('OK'),
             hideClose: true,
         });
     }, 500);

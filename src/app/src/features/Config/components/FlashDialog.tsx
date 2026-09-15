@@ -24,6 +24,7 @@ import get from 'lodash/get';
 import cn from 'classnames';
 import { FlashingProgress } from 'app/features/Config/components/FlashingProgress.tsx';
 import { useTypedSelector } from 'app/hooks/useTypedSelector';
+import { t } from 'app/i18n';
 
 interface flashDialogProps {
     show: boolean;
@@ -63,7 +64,9 @@ function startFlash({
 }: startFlashOptions) {
     if (!port) {
         toast.error(
-            'No port specified - please connect to the device to determine what is being flashed.',
+            t(
+                'No port specified - please connect to the device to determine what is being flashed.',
+            ),
             { position: 'bottom-right' },
         );
     }

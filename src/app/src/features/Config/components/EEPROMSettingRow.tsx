@@ -15,6 +15,7 @@ import {
     translateGrblCoreKey,
 } from 'app/features/Config/utils/grblCoreMigration.ts';
 import { GRBLHAL } from 'app/constants';
+import { t } from 'app/i18n';
 
 interface EEPROMSettingRowProps {
     eID: string;
@@ -78,7 +79,9 @@ export function EEPROMSettingRow({
 
         const detailString = (
             <span>
-                {filterNewlines(EEPROMData.details)}
+                {filterNewlines(
+                    EEPROMData.details ? t(EEPROMData.details) : '',
+                )}
                 <span>
                     {' '}
                     ({EEPROMData.setting}, Default {inputDefault})
@@ -98,18 +101,25 @@ export function EEPROMSettingRow({
                 )}
             >
                 <div className="w-full sm:w-1/5 flex flex-row gap-2 items-center justify-between sm:justify-start text-gray-700 relative dark:text-gray-400 mb-2 sm:mb-0">
-                    <span>{EEPROMData.description}</span>
+                    <span>
+                        {EEPROMData.description
+                            ? t(EEPROMData.description)
+                            : ''}
+                    </span>
                     <span className="flex flex-row gap-2 sm:hidden">
                         {!isDefault && (
-                            <Tooltip content="Reset to default value">
+                            <Tooltip content={t('Reset to default value')}>
                                 <button
                                     className="text-3xl"
                                     onClick={() => {
                                         Confirm({
-                                            title: 'Reset Single EEPROM Value',
-                                            content:
+                                            title: t(
+                                                'Reset Single EEPROM Value',
+                                            ),
+                                            content: t(
                                                 'Are you sure you want to reset this value to default?',
-                                            confirmLabel: 'Yes',
+                                            ),
+                                            confirmLabel: t('Yes'),
                                             onConfirm: () => {
                                                 resetHandler(
                                                     EEPROMData.setting,
@@ -123,7 +133,7 @@ export function EEPROMSettingRow({
                                 </button>
                             </Tooltip>
                         )}
-                        <Tooltip content="Machine setting">
+                        <Tooltip content={t('Machine setting')}>
                             <span className="text-robin-500 text-4xl">
                                 <FaMicrochip />
                             </span>
@@ -150,15 +160,16 @@ export function EEPROMSettingRow({
                 </div>
                 <span className="hidden sm:flex w-1/5 text-xs px-4 flex-row gap-2 order-3 justify-end">
                     {!isDefault && (
-                        <Tooltip content="Reset to default value">
+                        <Tooltip content={t('Reset to default value')}>
                             <button
                                 className="text-3xl"
                                 onClick={() => {
                                     Confirm({
-                                        title: 'Reset Single EEPROM Value',
-                                        content:
+                                        title: t('Reset Single EEPROM Value'),
+                                        content: t(
                                             'Are you sure you want to reset this value to default?',
-                                        confirmLabel: 'Yes',
+                                        ),
+                                        confirmLabel: t('Yes'),
                                         onConfirm: () => {
                                             resetHandler(
                                                 EEPROMData.setting,
@@ -172,7 +183,7 @@ export function EEPROMSettingRow({
                             </button>
                         </Tooltip>
                     )}
-                    <Tooltip content="Machine setting">
+                    <Tooltip content={t('Machine setting')}>
                         <span className="text-robin-500 text-4xl">
                             <FaMicrochip />
                         </span>

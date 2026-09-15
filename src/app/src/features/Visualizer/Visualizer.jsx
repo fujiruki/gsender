@@ -105,6 +105,7 @@ import { outlineResponse } from '../../workers/Outline.response';
 import { shouldVisualizeSVG } from '../../workers/Visualize.response';
 import { uploadGcodeFileToServer } from 'app/lib/fileupload';
 import { toast } from 'app/lib/toaster';
+import { t } from 'app/i18n';
 import { getZUpTravel } from 'app/lib/SoftLimits.js';
 import { mm2in } from 'app/lib/units';
 import { Confirm } from 'app/components/ConfirmationDialog/ConfirmationDialogLib';
@@ -1233,7 +1234,7 @@ class Visualizer extends Component {
                 if (this.outlineRunning) {
                     return;
                 }
-                toast.info('Generating outline g-code...');
+                toast.info(t('Generating outline g-code...'));
                 this.outlineRunning = true;
 
                 const vertices = this.props.actions.getHull();
@@ -1276,7 +1277,9 @@ class Visualizer extends Component {
                     const maxRuntime = setTimeout(() => {
                         outlineWorker.terminate();
                         toast.error(
-                            'Outline generation timed out. Please try again.',
+                            t(
+                                'Outline generation timed out. Please try again.',
+                            ),
                         );
                         this.outlineRunning = false;
                     }, 15000);
@@ -2637,7 +2640,7 @@ class Visualizer extends Component {
 
     runCheck() {
         controller.command('gcode:start');
-        toast.info('Running Check mode', {
+        toast.info(t('Running Check mode'), {
             position: 'bottom-right',
         });
     }
@@ -2751,11 +2754,12 @@ class Visualizer extends Component {
                 if (this.counter < 5) {
                     if (this.props.isConnected) {
                         Confirm({
-                            title: 'Start Check Mode',
-                            content:
+                            title: t('Start Check Mode'),
+                            content: t(
                                 'Run a validation check ($C) on this file?',
-                            confirmLabel: 'Start Check',
-                            cancelLabel: 'Cancel',
+                            ),
+                            confirmLabel: t('Start Check'),
+                            cancelLabel: t('Cancel'),
                             onConfirm: () => {
                                 const { activeState } = this.props.state;
                                 if (activeState === GRBL_ACTIVE_STATE_CHECK) {

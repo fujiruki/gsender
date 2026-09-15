@@ -82,7 +82,7 @@ function restoreEEPROMDefaults(
     controller.command('gcode', values);
 
 
-    toast.success('Restored default settings for your machine.', {
+    toast.success(t('Restored default settings for your machine.'), {
         position: 'bottom-right',
     });
 }

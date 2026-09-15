@@ -9,6 +9,7 @@ import controller from "app/lib/controller.ts";
 import {delay} from "lodash";
 import {Confirm} from "app/components/ConfirmationDialog/ConfirmationDialogLib.ts";
 import store from "app/store";
+import {t} from "app/i18n";
 
 
 // Check firmware
@@ -18,10 +19,10 @@ import store from "app/store";
 // Prompt to restart
 function enableATCiWizard(firmware, version) {
     if (firmware !== GRBLHAL) {
-        toast.error("ATCi is only supported by boards running grblHAL.");
+        toast.error(t("ATCi is only supported by boards running grblHAL."));
     }
     if (!firmwareSemver(version.semver, ATCI_SUPPORTED_VERSION)) {
-        toast.error(`ATCi is only supported by grblHAL version ${ATCI_SUPPORTED_VERSION} or above.`);
+        toast.error(t("ATCi is only supported by grblHAL version {{version}} or above.", {version: ATCI_SUPPORTED_VERSION}));
     }
 
     const code = [
@@ -42,10 +43,11 @@ function enableATCiWizard(firmware, version) {
 
     delay(() => {
         Confirm({
-            title: 'ATCi - Restart your Controller',
-            content:
+            title: t('ATCi - Restart your Controller'),
+            content: t(
                 'Please manually restart your CNC controller (power cycle) and reconnect to gSender for these settings to take effect.',
-            confirmLabel: 'OK',
+            ),
+            confirmLabel: t('OK'),
             hideClose: true,
         });
     }, 500);
