@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { DownloadGSender } from 'app/features/Stats/components/DownloadGSender.tsx';
 import { FaExternalLinkAlt } from 'react-icons/fa';
 import isElectron from 'is-electron';
+import { t } from 'app/i18n';
 
 export function UpdateGSender({
     notes = {
@@ -42,7 +43,7 @@ export function UpdateGSender({
             <div className="col-span-2 flex flex-col">
                 <div className="flex gap-2 items-center justify-between">
                     <h2 className="text-2xl font-bold dark:text-white">
-                        What's new in v{version}
+                        {t("What's new in v{{version}}", { version })}
                     </h2>
                     <a
                         className="text-sm text-blue-500 underline"
@@ -52,7 +53,7 @@ export function UpdateGSender({
                     >
                         <div className="flex items-center gap-1">
                             <FaExternalLinkAlt />
-                            See all recent releases
+                            {t('See all recent releases')}
                         </div>
                     </a>
                 </div>

@@ -16,6 +16,7 @@ import { GAMEPAD_MODAL } from '../../utils/constants';
 import get from 'lodash/get';
 import classNames from 'classnames';
 import { Input } from 'app/components/shadcn/Input';
+import { t } from 'app/i18n';
 
 const ButtonActionsTable = () => {
     const {
@@ -125,7 +126,9 @@ const ButtonActionsTable = () => {
                         onBlur={(e) =>
                             handleButtonLabelChange(row.value, e.target.value)
                         }
-                        aria-label={`Label for button ${row.value}`}
+                        aria-label={t('Label for button {{value}}', {
+                            value: row.value,
+                        })}
                     />
                 );
             }
@@ -137,7 +140,9 @@ const ButtonActionsTable = () => {
                     onBlur={(e) =>
                         handleButtonLabelChange(row.value, e.target.value)
                     }
-                    aria-label={`Label for button ${row.value}`}
+                    aria-label={t('Label for button {{value}}', {
+                        value: row.value,
+                    })}
                 />
             );
         },
@@ -149,7 +154,9 @@ const ButtonActionsTable = () => {
                             role="button"
                             tabIndex={0}
                             className="text-blue-500 cursor-pointer"
-                            aria-label={`Add action to button ${value}`}
+                            aria-label={t('Add action to button {{value}}', {
+                                value,
+                            })}
                             onClick={() =>
                                 handleOpenSetShortcutModal(value, type)
                             }
@@ -171,7 +178,7 @@ const ButtonActionsTable = () => {
             return (
                 <div className="grid grid-cols-[2fr_auto] justify-between items-center p-2 border border-gray-300 rounded dark:border-gray-700 gap-3">
                     <span className="inline-block text-ellipsis overflow-hidden whitespace-nowrap dark:text-white">
-                        {event?.title ?? action}
+                        {t(event?.title ?? action)}
                     </span>
 
                     <div className="flex space-x-2">
@@ -179,7 +186,9 @@ const ButtonActionsTable = () => {
                             role="button"
                             tabIndex={0}
                             className="text-blue-500 w-5 cursor-pointer"
-                            aria-label={`Edit action for button ${value}`}
+                            aria-label={t('Edit action for button {{value}}', {
+                                value,
+                            })}
                             onClick={() =>
                                 handleOpenSetShortcutModal(value, type)
                             }
@@ -194,7 +203,9 @@ const ButtonActionsTable = () => {
                             role="button"
                             tabIndex={0}
                             className="text-red-500 w-5 cursor-pointer"
-                            aria-label={`Remove action for button ${value}`}
+                            aria-label={t('Remove action for button {{value}}', {
+                                value,
+                            })}
                             onClick={() =>
                                 handleRemoveButtonAction(value, type)
                             }
@@ -222,12 +233,12 @@ const ButtonActionsTable = () => {
         lockout: (_, row) => {
             return (
                 <div className="flex justify-between items-center p-2">
-                    <div>Lockout</div>
+                    <div>{t('Lockout')}</div>
                     <FaTrash
                         role="button"
                         tabIndex={0}
                         className="text-red-500 w-5 cursor-pointer"
-                        aria-label="Remove lockout button"
+                        aria-label={t('Remove lockout button')}
                         onClick={() => handleRemoveLockoutButton()}
                         onKeyDown={(e) => {
                             if (e.key === 'Enter' || e.key === ' ') {
@@ -242,12 +253,14 @@ const ButtonActionsTable = () => {
         modifier: (_, row) => {
             return (
                 <div className="flex justify-between items-center p-2">
-                    <div className="dark:text-white">Activate 2nd Actions</div>
+                    <div className="dark:text-white">
+                        {t('Activate 2nd Actions')}
+                    </div>
                     <FaTrash
                         role="button"
                         tabIndex={0}
                         className="text-red-500 w-5 cursor-pointer"
-                        aria-label="Remove 2nd action button"
+                        aria-label={t('Remove 2nd action button')}
                         onClick={() => handleRemoveModifierButton()}
                         onKeyDown={(e) => {
                             if (e.key === 'Enter' || e.key === ' ') {
@@ -340,19 +353,19 @@ const ButtonActionsTable = () => {
                         className="text-left p-2 bg-gray-100 border-b border-gray-300 dark:bg-dark dark:text-white"
                         style={{ width: '20%', minWidth: '80px' }}
                     >
-                        Button
+                        {t('Button')}
                     </th>
                     <th
                         className="text-left p-2 bg-gray-100 border-b border-gray-300 dark:bg-dark dark:text-white"
                         style={{ width: '40%' }}
                     >
-                        Action
+                        {t('Action')}
                     </th>
                     <th
                         className="text-left p-2 bg-gray-100 border-b border-gray-300 dark:bg-dark dark:text-white"
                         style={{ width: '40%' }}
                     >
-                        2nd Action
+                        {t('2nd Action')}
                     </th>
                 </tr>
             </thead>

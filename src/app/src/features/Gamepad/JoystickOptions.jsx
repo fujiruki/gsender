@@ -11,6 +11,7 @@ import { GamepadContext } from './utils/context';
 import { arrayComparator } from './utils';
 import { setGamepadProfileList } from './utils/actions';
 import { useGamepadListener } from 'app/lib/hooks/useGamepadListener';
+import { t } from 'app/i18n';
 
 const JoystickOptions = () => {
     const {
@@ -49,7 +50,7 @@ const JoystickOptions = () => {
     };
 
     const axesOptions = [
-        { label: 'None', value: null },
+        { label: t('None'), value: null },
         { label: 'X', value: 'x' },
         { label: 'Y', value: 'y' },
         { label: 'Z', value: 'z' },
@@ -112,14 +113,14 @@ const JoystickOptions = () => {
         <div className="text-base border p-2 rounded">
             <div className="grid grid-cols-[3fr_3fr_3fr_2fr] items-center gap-2">
                 <div />
-                <div className="font-bold dark:text-white">Action</div>
-                <div className="font-bold dark:text-white">2nd Action</div>
-                <div className="font-bold dark:text-white">Invert</div>
+                <div className="font-bold dark:text-white">{t('Action')}</div>
+                <div className="font-bold dark:text-white">{t('2nd Action')}</div>
+                <div className="font-bold dark:text-white">{t('Invert')}</div>
             </div>
 
             <div className="grid grid-cols-[3fr_3fr_3fr_2fr] items-center mb-2 gap-2">
                 <div className="leading-[1.3] dark:text-white">
-                    Stick 1 left/right
+                    {t('Stick 1 left/right')}
                 </div>
                 <Select
                     styles={
@@ -137,14 +138,14 @@ const JoystickOptions = () => {
                             ? String(
                                   get(stick1, 'horizontal.primaryAction'),
                               ).toUpperCase()
-                            : 'None',
+                            : t('None'),
                         value: get(stick1, 'horizontal.primaryAction', null),
                     }}
                     onChange={({ value }) =>
                         handleChange('stick1.horizontal.primaryAction', value)
                     }
                     isDisabled={stick1PrimaryActionIsUsingMPG}
-                    aria-label="Stick 1 horizontal action"
+                    aria-label={t('Stick 1 horizontal action')}
                 />
                 <Select
                     styles={
@@ -162,14 +163,14 @@ const JoystickOptions = () => {
                             ? String(
                                   get(stick1, 'horizontal.secondaryAction'),
                               ).toUpperCase()
-                            : 'None',
+                            : t('None'),
                         value: get(stick1, 'horizontal.secondaryAction', null),
                     }}
                     onChange={({ value }) =>
                         handleChange('stick1.horizontal.secondaryAction', value)
                     }
                     isDisabled={stick1SecondaryActionIsUsingMPG}
-                    aria-label="Stick 1 horizontal 2nd action"
+                    aria-label={t('Stick 1 horizontal 2nd action')}
                 />
                 <Switch
                     checked={stick1.horizontal.isReversed}
@@ -180,13 +181,13 @@ const JoystickOptions = () => {
                         stick1PrimaryActionIsUsingMPG &&
                         stick1SecondaryActionIsUsingMPG
                     }
-                    aria-label="Invert stick 1 horizontal"
+                    aria-label={t('Invert stick 1 horizontal')}
                 />
             </div>
 
             <div className="grid grid-cols-[3fr_3fr_3fr_2fr] items-center mb-2 gap-2">
                 <div className="leading-[1.3] dark:text-white">
-                    Stick 1 up/down
+                    {t('Stick 1 up/down')}
                 </div>
                 <Select
                     styles={
@@ -204,14 +205,14 @@ const JoystickOptions = () => {
                             ? String(
                                   get(stick1, 'vertical.primaryAction'),
                               ).toUpperCase()
-                            : 'None',
+                            : t('None'),
                         value: get(stick1, 'vertical.primaryAction', null),
                     }}
                     onChange={({ value }) =>
                         handleChange('stick1.vertical.primaryAction', value)
                     }
                     isDisabled={stick1PrimaryActionIsUsingMPG}
-                    aria-label="Stick 1 vertical action"
+                    aria-label={t('Stick 1 vertical action')}
                 />
                 <Select
                     styles={
@@ -229,14 +230,14 @@ const JoystickOptions = () => {
                             ? String(
                                   get(stick1, 'vertical.secondaryAction'),
                               ).toUpperCase()
-                            : 'None',
+                            : t('None'),
                         value: get(stick1, 'vertical.secondaryAction', null),
                     }}
                     onChange={({ value }) =>
                         handleChange('stick1.vertical.secondaryAction', value)
                     }
                     isDisabled={stick1SecondaryActionIsUsingMPG}
-                    aria-label="Stick 1 vertical 2nd action"
+                    aria-label={t('Stick 1 vertical 2nd action')}
                 />
                 <Switch
                     checked={stick1.vertical.isReversed}
@@ -247,12 +248,12 @@ const JoystickOptions = () => {
                         stick1PrimaryActionIsUsingMPG &&
                         stick1SecondaryActionIsUsingMPG
                     }
-                    aria-label="Invert stick 1 vertical"
+                    aria-label={t('Invert stick 1 vertical')}
                 />
             </div>
 
             <div className="grid grid-cols-[3fr_3fr_3fr_2fr] items-center mb-2 gap-2">
-                <div className="leading-[1.3] dark:text-white">Stick 1 MPG</div>
+                <div className="leading-[1.3] dark:text-white">{t('Stick 1 MPG')}</div>
                 <Select
                     styles={
                         stick1PrimaryActionIsUsingMPG &&
@@ -269,13 +270,13 @@ const JoystickOptions = () => {
                             ? String(
                                   get(stick1, 'mpgMode.primaryAction'),
                               ).toUpperCase()
-                            : 'None',
+                            : t('None'),
                         value: get(stick1, 'mpgMode.primaryAction', null),
                     }}
                     onChange={({ value }) =>
                         handleChange('stick1.mpgMode.primaryAction', value)
                     }
-                    aria-label="Stick 1 MPG action"
+                    aria-label={t('Stick 1 MPG action')}
                 />
                 <Select
                     styles={
@@ -293,26 +294,26 @@ const JoystickOptions = () => {
                             ? String(
                                   get(stick1, 'mpgMode.secondaryAction'),
                               ).toUpperCase()
-                            : 'None',
+                            : t('None'),
                         value: get(stick1, 'mpgMode.secondaryAction', null),
                     }}
                     onChange={({ value }) =>
                         handleChange('stick1.mpgMode.secondaryAction', value)
                     }
-                    aria-label="Stick 1 MPG 2nd action"
+                    aria-label={t('Stick 1 MPG 2nd action')}
                 />
                 <Switch
                     checked={stick1.mpgMode.isReversed}
                     onChange={(checked) =>
                         handleChange('stick1.mpgMode.isReversed', checked)
                     }
-                    aria-label="Invert stick 1 MPG"
+                    aria-label={t('Invert stick 1 MPG')}
                 />
             </div>
 
             <div className="grid grid-cols-[3fr_3fr_3fr_2fr] items-center mb-2 gap-2">
                 <div className="leading-[1.3] dark:text-white">
-                    Stick 2 left/right
+                    {t('Stick 2 left/right')}
                 </div>
                 <Select
                     styles={
@@ -330,14 +331,14 @@ const JoystickOptions = () => {
                             ? String(
                                   get(stick2, 'horizontal.primaryAction'),
                               ).toUpperCase()
-                            : 'None',
+                            : t('None'),
                         value: get(stick2, 'horizontal.primaryAction'),
                     }}
                     onChange={({ value }) =>
                         handleChange('stick2.horizontal.primaryAction', value)
                     }
                     isDisabled={stick2PrimaryActionIsUsingMPG}
-                    aria-label="Stick 2 horizontal action"
+                    aria-label={t('Stick 2 horizontal action')}
                 />
                 <Select
                     styles={
@@ -355,14 +356,14 @@ const JoystickOptions = () => {
                             ? String(
                                   get(stick2, 'horizontal.secondaryAction'),
                               ).toUpperCase()
-                            : 'None',
+                            : t('None'),
                         value: get(stick2, 'horizontal.secondaryAction'),
                     }}
                     onChange={({ value }) =>
                         handleChange('stick2.horizontal.secondaryAction', value)
                     }
                     isDisabled={stick2SecondaryActionIsUsingMPG}
-                    aria-label="Stick 2 horizontal 2nd action"
+                    aria-label={t('Stick 2 horizontal 2nd action')}
                 />
                 <Switch
                     checked={stick2.horizontal.isReversed}
@@ -373,13 +374,13 @@ const JoystickOptions = () => {
                         stick2PrimaryActionIsUsingMPG &&
                         stick2SecondaryActionIsUsingMPG
                     }
-                    aria-label="Invert stick 2 horizontal"
+                    aria-label={t('Invert stick 2 horizontal')}
                 />
             </div>
 
             <div className="grid grid-cols-[3fr_3fr_3fr_2fr] items-center mb-2 gap-2">
                 <div className="leading-[1.3] dark:text-white">
-                    Stick 2 up/down
+                    {t('Stick 2 up/down')}
                 </div>
                 <Select
                     styles={
@@ -397,14 +398,14 @@ const JoystickOptions = () => {
                             ? String(
                                   get(stick2, 'vertical.primaryAction'),
                               ).toUpperCase()
-                            : 'None',
+                            : t('None'),
                         value: get(stick2, 'vertical.primaryAction'),
                     }}
                     onChange={({ value }) =>
                         handleChange('stick2.vertical.primaryAction', value)
                     }
                     isDisabled={stick2PrimaryActionIsUsingMPG}
-                    aria-label="Stick 2 vertical action"
+                    aria-label={t('Stick 2 vertical action')}
                 />
                 <Select
                     styles={
@@ -422,14 +423,14 @@ const JoystickOptions = () => {
                             ? String(
                                   get(stick2, 'vertical.secondaryAction'),
                               ).toUpperCase()
-                            : 'None',
+                            : t('None'),
                         value: get(stick2, 'vertical.secondaryAction'),
                     }}
                     onChange={({ value }) =>
                         handleChange('stick2.vertical.secondaryAction', value)
                     }
                     isDisabled={stick2SecondaryActionIsUsingMPG}
-                    aria-label="Stick 2 vertical 2nd action"
+                    aria-label={t('Stick 2 vertical 2nd action')}
                 />
                 <Switch
                     checked={stick2.vertical.isReversed}
@@ -440,12 +441,12 @@ const JoystickOptions = () => {
                         stick2PrimaryActionIsUsingMPG &&
                         stick2SecondaryActionIsUsingMPG
                     }
-                    aria-label="Invert stick 2 vertical"
+                    aria-label={t('Invert stick 2 vertical')}
                 />
             </div>
 
             <div className="grid grid-cols-[3fr_3fr_3fr_2fr] items-center mb-2 gap-2">
-                <div className="leading-[1.3] dark:text-white">Stick 2 MPG</div>
+                <div className="leading-[1.3] dark:text-white">{t('Stick 2 MPG')}</div>
                 <Select
                     styles={
                         stick2PrimaryActionIsUsingMPG &&
@@ -463,13 +464,13 @@ const JoystickOptions = () => {
                             ? String(
                                   get(stick2, 'mpgMode.primaryAction'),
                               ).toUpperCase()
-                            : 'None',
+                            : t('None'),
                         value: get(stick2, 'mpgMode.primaryAction'),
                     }}
                     onChange={({ value }) =>
                         handleChange('stick2.mpgMode.primaryAction', value)
                     }
-                    aria-label="Stick 2 MPG action"
+                    aria-label={t('Stick 2 MPG action')}
                 />
                 <Select
                     styles={
@@ -488,26 +489,26 @@ const JoystickOptions = () => {
                             ? String(
                                   get(stick2, 'mpgMode.secondaryAction'),
                               ).toUpperCase()
-                            : 'None',
+                            : t('None'),
                         value: get(stick2, 'mpgMode.secondaryAction'),
                     }}
                     onChange={({ value }) =>
                         handleChange('stick2.mpgMode.secondaryAction', value)
                     }
-                    aria-label="Stick 2 MPG 2nd action"
+                    aria-label={t('Stick 2 MPG 2nd action')}
                 />
                 <Switch
                     checked={stick2.mpgMode.isReversed}
                     onChange={(checked) =>
                         handleChange('stick2.mpgMode.isReversed', checked)
                     }
-                    aria-label="Invert stick 2 MPG"
+                    aria-label={t('Invert stick 2 MPG')}
                 />
             </div>
 
             <div className="grid grid-cols-[3fr_3fr_3fr_2fr] items-center mb-2 gap-2">
                 <div className="leading-[1.4] dark:text-white">
-                    Zero threshold
+                    {t('Zero threshold')}
                 </div>
                 <ControlledInput
                     value={zeroThreshold}
@@ -520,13 +521,13 @@ const JoystickOptions = () => {
                     }
                     className="p-1 w-full"
                     suffix="%"
-                    aria-label="Zero threshold"
+                    aria-label={t('Zero threshold')}
                 />
             </div>
 
             <div className="grid grid-cols-[3fr_3fr_3fr_2fr] items-center mb-2 gap-2">
                 <div className="leading-[1.4] dark:text-white">
-                    Movement override
+                    {t('Movement override')}
                 </div>
                 <ControlledInput
                     type="number"
@@ -546,13 +547,13 @@ const JoystickOptions = () => {
                     }}
                     className="p-1 w-full"
                     suffix="%"
-                    aria-label="Movement distance override"
+                    aria-label={t('Movement distance override')}
                 />
             </div>
 
             <div className="grid grid-cols-[3fr_3fr_3fr_2fr] items-center gap-2">
                 <div className="leading-[1.4] dark:text-white">
-                    Fixed speed mode
+                    {t('Fixed speed mode')}
                 </div>
                 <div className="col-span-3 flex gap-2 items-center">
                     <Switch
@@ -563,8 +564,9 @@ const JoystickOptions = () => {
                         }
                     />
                     <p className="text-gray-500 text-xs -mt-[5px]">
-                        For gamepads that don't work well with variable speed
-                        jogging
+                        {t(
+                            "For gamepads that don't work well with variable speed jogging",
+                        )}
                     </p>
                 </div>
             </div>

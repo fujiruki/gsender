@@ -11,6 +11,7 @@ import { MaintenancePreview } from 'app/features/Stats/components/MaintenancePre
 import { Configuration } from 'app/features/Stats/components/Configuration.tsx';
 import { JobResultsChart } from 'app/features/Stats/JobResultsChart.tsx';
 import { StatTable } from 'app/features/Stats/components/StatTable.tsx';
+import { t } from 'app/i18n';
 
 export function Stats() {
     return (
@@ -21,21 +22,21 @@ export function Stats() {
                     className="col-span-4 max-xl:col-span-6 row-span-6 pr-8 max-xl:pr-0 mb-2 gap-4 flex flex-col"
                 >
                     <h1 className="text-3xl font-bold dark:text-white">
-                        Your Machine
+                        {t('Your Machine')}
                     </h1>
                     <StatCard>
                         <div className="grid grid-cols-2 gap-2">
                             <div className="flex flex-col gap-2">
-                                <CardHeader>Stats</CardHeader>
+                                <CardHeader>{t('Stats')}</CardHeader>
                                 <JobResultsChart />
                                 <StatTable />
                             </div>
                             <div className="flex flex-col gap-2">
                                 <CardHeader
                                     link={'/stats/jobs'}
-                                    linkLabel={'More'}
+                                    linkLabel={t('More')}
                                 >
-                                    Recent Jobs
+                                    {t('Recent Jobs')}
                                 </CardHeader>
                                 <JobPreviewList />
                             </div>
@@ -45,18 +46,18 @@ export function Stats() {
                         <StatCard>
                             <CardHeader
                                 link={'/stats/maintenance'}
-                                linkLabel="Manage"
+                                linkLabel={t('Manage')}
                             >
-                                Upcoming Maintenance
+                                {t('Upcoming Maintenance')}
                             </CardHeader>
                             <MaintenancePreview />
                         </StatCard>
                         <StatCard>
                             <CardHeader
                                 link={'/configuration'}
-                                linkLabel="Change"
+                                linkLabel={t('Change')}
                             >
-                                Configuration
+                                {t('Configuration')}
                             </CardHeader>
                             <Configuration />
                         </StatCard>
@@ -68,35 +69,39 @@ export function Stats() {
                 >
                     <div className="flex flex-col gap-4">
                         <h1 className="text-3xl font-bold dark:text-white">
-                            Get Help
+                            {t('Get Help')}
                         </h1>
                         <StatCard>
                             <Diagnostic />
                         </StatCard>
                         <ExternalLink
-                            title={'Resources'}
+                            title={t('Resources')}
                             link={
                                 'https://resources.sienci.com/view/gs-using-gsender/'
                             }
                             icon={<FaBookBookmark />}
                         >
-                            Learn about starting with gSender and how to use
-                            specific features
+                            {t(
+                                'Learn about starting with gSender and how to use specific features',
+                            )}
                         </ExternalLink>
                         <ExternalLink
-                            title={'Community'}
+                            title={t('Community')}
                             link={'https://forum.sienci.com/c/gsender/14'}
                             icon={<ImBubbles4 />}
                         >
-                            Have conversations with our friendly and helpful
-                            community
+                            {t(
+                                'Have conversations with our friendly and helpful community',
+                            )}
                         </ExternalLink>
                         <ExternalLink
-                            title={'Github'}
+                            title={t('Github')}
                             link={'https://github.com/Sienci-Labs/gsender'}
                             icon={<FaGithub />}
                         >
-                            Submit issues or grab the latest version of gSender
+                            {t(
+                                'Submit issues or grab the latest version of gSender',
+                            )}
                         </ExternalLink>
                     </div>
                     <AlarmPreview />

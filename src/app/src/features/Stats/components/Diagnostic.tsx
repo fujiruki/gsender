@@ -1,4 +1,5 @@
 import generateSupportFile from 'app/lib/diagnostics.tsx';
+import { t } from 'app/i18n';
 
 interface DiagnosticProps {
     compactOnSmall?: boolean;
@@ -16,9 +17,9 @@ export function Diagnostic({ compactOnSmall = false }: DiagnosticProps) {
                     compactOnSmall ? 'max-xl:hidden' : ''
                 }`}
             >
-                Share this file with our customer support or community so others
-                can help you better. It contains your machine errors, profile,
-                settings, and more.
+                {t(
+                    'Share this file with our customer support or community so others can help you better. It contains your machine errors, profile, settings, and more.',
+                )}
             </p>
             {generateSupportFile()}
         </div>

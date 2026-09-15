@@ -2,6 +2,7 @@ import { StatContext } from 'app/features/Stats/utils/StatContext.tsx';
 import { useContext } from 'react';
 import { JobPreview } from 'app/features/Stats/components/JobPreview.tsx';
 import { FaRegListAlt } from 'react-icons/fa';
+import { t } from 'app/i18n';
 
 export function EmptyJobList() {
     return (
@@ -9,7 +10,7 @@ export function EmptyJobList() {
             <span className="text-6xl">
                 <FaRegListAlt />
             </span>
-            <span>No Jobs recorded. Get carving!</span>
+            <span>{t('No Jobs recorded. Get carving!')}</span>
         </div>
     );
 }

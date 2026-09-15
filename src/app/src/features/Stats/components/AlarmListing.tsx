@@ -8,6 +8,7 @@ import { IoIosWarning } from 'react-icons/io';
 import { MdCancel } from 'react-icons/md';
 import cx from 'classnames';
 import { EmptyAlarmList } from 'app/features/Stats/components/EmptyAlarmList.tsx';
+import { t } from 'app/i18n';
 
 // const colorCodes = {
 //     ALARM: '#d75f5f',
@@ -49,13 +50,13 @@ function AlarmItem({ alarm }: AlarmItemProps) {
                 {alarm.type} {alarm.CODE} - {alarm.source}
             </h3>
             <time className="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
-                {`at ${dateString}`}
+                {t('at {{date}}', { date: dateString })}
             </time>
             <p className="text-base font-normal text-gray-500 dark:text-gray-300">
-                {alarm.MESSAGE || 'No associated message'}
+                {alarm.MESSAGE || t('No associated message')}
             </p>
             <p className="text-base font-normal text-gray-500">
-                Line: <b>{alarm.line}</b>
+                {t('Line:')} <b>{alarm.line}</b>
             </p>
         </li>
     );

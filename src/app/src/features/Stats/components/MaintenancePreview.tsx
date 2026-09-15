@@ -6,6 +6,7 @@ import { useContext } from 'react';
 import { FaCircle } from 'react-icons/fa';
 import cx from 'classnames';
 import { tv } from 'tailwind-variants';
+import { t } from 'app/i18n';
 
 function timeRemainingSortComparison(a: Task, b: Task) {
     const aTimeRemaining = a.rangeEnd - a.currentTime;
@@ -70,14 +71,14 @@ function MaintenanceTask({ task }: { task: Task }) {
         >
             <div className={'flex flex-col'}>
                 <span className={reminderStyles({ color: reminderString })}>
-                    {time} hrs
+                    {t('{{time}} hrs', { time })}
                 </span>
                 <span className="text-gray-700 max-xl:text-sm dark:text-gray-400">
                     {task.name}
                 </span>
             </div>
             <div className={reminderStyles({ color: reminderString })}>
-                {reminderString}
+                {t(reminderString)}
                 <span className="">
                     <FaCircle />
                 </span>

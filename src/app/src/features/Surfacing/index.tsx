@@ -30,6 +30,7 @@ import MachinePosition from './components/MachinePosition';
 import WidgetConfig from '../WidgetConfig/WidgetConfig';
 import Generator from './utils/surfacingGcodeGenerator';
 import { GcodeViewer } from './components/GcodeViewer';
+import { t } from 'app/i18n';
 
 const defaultSurfacingState = get(
     defaultState,
@@ -146,16 +147,14 @@ const SurfacingTool = () => {
                 <div className="grid grid-cols-2 gap-4">
                     <div className="grid gap-4 max-xl:gap-3 xl:gap-2">
                         <p className="text-sm xl:text-base font-normal text-gray-500 dark:text-gray-300">
-                            <b>For ideal wasteboard surfacing:</b> know your
-                            CNCs exact movement limits accounting for limit
-                            switches and other add-ons, get nicer and faster
-                            cuts using your widest diameter bit, and consider
-                            turning off hard and soft limits so you don&apos;t
-                            encounter alarms or errors.
+                            <b>{t('For ideal wasteboard surfacing:')}</b>{' '}
+                            {t(
+                                "know your CNCs exact movement limits accounting for limit switches and other add-ons, get nicer and faster cuts using your widest diameter bit, and consider turning off hard and soft limits so you don't encounter alarms or errors.",
+                            )}
                         </p>
                         <div className="grid grid-cols-5 items-center gap-4">
                             <span className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 col-span-2">
-                                Start Position
+                                {t('Start Position')}
                             </span>
                             <div className="flex items-center col-span-3 justify-center">
                                 <MachinePosition
@@ -164,10 +163,13 @@ const SurfacingTool = () => {
                                 />
                             </div>
                         </div>
-                        <InputArea label="X & Y">
+                        <InputArea label={t('X & Y')}>
                             <div className="grid grid-cols-[3fr_10px_3fr] gap-2 col-span-3">
                                 <Tooltip
-                                    content={`Default is ${convertedDefaultSurfacingState.width} ${units}`}
+                                    content={t('Default is {{value}} {{units}}', {
+                                        value: convertedDefaultSurfacingState.width,
+                                        units,
+                                    })}
                                 >
                                     <ControlledInput
                                         type="number"
@@ -191,7 +193,10 @@ const SurfacingTool = () => {
                                     &
                                 </span>
                                 <Tooltip
-                                    content={`Default is ${convertedDefaultSurfacingState.length} ${units}`}
+                                    content={t('Default is {{value}} {{units}}', {
+                                        value: convertedDefaultSurfacingState.length,
+                                        units,
+                                    })}
                                 >
                                     <ControlledInput
                                         type="number"
@@ -213,10 +218,13 @@ const SurfacingTool = () => {
                                 </Tooltip>
                             </div>
                         </InputArea>
-                        <InputArea label="Cut Depth & Max">
+                        <InputArea label={t('Cut Depth & Max')}>
                             <div className="grid grid-cols-[3fr_10px_3fr] gap-x-2 gap-y-1 col-span-3">
                                 <Tooltip
-                                    content={`Default is ${convertedDefaultSurfacingState.skimDepth} ${units}`}
+                                    content={t('Default is {{value}} {{units}}', {
+                                        value: convertedDefaultSurfacingState.skimDepth,
+                                        units,
+                                    })}
                                 >
                                     <ControlledInput
                                         type="number"
@@ -243,7 +251,10 @@ const SurfacingTool = () => {
                                     &
                                 </span>
                                 <Tooltip
-                                    content={`Default is ${convertedDefaultSurfacingState.maxDepth} ${units}`}
+                                    content={t('Default is {{value}} {{units}}', {
+                                        value: convertedDefaultSurfacingState.maxDepth,
+                                        units,
+                                    })}
                                 >
                                     <ControlledInput
                                         type="number"
@@ -269,15 +280,23 @@ const SurfacingTool = () => {
                             </div>
                             {isCutDepthExceedingMax && (
                                 <p className="col-span-4 text-[10px] xl:text-xs text-red-500 leading-tight">
-                                    Warning: Cut depth ({surfacing.skimDepth}{' '}
-                                    {units}) exceeds max depth (
-                                    {surfacing.maxDepth} {units})
+                                    {t(
+                                        'Warning: Cut depth ({{skimDepth}} {{units}}) exceeds max depth ({{maxDepth}} {{units}})',
+                                        {
+                                            skimDepth: surfacing.skimDepth,
+                                            maxDepth: surfacing.maxDepth,
+                                            units,
+                                        },
+                                    )}
                                 </p>
                             )}
                         </InputArea>
-                        <InputArea label="Bit Diameter">
+                        <InputArea label={t('Bit Diameter')}>
                             <Tooltip
-                                content={`Default is ${convertedDefaultSurfacingState.bitDiameter} ${units}`}
+                                content={t('Default is {{value}} {{units}}', {
+                                    value: convertedDefaultSurfacingState.bitDiameter,
+                                    units,
+                                })}
                             >
                                 <ControlledInput
                                     type="number"
@@ -295,9 +314,11 @@ const SurfacingTool = () => {
                                 />
                             </Tooltip>
                         </InputArea>
-                        <InputArea label="Stepover">
+                        <InputArea label={t('Stepover')}>
                             <Tooltip
-                                content={`Default is ${convertedDefaultSurfacingState.stepover}%`}
+                                content={t('Default is {{value}}%', {
+                                    value: convertedDefaultSurfacingState.stepover,
+                                })}
                             >
                                 <ControlledInput
                                     type="number"
@@ -315,9 +336,12 @@ const SurfacingTool = () => {
                                 />
                             </Tooltip>
                         </InputArea>
-                        <InputArea label="Feed Rate">
+                        <InputArea label={t('Feed Rate')}>
                             <Tooltip
-                                content={`Default is ${convertedDefaultSurfacingState.feedrate} ${units}/min`}
+                                content={t('Default is {{value}} {{units}}/min', {
+                                    value: convertedDefaultSurfacingState.feedrate,
+                                    units,
+                                })}
                             >
                                 <ControlledInput
                                     type="number"
@@ -335,10 +359,12 @@ const SurfacingTool = () => {
                                 />
                             </Tooltip>
                         </InputArea>
-                        <InputArea label="Spindle RPM">
+                        <InputArea label={t('Spindle RPM')}>
                             <div className="grid grid-cols-2 gap-2 col-span-3">
                                 <Tooltip
-                                    content={`Default is ${convertedDefaultSurfacingState.spindleRPM} RPM`}
+                                    content={t('Default is {{value}} RPM', {
+                                        value: convertedDefaultSurfacingState.spindleRPM,
+                                    })}
                                 >
                                     <ControlledInput
                                         type="number"
@@ -356,11 +382,15 @@ const SurfacingTool = () => {
                                     />
                                 </Tooltip>
                                 <Tooltip
-                                    content={`Default is ${convertedDefaultSurfacingState.shouldDwell ? 'on' : 'off'}`}
+                                    content={t('Default is {{value}}', {
+                                        value: convertedDefaultSurfacingState.shouldDwell
+                                            ? t('on')
+                                            : t('off'),
+                                    })}
                                 >
                                     <div className="flex items-center gap-2 justify-center">
                                         <label className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 col-span-2">
-                                            Delay
+                                            {t('Delay')}
                                         </label>
                                         <Switch
                                             checked={surfacing.shouldDwell}
@@ -371,20 +401,24 @@ const SurfacingTool = () => {
                                                         checked as boolean,
                                                 });
                                             }}
-                                            aria-label="Toggle spindle delay"
+                                            aria-label={t('Toggle spindle delay')}
                                         />
                                     </div>
                                 </Tooltip>
                             </div>
                         </InputArea>
-                        <InputArea label="Coolant Control">
+                        <InputArea label={t('Coolant Control')}>
                             <div className="flex items-center gap-2 justify-center col-span-3">
                                 <Tooltip
-                                    content={`Default is ${convertedDefaultSurfacingState.mist ? 'on' : 'off'}`}
+                                    content={t('Default is {{value}}', {
+                                        value: convertedDefaultSurfacingState.mist
+                                            ? t('on')
+                                            : t('off'),
+                                    })}
                                 >
                                     <div className="flex items-center gap-2 justify-center">
                                         <span className="font-light text-sm max-w-20 dark:text-white">
-                                            Mist (M7)
+                                            {t('Mist (M7)')}
                                         </span>
                                         <Switch
                                             onChange={(value) =>
@@ -395,16 +429,20 @@ const SurfacingTool = () => {
                                             }
                                             checked={surfacing.mist ?? false}
                                             className="h-20"
-                                            aria-label="Toggle Mist coolant"
+                                            aria-label={t('Toggle Mist coolant')}
                                         />
                                     </div>
                                 </Tooltip>
                                 <Tooltip
-                                    content={`Default is ${convertedDefaultSurfacingState.flood ? 'on' : 'off'}`}
+                                    content={t('Default is {{value}}', {
+                                        value: convertedDefaultSurfacingState.flood
+                                            ? t('on')
+                                            : t('off'),
+                                    })}
                                 >
                                     <div className="flex items-center gap-2 justify-center">
                                         <span className="font-light text-sm max-w-20 dark:text-white">
-                                            Flood (M8)
+                                            {t('Flood (M8)')}
                                         </span>
                                         <Switch
                                             onChange={(value) =>
@@ -415,7 +453,7 @@ const SurfacingTool = () => {
                                             }
                                             checked={surfacing.flood ?? false}
                                             className="h-20"
-                                            aria-label="Toggle Flood coolant"
+                                            aria-label={t('Toggle Flood coolant')}
                                         />
                                     </div>
                                 </Tooltip>
@@ -430,7 +468,7 @@ const SurfacingTool = () => {
                                     className="w-full"
                                     onClick={() => setTabSwitch(false)}
                                 >
-                                    Visualizer Preview
+                                    {t('Visualizer Preview')}
                                 </TabsTrigger>
                                 <TabsTrigger
                                     value="gcode-viewer"
@@ -438,10 +476,12 @@ const SurfacingTool = () => {
                                     onClick={() => setTabSwitch(true)}
                                     disabled={!gcode}
                                 >
-                                    G-Code{' '}
+                                    {t('G-Code')}{' '}
                                     {gcode.length !== 0 ? (
                                         <span className="text-xs text-gray-500">
-                                            ({gcode.split('\n').length} lines)
+                                            {t('({{count}} lines)', {
+                                                count: gcode.split('\n').length,
+                                            })}
                                         </span>
                                     ) : null}
                                 </TabsTrigger>
@@ -471,13 +511,13 @@ const SurfacingTool = () => {
 
                 <div className="flex flex-row gap-4">
                     <Button onClick={handleGenerateGcode} disabled={isDisabled}>
-                        Generate G-code
+                        {t('Generate G-code')}
                     </Button>
                     <Button
                         disabled={!!!gcode || isDisabled}
                         onClick={loadGcode}
                     >
-                        Load to Main Visualizer
+                        {t('Load to Main Visualizer')}
                     </Button>
                 </div>
             </div>

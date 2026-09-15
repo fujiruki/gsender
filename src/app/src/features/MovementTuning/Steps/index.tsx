@@ -40,6 +40,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from 'app/components/shadcn/Popover';
+import { t } from 'app/i18n';
 
 const Steps = () => {
     const [status, setStatus] = useState<'initial' | 'started'>('initial');
@@ -88,7 +89,9 @@ const Steps = () => {
 
         controller.command('gcode', [`${eepromKey}=${newStepsPerMM}`, '$$']);
 
-        toast.info('Updated steps-per-mm value', { position: 'bottom-right' });
+        toast.info(t('Updated steps-per-mm value'), {
+            position: 'bottom-right',
+        });
     };
 
     const eepromKey = getEEPROMSettingKey(selectedAxis);
@@ -122,42 +125,39 @@ const Steps = () => {
                 <div className="max-w-7xl w-full grid gap-4 grid-cols-1 lg:grid-cols-[3fr_2fr]">
                     <div className="space-y-1 text-sm xl:text-base font-normal">
                         <p className="text-gray-500 dark:text-gray-300">
-                            If you're looking to use your CNC for more accurate
-                            work and notice a specific axis is always off by a
-                            small amount - say 102mm instead of 100 - then use
-                            this tool.
+                            {t(
+                                "If you're looking to use your CNC for more accurate work and notice a specific axis is always off by a small amount - say 102mm instead of 100 - then use this tool.",
+                            )}
                         </p>
 
                         <p className="text-gray-500 dark:text-gray-300">
-                            Since CNC firmware needs to understand its hardware
-                            to make exact movements, small manufacturing
-                            variations in the motors, lead screws, pulleys, or
-                            incorrect firmware will create inaccuracies over
-                            longer distances.
+                            {t(
+                                'Since CNC firmware needs to understand its hardware to make exact movements, small manufacturing variations in the motors, lead screws, pulleys, or incorrect firmware will create inaccuracies over longer distances.',
+                            )}
                         </p>
 
                         <p className="text-gray-500 dark:text-gray-300">
-                            By testing for this difference using a marker or
-                            tape and a measuring tape, this tool will better
-                            tune the firmware to your machine.
+                            {t(
+                                'By testing for this difference using a marker or tape and a measuring tape, this tool will better tune the firmware to your machine.',
+                            )}
                         </p>
 
                         <div className="flex gap-2 items-center">
                             <label className="min-w-24 font-bold dark:text-white">
-                                Axis to Tune
+                                {t('Axis to Tune')}
                             </label>
                             <Select
                                 options={[
                                     {
-                                        label: 'X-Axis',
+                                        label: t('X-Axis'),
                                         value: 'x',
                                     },
                                     {
-                                        label: 'Y-Axis',
+                                        label: t('Y-Axis'),
                                         value: 'y',
                                     },
                                     {
-                                        label: 'Z-Axis',
+                                        label: t('Z-Axis'),
                                         value: 'z',
                                     },
                                 ]}
@@ -183,10 +183,12 @@ const Steps = () => {
                                     }
                                 }}
                                 value={{
-                                    label: `${selectedAxis.toUpperCase()}-Axis`,
+                                    label: t('{{axis}}-Axis', {
+                                        axis: selectedAxis.toUpperCase(),
+                                    }),
                                     value: selectedAxis,
                                 }}
-                                placeholder="Select Axis"
+                                placeholder={t('Select Axis')}
                                 className="w-full"
                             />
                         </div>
@@ -200,8 +202,9 @@ const Steps = () => {
                         {!isConnected && (
                             <div className="text-yellow-800 bg-yellow-100 p-4 xl:p-2 rounded-lg border flex flex-col gap-4 justify-center items-center text-center">
                                 <p>
-                                    Please connect to a device before starting
-                                    the movement tuning wizard.
+                                    {t(
+                                        'Please connect to a device before starting the movement tuning wizard.',
+                                    )}
                                 </p>
                             </div>
                         )}
@@ -209,15 +212,14 @@ const Steps = () => {
                     <div className="flex flex-col gap-4 items-center">
                         <img
                             src={starterImage}
-                            alt="Movement Tuning Example"
+                            alt={t('Movement Tuning Example')}
                             className="w-[440px] h-auto border border-gray-200 rounded-lg"
                         />
 
                         <p className="text-gray-600 font-bold dark:text-white">
-                            Whichever axis you'll be tuning, please place it in
-                            an initial location so that it'll have space to move
-                            to the right (for X), backwards (for Y), and
-                            downwards (for Z).
+                            {t(
+                                "Whichever axis you'll be tuning, please place it in an initial location so that it'll have space to move to the right (for X), backwards (for Y), and downwards (for Z).",
+                            )}
                         </p>
                     </div>
                 </div>
@@ -228,7 +230,7 @@ const Steps = () => {
                         variant="outline"
                         disabled={isDisabled}
                     >
-                        Start Movement Tuning
+                        {t('Start Movement Tuning')}
                     </Button>
                 </div>
             </div>
@@ -241,8 +243,10 @@ const Steps = () => {
                 <div className="flex flex-col gap-4">
                     <div className="text-yellow-800 bg-yellow-100 p-4 rounded-lg border min-h-52 flex flex-col gap-4 justify-center items-center text-lg dark:bg-yellow-950 dark:text-white dark:border-yellow-950">
                         <span>
-                            Your {selectedAxis.toUpperCase()}-axis movement was
-                            off by{' '}
+                            {t(
+                                'Your {{axis}}-axis movement was off by',
+                                { axis: selectedAxis.toUpperCase() },
+                            )}{' '}
                             <strong>
                                 {toFixedIfNecessary(
                                     moveDistance - measuredDistance,
@@ -250,8 +254,10 @@ const Steps = () => {
                                 )}{' '}
                                 {units}.
                             </strong>{' '}
-                            Consider updating your {selectedAxis.toUpperCase()}
-                            -axis step/mm value in your CNC firmware.
+                            {t(
+                                'Consider updating your {{axis}}-axis step/mm value in your CNC firmware.',
+                                { axis: selectedAxis.toUpperCase() },
+                            )}
                         </span>
 
                         <AlertDialog>
@@ -260,22 +266,24 @@ const Steps = () => {
                                     className="bg-white text-black"
                                     variant="outline"
                                 >
-                                    Update step/mm
+                                    {t('Update step/mm')}
                                 </Button>
                             </AlertDialogTrigger>
                             <AlertDialogContent className="bg-white">
                                 <AlertDialogHeader>
                                     <AlertDialogTitle>
-                                        Update Firmware
+                                        {t('Update Firmware')}
                                     </AlertDialogTitle>
                                     <div className="space-y-4">
                                         <p>
-                                            This will update the{' '}
+                                            {t('This will update the')}{' '}
                                             <strong>
                                                 {selectedAxis.toUpperCase()}
                                                 -axis
                                             </strong>{' '}
-                                            step/mm value in your CNC firmware ({' '}
+                                            {t(
+                                                'step/mm value in your CNC firmware (',
+                                            )}{' '}
                                             <strong>
                                                 {getEEPROMSettingKey(
                                                     selectedAxis,
@@ -284,11 +292,11 @@ const Steps = () => {
                                             )
                                         </p>
                                         <p>
-                                            From:{' '}
+                                            {t('From:')}{' '}
                                             <strong>{currentStepsPerMM}</strong>
                                         </p>
                                         <p>
-                                            To:{' '}
+                                            {t('To:')}{' '}
                                             <strong>
                                                 {calculateNewStepsPerMM({
                                                     originalStepsPerMM:
@@ -304,13 +312,13 @@ const Steps = () => {
                                 </AlertDialogHeader>
                                 <AlertDialogFooter>
                                     <AlertDialogCancel>
-                                        Cancel
+                                        {t('Cancel')}
                                     </AlertDialogCancel>
                                     <AlertDialogAction
                                         className="border border-blue-500"
                                         onClick={handleUpdateEEPROM}
                                     >
-                                        Update Firmware
+                                        {t('Update Firmware')}
                                     </AlertDialogAction>
                                 </AlertDialogFooter>
                             </AlertDialogContent>
@@ -321,14 +329,14 @@ const Steps = () => {
                             onClick={reset}
                             variant="outline"
                             icon={<LuRefreshCw className="w-4 h-4" />}
-                            text="Restart Wizard"
+                            text={t('Restart Wizard')}
                         />
                         <Popover>
                             <PopoverTrigger asChild>
                                 <Button
                                     variant="outline"
                                     icon={<LuMove className="w-4 h-4" />}
-                                    text="Jog Controls"
+                                    text={t('Jog Controls')}
                                 />
                             </PopoverTrigger>
 
@@ -345,8 +353,10 @@ const Steps = () => {
             <div className="flex flex-col gap-4">
                 <div className="text-green-800 bg-green-100 p-4 rounded-lg border min-h-52 flex flex-col gap-4 justify-center items-center text-lg dark:bg-green-950 dark:text-white dark:border-green-950">
                     <p>
-                        Your {selectedAxis.toUpperCase()}-axis looks accurate,
-                        so you should be good to go!
+                        {t(
+                            'Your {{axis}}-axis looks accurate, so you should be good to go!',
+                            { axis: selectedAxis.toUpperCase() },
+                        )}
                     </p>
                 </div>
 
@@ -355,14 +365,14 @@ const Steps = () => {
                         onClick={reset}
                         variant="outline"
                         icon={<LuRefreshCw className="w-4 h-4" />}
-                        text="Restart Wizard"
+                        text={t('Restart Wizard')}
                     />
                     <Popover>
                         <PopoverTrigger asChild>
                             <Button
                                 variant="outline"
                                 icon={<LuMove className="w-4 h-4" />}
-                                text="Jog Controls"
+                                text={t('Jog Controls')}
                             />
                         </PopoverTrigger>
 
@@ -382,15 +392,21 @@ const Steps = () => {
                     <div className="flex flex-col gap-4">
                         <div className="space-y-1">
                             <h3 className="text-lg font-semibold dark:text-white">
-                                Instructions
+                                {t('Instructions')}
                             </h3>
                             <p className="h-20 text-gray-600 dark:text-white">
                                 {currentStep === 0 &&
-                                    'First, mark next to the gantry in the location shown with your marker, pencil, or using a strip of tape.'}
+                                    t(
+                                        'First, mark next to the gantry in the location shown with your marker, pencil, or using a strip of tape.',
+                                    )}
                                 {currentStep === 1 &&
-                                    "Now move any distance you wish. A larger value will better tune your movement, just make sure you don't hit your machine limits. Once you are ready, clicked the Move Axis Button."}
+                                    t(
+                                        "Now move any distance you wish. A larger value will better tune your movement, just make sure you don't hit your machine limits. Once you are ready, clicked the Move Axis Button.",
+                                    )}
                                 {currentStep === 2 &&
-                                    'Lastly, measure the distance travelled between the original mark and the current gantry location. Take your time when entering this value, a more accurate measurement will give you better tuning results'}
+                                    t(
+                                        'Lastly, measure the distance travelled between the original mark and the current gantry location. Take your time when entering this value, a more accurate measurement will give you better tuning results',
+                                    )}
                             </p>
                         </div>
 
@@ -429,7 +445,7 @@ const Steps = () => {
                                             }}
                                             variant="secondary"
                                         >
-                                            Mark First Location
+                                            {t('Mark First Location')}
                                         </Button>
                                     </div>
                                 </div>
@@ -476,8 +492,9 @@ const Steps = () => {
                                             }}
                                             variant="alt"
                                         >
-                                            Move {selectedAxis.toUpperCase()}
-                                            -axis
+                                            {t('Move {{axis}}-axis', {
+                                                axis: selectedAxis.toUpperCase(),
+                                            })}
                                         </Button>
 
                                         <div className="flex items-center gap-2">
@@ -531,7 +548,7 @@ const Steps = () => {
                                                 setCurrentStep(3);
                                             }}
                                         >
-                                            Set Distance Travelled
+                                            {t('Set Distance Travelled')}
                                         </Button>
 
                                         <div className="flex items-center gap-2">
@@ -556,11 +573,11 @@ const Steps = () => {
 
                     <div className="flex flex-col items-center gap-4">
                         <h3 className="text-lg font-semibold dark:text-white">
-                            Diagram
+                            {t('Diagram')}
                         </h3>
                         <img
                             src={stepImage}
-                            alt="Movement Tuning Step"
+                            alt={t('Movement Tuning Step')}
                             className="w-[450px] h-auto border border-gray-200 rounded-lg"
                         />
                     </div>
@@ -572,14 +589,14 @@ const Steps = () => {
                     onClick={reset}
                     variant="outline"
                     icon={<LuRefreshCw className="w-4 h-4" />}
-                    text="Restart Wizard"
+                    text={t('Restart Wizard')}
                 />
                 <Popover>
                     <PopoverTrigger asChild>
                         <Button
                             variant="outline"
                             icon={<LuMove className="w-4 h-4" />}
-                            text="Jog Controls"
+                            text={t('Jog Controls')}
                         />
                     </PopoverTrigger>
 

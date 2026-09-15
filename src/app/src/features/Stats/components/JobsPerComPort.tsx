@@ -7,6 +7,7 @@ import { useContext } from 'react';
 import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { truncatePort } from 'app/features/Stats/utils/statUtils.ts';
+import { t } from 'app/i18n';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -33,7 +34,7 @@ export function JobsPerComPort() {
         labels,
         datasets: [
             {
-                label: 'Jobs',
+                label: t('Jobs'),
                 data: jobData,
                 backgroundColor: [
                     '#7ca7d0',

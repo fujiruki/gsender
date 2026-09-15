@@ -22,6 +22,7 @@
  */
 
 import React from 'react';
+import { t } from 'app/i18n';
 
 interface ToolRequirementBannerProps {
     toolLabel: string | null;
@@ -38,7 +39,7 @@ const ToolRequirementBanner = ({ toolLabel, comment }: ToolRequirementBannerProp
     return (
         <div className="self-center w-full max-w-[320px] rounded-[8px] border border-emerald-300/80 bg-emerald-50 px-5 py-4 text-center shadow-sm dark:border-emerald-700/60 dark:bg-[#0d2518]">
             <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-700 dark:text-emerald-300">
-                Install New Tool
+                {t('Install New Tool')}
             </div>
             <div className="mt-2 text-5xl font-semibold leading-none text-emerald-700 dark:text-emerald-300">
                 {toolLabel}

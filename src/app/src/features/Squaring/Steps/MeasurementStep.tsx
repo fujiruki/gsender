@@ -5,6 +5,7 @@ import TriangleDiagram from '../components/TriangleDiagram';
 import { useState, useEffect } from 'react';
 import { FaClipboard, FaClipboardCheck, FaClipboardList } from 'react-icons/fa';
 import { useWorkspaceState } from 'app/hooks/useWorkspaceState';
+import { t } from 'app/i18n';
 
 const MeasurementStep = () => {
     const {
@@ -59,10 +60,10 @@ const MeasurementStep = () => {
             <div className="flex flex-col gap-4">
                 <div className="space-y-1">
                     <h3 className="text-lg font-semibold dark:text-white">
-                        Instructions
+                        {t('Instructions')}
                     </h3>
                     <p className="text-gray-600 dark:text-white h-20">
-                        {currentSubStepData.description}
+                        {t(currentSubStepData.description)}
                     </p>
                 </div>
 
@@ -102,12 +103,14 @@ const MeasurementStep = () => {
                                     <div className="flex items-center gap-4">
                                         <div className="flex-1">
                                             <h4 className="font-medium">
-                                                {step.buttonLabel}
+                                                {t(step.buttonLabel)}
                                             </h4>
                                             <div className="flex items-center gap-2 mt-2">
                                                 <ControlledInput
                                                     type="number"
-                                                    placeholder="Enter measurement"
+                                                    placeholder={t(
+                                                        'Enter measurement',
+                                                    )}
                                                     value={
                                                         measurementInputs[
                                                             measurementKey
@@ -147,8 +150,8 @@ const MeasurementStep = () => {
                                                     }
                                                 >
                                                     {step.completed
-                                                        ? 'Update'
-                                                        : 'Confirm'}
+                                                        ? t('Update')
+                                                        : t('Confirm')}
                                                 </Button>
                                             </div>
                                         </div>
@@ -161,7 +164,7 @@ const MeasurementStep = () => {
             </div>
 
             <div className="flex flex-col items-center gap-4">
-                <h3 className="text-lg font-semibold">Diagram</h3>
+                <h3 className="text-lg font-semibold">{t('Diagram')}</h3>
                 <TriangleDiagram />
             </div>
         </div>

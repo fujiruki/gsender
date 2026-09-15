@@ -18,6 +18,7 @@ import { defaultOptions, gamepadMapping } from 'app/store/gamepad';
 import { AVAILABILITY_TYPES } from './utils';
 import { GamepadContext } from './utils/context';
 import { setCurrentModal, setGamepadProfileList } from './utils/actions';
+import { t } from 'app/i18n';
 
 const { DEFAULT, AVAILABLE, UNAVAILABLE } = AVAILABILITY_TYPES;
 
@@ -117,7 +118,9 @@ const ProfileModal = () => {
 
         dispatch(setGamepadProfileList(updatedProfiles));
 
-        toast.info('Created New Gamepad Profile', { position: 'bottom-right' });
+        toast.info(t('Created New Gamepad Profile'), {
+            position: 'bottom-right',
+        });
 
         closeModal();
     };
@@ -127,24 +130,24 @@ const ProfileModal = () => {
             [DEFAULT]: (
                 <div className="flex flex-col items-center gap-2 text-center p-4">
                     <i className="fas fa-info-circle text-blue-500 text-xl" />
-                    <p>Connect your device and press any button on it</p>
+                    <p>{t('Connect your device and press any button on it')}</p>
                 </div>
             ),
             [AVAILABLE]: (
                 <div className="flex flex-col items-center gap-2 text-center p-4 text-green-600">
                     <i className="fas fa-check-circle text-xl" />
-                    <p className="m-0">Profile Is Available</p>
+                    <p className="m-0">{t('Profile Is Available')}</p>
                     <small className="text-gray-500">
-                        Device ID: {gamepadInfo?.id}
+                        {t('Device ID: {{id}}', { id: gamepadInfo?.id })}
                     </small>
                 </div>
             ),
             [UNAVAILABLE]: (
                 <div className="flex flex-col items-center gap-2 text-center p-4 text-red-600">
                     <i className="fas fa-times-circle text-xl" />
-                    <p className="m-0">Profile Already Exists</p>
+                    <p className="m-0">{t('Profile Already Exists')}</p>
                     <small className="text-gray-500">
-                        Device ID: {gamepadInfo?.id}
+                        {t('Device ID: {{id}}', { id: gamepadInfo?.id })}
                     </small>
                 </div>
             ),
@@ -157,14 +160,14 @@ const ProfileModal = () => {
         <Dialog open={true} onOpenChange={() => closeModal()}>
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
-                    <DialogTitle>Add Gamepad Profile</DialogTitle>
+                    <DialogTitle>{t('Add Gamepad Profile')}</DialogTitle>
                 </DialogHeader>
                 <div className="flex flex-col gap-4 p-4">
                     <Availability type={availabilityType} info={gamepadInfo} />
 
                     <Input
                         ref={inputRef}
-                        placeholder="Enter a profile name here..."
+                        placeholder={t('Enter a profile name here...')}
                     />
 
                     <Button
@@ -177,7 +180,7 @@ const ProfileModal = () => {
                         }}
                         className="w-full"
                     >
-                        Add New Profile
+                        {t('Add New Profile')}
                     </Button>
                 </div>
             </DialogContent>

@@ -8,6 +8,7 @@ import {
 } from 'app/components/shadcn/Dialog';
 import { GamepadContext } from './utils/context';
 import { setCurrentModal } from './utils/actions';
+import { t } from 'app/i18n';
 
 const HelpModal = () => {
     const { dispatch } = useContext(GamepadContext);
@@ -18,14 +19,13 @@ const HelpModal = () => {
         <Dialog open={true} onOpenChange={() => closeModal()}>
             <DialogContent className="sm:max-w-sm">
                 <DialogHeader>
-                    <DialogTitle>Help with Gamepad</DialogTitle>
+                    <DialogTitle>{t('Help with Gamepad')}</DialogTitle>
                 </DialogHeader>
                 <div className="flex flex-col items-center gap-4 p-4 text-center">
                     <p>
-                        Your gamepad setup needs to work correctly for shortcuts
-                        to behave as expected. If you are experiencing issues,
-                        use this online diagnostics tool to verify its
-                        stability:
+                        {t(
+                            'Your gamepad setup needs to work correctly for shortcuts to behave as expected. If you are experiencing issues, use this online diagnostics tool to verify its stability:',
+                        )}
                     </p>
                     <a
                         href="https://hardwaretester.com/gamepad"
@@ -33,7 +33,7 @@ const HelpModal = () => {
                         rel="noopener noreferrer"
                         className="text-blue-500 hover:text-blue-700 underline"
                     >
-                        Hardware Tester
+                        {t('Hardware Tester')}
                     </a>
                 </div>
             </DialogContent>

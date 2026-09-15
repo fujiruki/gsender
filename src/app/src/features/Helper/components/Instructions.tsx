@@ -29,6 +29,7 @@ import Substep from 'app/features/Helper/components/Substep';
 import ToolRequirementBanner from 'app/features/Helper/components/ToolRequirementBanner';
 import PendingToolchangeNotice from 'app/features/Helper/components/PendingToolchangeNotice';
 import ResumingJobNotice from 'app/features/Helper/components/ResumingJobNotice';
+import { t } from 'app/i18n';
 
 const getToolLabel = (toolchangeContext: Record<string, unknown> | null): string | null => {
     const backendTool =
@@ -85,15 +86,15 @@ const Instructions = () => {
         <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3 bg-white dark:bg-[#18181f]">
             {/* Breadcrumb */}
             <div className="flex items-center gap-1 text-xs text-gray-400 dark:text-[#9ca3af]">
-                <span>{step.title}</span>
+                <span>{t(step.title)}</span>
                 <span className="text-gray-300 dark:text-[#9ca3af]">›</span>
-                <span className="text-gray-600 dark:text-white">{substep.title}</span>
+                <span className="text-gray-600 dark:text-white">{t(substep.title)}</span>
             </div>
             {/* Warning banner — first step only */}
             {intro && activeStep === 0 && activeSubstep === 0 && !substep.toolBanner && (
                 <div className="flex items-center gap-2 px-3 py-2 rounded bg-emerald-50 dark:bg-[#052e16] text-emerald-800 dark:text-[#6ee7b7] text-sm">
                     <CheckCircle size={13} className="shrink-0" />
-                    {intro}
+                    {t(intro)}
                 </div>
             )}
             {substep.toolBanner && (

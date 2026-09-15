@@ -63,6 +63,7 @@ import {
     ToggleLeftIcon,
     ToggleRightIcon,
 } from 'lucide-react';
+import { t } from 'app/i18n';
 
 /**
  * Keybinding settings page
@@ -195,7 +196,7 @@ const Keyboard = () => {
     }, []);
 
     const showToast = _.throttle(
-        (msg = 'Shortcut Updated') => {
+        (msg = t('Shortcut Updated')) => {
             toast.info(msg, {
                 duration: 3000,
                 position: 'bottom-right',
@@ -215,7 +216,7 @@ const Keyboard = () => {
         updatedShortcuts[shortcut.cmd].keys = '';
         updateKeybindings(updatedShortcuts, false);
 
-        showToast('Shortcut Cleared');
+        showToast(t('Shortcut Cleared'));
     };
 
     /**
@@ -330,13 +331,13 @@ const Keyboard = () => {
             document.body.removeChild(link);
             URL.revokeObjectURL(url);
 
-            toast.success('Shortcuts exported successfully!', {
+            toast.success(t('Shortcuts exported successfully!'), {
                 duration: 3000,
                 position: 'bottom-right',
             });
         } catch (error) {
             console.error('Export error:', error);
-            toast.error('Failed to export shortcuts.', {
+            toast.error(t('Failed to export shortcuts.'), {
                 position: 'bottom-right',
             });
         }
@@ -381,14 +382,16 @@ const Keyboard = () => {
 
                     updateKeybindings(mergedShortcuts, false);
 
-                    toast.success('Shortcuts imported successfully!', {
+                    toast.success(t('Shortcuts imported successfully!'), {
                         duration: 3000,
                         position: 'bottom-right',
                     });
                 } catch (error) {
                     console.error('Import error:', error);
                     toast.error(
-                        'Failed to import shortcuts. Please check the file format.',
+                        t(
+                            'Failed to import shortcuts. Please check the file format.',
+                        ),
                         {
                             position: 'bottom-right',
                         },
@@ -643,13 +646,13 @@ const Keyboard = () => {
                     iframe.contentWindow?.print();
                 };
             } else {
-                toast.error('Unable to create print document.', {
+                toast.error(t('Unable to create print document.'), {
                     position: 'bottom-right',
                 });
             }
         } catch (error) {
             console.error('Print error:', error);
-            toast.error('Failed to print shortcuts.', {
+            toast.error(t('Failed to print shortcuts.'), {
                 position: 'bottom-right',
             });
         }
@@ -675,17 +678,17 @@ const Keyboard = () => {
                     <Button
                         onClick={handleImportShortcuts}
                         icon={<DownloadIcon size={16} />}
-                        text="Import"
+                        text={t('Import')}
                         tooltip={{
-                            content: 'Import shortcuts from a file',
+                            content: t('Import shortcuts from a file'),
                         }}
                     />
                     <Button
                         onClick={handleExportShortcuts}
                         icon={<UploadIcon size={16} />}
-                        text="Export"
+                        text={t('Export')}
                         tooltip={{
-                            content: 'Export shortcuts to a file',
+                            content: t('Export shortcuts to a file'),
                         }}
                     />
                 </div>
@@ -694,26 +697,26 @@ const Keyboard = () => {
                         onClick={enableAllShortcuts}
                         disabled={allShortcutsEnabled}
                         icon={<ToggleRightIcon size={16} />}
-                        text="Enable All"
+                        text={t('Enable All')}
                         tooltip={{
-                            content: 'Enable all shortcuts',
+                            content: t('Enable all shortcuts'),
                         }}
                     />
                     <Button
                         onClick={disableAllShortcuts}
                         disabled={allShortcutsDisabled}
                         icon={<ToggleLeftIcon size={16} />}
-                        text="Disable All"
+                        text={t('Disable All')}
                         tooltip={{
-                            content: 'Disable all shortcuts',
+                            content: t('Disable all shortcuts'),
                         }}
                     />
                     <Button
                         onClick={handlePrintShortcuts}
                         icon={<PrinterIcon size={16} />}
-                        text="Print"
+                        text={t('Print')}
                         tooltip={{
-                            content: 'Print shortcuts',
+                            content: t('Print shortcuts'),
                         }}
                     />
                 </div>
@@ -726,10 +729,10 @@ const Keyboard = () => {
                 >
                     <DialogContent className="p-6 w-3/4 max-w-[800px]">
                         <DialogHeader>
-                            <DialogTitle>Edit Shortcut</DialogTitle>
+                            <DialogTitle>{t('Edit Shortcut')}</DialogTitle>
 
                             <DialogDescription>
-                                Update the keybinding for this shortcut
+                                {t('Update the keybinding for this shortcut')}
                             </DialogDescription>
                         </DialogHeader>
 

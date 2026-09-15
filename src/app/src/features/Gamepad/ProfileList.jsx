@@ -7,6 +7,7 @@ import { GamepadContext } from './utils/context';
 
 import { GAMEPAD_MODAL } from './utils/constants';
 import { setCurrentModal } from './utils/actions';
+import { t } from 'app/i18n';
 
 const ProfileList = () => {
     const {
@@ -25,14 +26,14 @@ const ProfileList = () => {
                 className="flex items-center gap-2"
             >
                 <i className="fas fa-plus" />
-                <span>Add New Gamepad Profile</span>
+                <span>{t('Add New Gamepad Profile')}</span>
             </Button>
 
             <Button
                 onClick={() => dispatch(setCurrentModal(GAMEPAD_MODAL.HELP))}
                 className="bg-orange-400 dark:bg-orange-700 border-orange-700 dark:border-orange-400 text-white hover:bg-orange-50"
             >
-                <span>Help</span>
+                <span>{t('Help')}</span>
             </Button>
         </div>
     );
@@ -41,7 +42,7 @@ const ProfileList = () => {
         return (
             <div className="flex flex-col items-center justify-center gap-8 p-8 h-full">
                 <p className="text-2xl">
-                    No Profiles, Click the Button Below to Add One
+                    {t('No Profiles, Click the Button Below to Add One')}
                 </p>
 
                 <ActionArea />
