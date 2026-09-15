@@ -10,6 +10,7 @@ import {
     DialogTitle,
 } from 'app/components/shadcn/Dialog';
 import { toast } from 'app/lib/toaster';
+import { t } from 'app/i18n';
 
 interface UploadModalProps {
     isOpen: boolean;
@@ -19,10 +20,14 @@ interface UploadModalProps {
 // Mirrors the firmware's filename_valid() check from the SD card plugin.
 // Returns null if valid, or an error string describing the problem.
 export function validateSDFilename(filename: string): string | null {
-    if (filename.length > 40) return 'Filename too long (max 40 characters)';
-    if (filename.includes('?')) return 'Filename contains invalid character: ?';
-    if (filename.includes('~')) return 'Filename contains invalid character: ~';
-    if (filename.includes('!')) return 'Filename contains invalid character: !';
+    if (filename.length > 40)
+        return t('Filename too long (max 40 characters)');
+    if (filename.includes('?'))
+        return t('Filename contains invalid character: ?');
+    if (filename.includes('~'))
+        return t('Filename contains invalid character: ~');
+    if (filename.includes('!'))
+        return t('Filename contains invalid character: !');
     return null;
 }
 
@@ -59,7 +64,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({
             const extension = '.' + file.name.split('.').pop()?.toLowerCase();
 
             if (!ACCEPTED_EXTENSIONS.includes(extension)) {
-                errors.push(`${file.name}: Invalid file type`);
+                errors.push(`${file.name}: ${t('Invalid file type')}`);
                 return;
             }
 
@@ -73,7 +78,11 @@ export const UploadModal: React.FC<UploadModalProps> = ({
         });
 
         if (errors.length > 0) {
-            toast.error(`Some files were rejected:\n${errors.join('\n')}`);
+            toast.error(
+                t('Some files were rejected:\n{{errors}}', {
+                    errors: errors.join('\n'),
+                }),
+            );
         }
 
         setSelectedFiles((prev) => [...prev, ...validFiles]);

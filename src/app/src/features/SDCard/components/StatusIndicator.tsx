@@ -6,6 +6,7 @@ import cn from 'classnames';
 import { useEffect, useState } from 'react';
 import controller from 'app/lib/controller.ts';
 import { toast } from 'app/lib/toaster';
+import { t } from 'app/i18n';
 
 export function StatusIndicator({ isMounted }) {
     const { isConnected } = useSDCard();
@@ -30,7 +31,7 @@ export function StatusIndicator({ isMounted }) {
         };
         const handleYmodemError = (err) => {
             setUploadState('idle');
-            toast.error('Error uploading file - ' + err + '.');
+            toast.error(t('Error uploading file - {{err}}.', { err }));
         };
 
         controller.addListener('ymodem:start', handleYmodemStart);

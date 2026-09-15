@@ -22,6 +22,7 @@ import controller from 'app/lib/controller.ts';
 import { RootState } from 'app/store/redux';
 import { Confirm } from 'app/components/ConfirmationDialog/ConfirmationDialogLib.ts';
 import { isIPv4 } from 'app/lib/utils';
+import { t } from 'app/i18n';
 
 import { actions } from './apiActions.ts';
 
@@ -84,13 +85,18 @@ export function RemoteModeDialog({
 
         // Validations
         if (Number(port) < 1025 || Number(port) > 65535) {
-            toast.error('Invalid Port Number - Must be between 1025 and 65535');
+            toast.error(
+                t('Invalid Port Number - Must be between 1025 and 65535'),
+            );
             return;
         }
 
         if (!isIPv4(ip)) {
             toast.error(
-                `Invalid IP Address - ${ip} does not look like a valid V4 IP address`,
+                t(
+                    'Invalid IP Address - {{ip}} does not look like a valid V4 IP address',
+                    { ip },
+                ),
             );
             return;
         }
@@ -98,7 +104,7 @@ export function RemoteModeDialog({
         onClose(false);
         actions.saveSettings(payload);
         setHeadlessSettings(payload);
-        toast.success('Updated Wireless Control Settings', {
+        toast.success(t('Updated Wireless Control Settings'), {
             position: 'bottom-right',
         });
     }
@@ -108,10 +114,11 @@ export function RemoteModeDialog({
 
         Confirm({
             onConfirm: onConfirmUpdate,
-            confirmLabel: 'Save Settings',
-            title: 'Save Wireless CNC Settings',
-            content:
+            confirmLabel: t('Save Settings'),
+            title: t('Save Wireless CNC Settings'),
+            content: t(
                 'Are you sure you want to save these settings?  This will restart the application.',
+            ),
         });
     }
 

@@ -13,6 +13,7 @@ import { getDatatypeInput } from 'app/features/Config/utils/EEPROM.ts';
 import { EEPROMSettingRow } from 'app/features/Config/components/EEPROMSettingRow.tsx';
 import controller from 'app/lib/controller.ts';
 import { toast } from 'app/lib/toaster';
+import { t } from 'app/i18n';
 
 export function isEEPROMSettingsSection(s: gSenderEEEPROMSettings): boolean {
     return 'label' in s && 'eeprom' in s;
@@ -56,9 +57,15 @@ export function EEPROMSection({
             return updated;
         });
         controller.command('gcode', [`${setting}=${value}`, '$$']);
-        toast.success(`Restored ${setting} to default value of ${value}`, {
-            position: 'bottom-right',
-        });
+        toast.success(
+            t('Restored {{setting}} to default value of {{value}}', {
+                setting,
+                value,
+            }),
+            {
+                position: 'bottom-right',
+            },
+        );
     }
 
     return (

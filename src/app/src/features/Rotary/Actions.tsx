@@ -16,6 +16,7 @@ import {
 import { useNavigate } from 'react-router';
 import { useWorkspaceState } from 'app/hooks/useWorkspaceState';
 import { Confirm } from 'app/components/ConfirmationDialog/ConfirmationDialogLib';
+import { t } from 'app/i18n';
 
 const Actions = () => {
     const navigate = useNavigate();
@@ -55,10 +56,11 @@ const Actions = () => {
                 variant="primary"
                 onClick={() => {
                     Confirm({
-                        title: 'Rotary Z-Axis probing',
-                        content:
+                        title: t('Rotary Z-Axis probing'),
+                        content: t(
                             "Click 'Run' to start the Rotary Z-Axis probing cycle",
-                        confirmLabel: 'Run',
+                        ),
+                        confirmLabel: t('Run'),
                         onConfirm: () => {
                             runProbing('Rotary Z-Axis', getZAxisProbing());
                         },
@@ -82,10 +84,11 @@ const Actions = () => {
                 variant="primary"
                 onClick={() => {
                     Confirm({
-                        title: 'Rotary Y-Axis alignment',
-                        content:
+                        title: t('Rotary Y-Axis alignment'),
+                        content: t(
                             "Click 'Run' to start the Rotary Y-Axis alignment cycle",
-                        confirmLabel: 'Run',
+                        ),
+                        confirmLabel: t('Run'),
                         onConfirm: () => {
                             runProbing(
                                 'Y-Axis Alignment',

@@ -42,6 +42,7 @@ import {
     TOASTER_WARNING,
 } from 'app/lib/toaster/ToasterLib';
 import { toast } from 'app/lib/toaster';
+import { t } from 'app/i18n';
 import {
     updateFileInfo,
     updateFileProcessing,
@@ -669,7 +670,10 @@ class Visualizer extends Component {
             }));
             if (this.state.invalidGcode.shouldShow) {
                 toast.info(
-                    `Found ${invalidGcode.size} line(s) of non-GRBL-supported G-Code in this file.  Your job may not run properly.`,
+                    t(
+                        'Found {{count}} line(s) of non-GRBL-supported G-Code in this file.  Your job may not run properly.',
+                        { count: invalidGcode.size },
+                    ),
                     { position: 'bottom-right' },
                 );
             }
@@ -930,7 +934,7 @@ class Visualizer extends Component {
 
     showToast = _.throttle(
         () => {
-            toast.info('Unable to activate GrblHAL ONLY shortcut', {
+            toast.info(t('Unable to activate GrblHAL ONLY shortcut'), {
                 position: 'bottom-right',
             });
         },

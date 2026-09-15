@@ -12,6 +12,7 @@ import {
 import Button from 'app/components/Button';
 import { RadioGroup, RadioGroupItem } from 'app/components/shadcn/RadioGroup';
 import { toast } from 'app/lib/toaster';
+import { t } from 'app/i18n';
 import { uploadGcodeFileToServer } from 'app/lib/fileupload';
 import {
     TOOLBAR_CATEGORY,
@@ -183,7 +184,7 @@ const MountingSetup = ({ isDisabled = false }: { isDisabled?: boolean }) => {
             VISUALIZER_PRIMARY,
         );
 
-        toast.info('Loaded rotary mounting setup macro', {
+        toast.info(t('Loaded rotary mounting setup macro'), {
             position: 'bottom-right',
         });
 

@@ -17,6 +17,7 @@ import cn from 'classnames';
 import { toast } from 'app/lib/toaster';
 import { ACCEPTED_EXTENSIONS, validateSDFilename } from 'app/features/SDCard/components/UploadModal.tsx';
 import store from 'app/store';
+import { t } from 'app/i18n';
 
 const formatFileSize = (bytes: number): string => {
     const units = ['B', 'KB', 'MB', 'GB'];
@@ -32,7 +33,10 @@ const formatFileSize = (bytes: number): string => {
 };
 
 function getUnusableReason(filename: string): string {
-    return validateSDFilename(filename) ?? 'File flagged as unusable by firmware';
+    return (
+        validateSDFilename(filename) ??
+        t('File flagged as unusable by firmware')
+    );
 }
 
 export function isFileATCIRelated(filename, atciMacros) {
@@ -65,8 +69,10 @@ export const FileList: React.FC = () => {
 
     function handleDelete(fileName: string) {
         Confirm({
-            title: 'Delete File',
-            content: `Are you sure you want to delete ${fileName}?`,
+            title: t('Delete File'),
+            content: t('Are you sure you want to delete {{fileName}}?', {
+                fileName,
+            }),
             onConfirm: () => {
                 controller.command('sdcard:delete', fileName);
                 reduxStore.dispatch(clearSDCardFiles({ path: fileName }));
@@ -84,7 +90,7 @@ export const FileList: React.FC = () => {
             const extension = '.' + file.name.split('.').pop()?.toLowerCase();
 
             if (!ACCEPTED_EXTENSIONS.includes(extension)) {
-                errors.push(`${file.name}: Invalid file type`);
+                errors.push(`${file.name}: ${t('Invalid file type')}`);
                 return;
             }
 
@@ -98,7 +104,11 @@ export const FileList: React.FC = () => {
         });
 
         if (errors.length > 0) {
-            toast.error(`Some files were rejected:\n${errors.join('\n')}`);
+            toast.error(
+                t('Some files were rejected:\n{{errors}}', {
+                    errors: errors.join('\n'),
+                }),
+            );
         }
 
         if (validFiles.length > 0) {
