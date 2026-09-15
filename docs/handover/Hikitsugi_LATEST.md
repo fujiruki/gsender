@@ -29,20 +29,24 @@
 
 ## 進行中・待ち状態
 
-- **`codex-m0-i18n-base`エージェントに追加翻訳を依頼中、完了報告待ち**:
-  1. `AlarmDescriptionIcon.tsx`が直接importしている`GRBL_ALARMS`/`GRBL_HAL_ALARMS`(サーバー側`constants.js`)の`description`(約80件)
-  2. `constants/firmware/grbl.ts`/`grblHAL.ts`の`GRBL_SETTINGS`（`SettingsDescriptions.ts`とは別の重複データ、使用箇所要調査）
-  3. `GRBL_ERRORS`/`GRBL_HAL_ERRORS`が固定文言としてフロントに届くか動的合成かの調査報告
-  - 完了したら検証（`i18n:sync`/`test:app`/`build`確認、可能ならブラウザ実地確認）してからコミット記録
+- なし。アラーム/エラー説明文の追加翻訳（下記）まで完了し、検証・記録済み
 
 ## 次にやるべきこと（優先順）
 
-1. 上記のアラーム/設定翻訳タスクの完了報告を受けて検証・記録
-2. ユーザーがCNCjsマクロ（`.cncrc`のマクロ）を手動でgSenderにコピーして動作確認する予定 → 結果待ち。うまくいかなければインポートツールの仕様を詰める（`docs/requests.md`にはまだ未記載、必要になったら記録する）
-3. `docs/requests.md`に記録済みの2件、まだ仕様化・実装していない:
+1. ユーザーがCNCjsマクロ（`.cncrc`のマクロ）を手動でgSenderにコピーして動作確認する予定 → 結果待ち。うまくいかなければインポートツールの仕様を詰める（`docs/requests.md`にはまだ未記載、必要になったら記録する）
+2. `docs/requests.md`に記録済みの2件、まだ仕様化・実装していない:
    - Electron本体(`electron:hot`)がWindowsで起動しない問題（`bash -lc`のシェル互換性）
    - キーボードジョグの高速化機能（`Ctrl+Shift+矢印`等）。`Jogging/index.tsx`に`JOG_SPEED_I`/`JOG_SPEED_D`のコメントアウトされた実装痕跡あり、参考にできる
-4. 日本語化が完全に一段落したら、以降の新機能は「アドオン優先」方針（`CLAUDE.md`参照）で進める
+3. 日本語化が完全に一段落したら、以降の新機能は「アドオン優先」方針（`CLAUDE.md`参照）で進める
+4. i18n化はM0〜M3+アラーム/エラー説明文まで完了(keys in code: 1639, untranslated 0)。残っているとすればM3で意図的に対象外とした領域（About/ライセンス表記、開発者向けツール等）のみ
+
+## 完了した作業（追記: アラーム/エラー説明文）
+
+- ユーザーがアラームダイアログの本文未翻訳を発見 → 調査の結果、`AlarmDescriptionIcon.tsx`がサーバー側`constants.js`のGRBL_ALARMS/HAL_ALARMSを直接importしていることが判明し翻訳(19件)
+- 副次的に`GRBL_ERRORS`/`HAL_ERRORS`も別経路(`GrblController.js`→socket.io→`controllerSagas.tsx`のtoast)で固定文言としてフロントに届くと判明し翻訳(60件、コミット`0b3a23417`)
+- `constants/firmware/grbl.ts`のGRBL_SETTINGSは未使用のデッドコードと判明、対応不要
+- `i18n-sync.mjs`に配列名指定でのdescription抽出方式を追加、`unescape()`のエスケープ処理バグも修正
+- 教訓: 「サーバー起点=翻訳不可」と早合点せず、Electronアプリではサーバー側コードがフロントに直接importされることがあるため、実際のimport関係を追う必要がある
 
 ## 注意点・ハマりポイント
 
