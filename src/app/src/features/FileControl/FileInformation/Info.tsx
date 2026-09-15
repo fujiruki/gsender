@@ -1,5 +1,6 @@
 import { useTypedSelector } from 'app/hooks/useTypedSelector';
 import { useWorkspaceState } from 'app/hooks/useWorkspaceState';
+import { t } from 'app/i18n';
 
 const Info = () => {
     const { toolSet, movementSet, spindleSet, estimatedTime, fileModal } =
@@ -71,29 +72,29 @@ const Info = () => {
     return (
         <div className="text-gray-900 dark:text-gray-300">
             <div className="flex gap-1">
-                <span className="font-bold">Estimated Time</span>
+                <span className="font-bold">{t('Estimated Time')}</span>
                 <span>{formattedEstimatedTime}</span>
             </div>
 
             <div className="flex gap-1">
-                <span className="font-bold">Feed</span>
+                <span className="font-bold">{t('Feed')}</span>
                 <span>{formattedFeedrate}</span>
             </div>
 
             <div className="flex gap-1">
-                <span className="font-bold">Speed</span>
+                <span className="font-bold">{t('Speed')}</span>
                 <span>
                     {spindleSetFormatted.length === 0
-                        ? 'None'
+                        ? t('None')
                         : `${spindleMin}-${spindleMax} RPM`}
                 </span>
             </div>
 
             <div className="flex gap-1">
-                <span className="font-bold">Tools</span>
+                <span className="font-bold">{t('Tools')}</span>
                 <span>
                     {toolSetFormatted.length === 0
-                        ? 'None'
+                        ? t('None')
                         : `${toolSetFormatted.length} (${toolSetFormatted.toString()})`}
                 </span>
             </div>

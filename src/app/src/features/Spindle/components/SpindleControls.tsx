@@ -29,6 +29,7 @@ import { ActiveStateButton } from 'app/components/ActiveStateButton';
 import Tooltip from 'app/components/Tooltip';
 import { useState, useEffect } from 'react';
 import store from 'app/store';
+import { t } from 'app/i18n';
 
 type Props = {
     actions: {
@@ -98,41 +99,41 @@ const SpindleControls = ({ actions, state, canClick, isConnected }: Props) => {
                     onClick={actions.sendM3}
                     disabled={!canClick}
                     icon={<FaRedoAlt />}
-                    text="Forward"
+                    text={t('Forward')}
                     size="sm"
                     className="w-full"
                     active={isConnected && spindleForward}
-                    tooltip={{ content: 'Run spindle clockwise' }}
-                    aria-label="Start spindle clockwise (M3)"
+                    tooltip={{ content: t('Run spindle clockwise') }}
+                    aria-label={t('Start spindle clockwise (M3)')}
                 />
                 <ActiveStateButton
                     onClick={actions.sendM4}
                     disabled={!canClick}
                     icon={<FaUndoAlt />}
-                    text="Reverse"
+                    text={t('Reverse')}
                     size="sm"
                     className="w-full"
                     active={spindleReverse}
                     tooltip={{
-                        content: 'Run spindle counterclockwise',
+                        content: t('Run spindle counterclockwise'),
                     }}
-                    aria-label="Start spindle counterclockwise (M4)"
+                    aria-label={t('Start spindle counterclockwise (M4)')}
                 />
                 <ActiveStateButton
                     onClick={actions.sendM5}
                     disabled={!canClick}
                     icon={<FaBan />}
-                    text="Stop"
+                    text={t('Stop')}
                     size="sm"
                     className="w-full"
-                    tooltip={{ content: 'Stop spindle' }}
-                    aria-label="Stop spindle (M5)"
+                    tooltip={{ content: t('Stop spindle') }}
+                    aria-label={t('Stop spindle (M5)')}
                 />
             </div>
             <div className="grid grid-cols-[1fr_3fr_1fr] gap-2 justify-center items-center dark:text-white">
-                <span className="text-right">Speed</span>
+                <span className="text-right">{t('Speed')}</span>
                 {inputType === 'Slider' ? (
-                    <Tooltip content="Adjust spindle speed" side="bottom">
+                    <Tooltip content={t('Adjust spindle speed')} side="bottom">
                         <Slider
                             value={[state.spindleSpeed]}
                             min={state.spindleMin}
@@ -143,7 +144,7 @@ const SpindleControls = ({ actions, state, canClick, isConnected }: Props) => {
                                 actions.handleSpindleSpeedChange(value[0])
                             }
                             disabled={!canClick}
-                            aria-label="Adjust spindle speed"
+                            aria-label={t('Adjust spindle speed')}
                         />
                     </Tooltip>
                 ) : (
@@ -160,7 +161,7 @@ const SpindleControls = ({ actions, state, canClick, isConnected }: Props) => {
                             max={state.spindleMax}
                             disabled={!canClick}
                             className="h-8 w-full"
-                            aria-label="Type spindle speed"
+                            aria-label={t('Type spindle speed')}
                         />
                     </div>
                 )}

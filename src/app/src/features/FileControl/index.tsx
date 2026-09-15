@@ -20,6 +20,7 @@ import { toast } from 'app/lib/toaster';
 import { RecentFile } from './definitions';
 import { useTypedSelector } from 'app/hooks/useTypedSelector';
 import { usePostHog } from '@posthog/react';
+import { t } from 'app/i18n';
 
 export type FileData = {
     data: string;
@@ -55,7 +56,9 @@ const FileControl = () => {
                 ) => {
                     if (!fileMetaData) {
                         toast.error(
-                            'Error loading recent file, it may have been deleted or moved to a different folder.',
+                            t(
+                                'Error loading recent file, it may have been deleted or moved to a different folder.',
+                            ),
                             { position: 'bottom-right' },
                         );
 

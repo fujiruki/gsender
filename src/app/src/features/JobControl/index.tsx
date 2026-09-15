@@ -21,6 +21,7 @@ import pubsub from 'pubsub-js';
 import { SDCardProgress } from 'app/features/JobControl/SDCardProgress.tsx';
 import { isToolProbed } from 'app/features/ATC/utils/ATCFunctions.ts';
 import cx from 'classnames';
+import { t } from 'app/i18n';
 
 interface JobControlProps {
     workflow: { state: WORKFLOW_STATES_T };
@@ -155,17 +156,20 @@ const JobControl: React.FC<JobControlProps> = ({
                     true,
                     {
                         type: 'alert',
-                        title: `Using Current Tool (T${currentTool})`,
+                        title: t('Using Current Tool (T{{tool}})', {
+                            tool: currentTool,
+                        }),
                         body: (
                             <>
                                 <p>
-                                    This file contains no tool change commands
-                                    (M6) and the tool in the spindle will be
-                                    used.
+                                    {t(
+                                        'This file contains no tool change commands (M6) and the tool in the spindle will be used.',
+                                    )}
                                 </p>
                                 <p>
-                                    Please confirm that you want to use this
-                                    tool
+                                    {t(
+                                        'Please confirm that you want to use this tool',
+                                    )}
                                 </p>
                             </>
                         ),
@@ -176,19 +180,18 @@ const JobControl: React.FC<JobControlProps> = ({
                     true,
                     {
                         type: 'error',
-                        title: 'Current Tool Not Probed',
+                        title: t('Current Tool Not Probed'),
                         body: (
                             <>
                                 <p>
-                                    The file contains no tool change commands
-                                    (M6) and the tool in the spindle will be
-                                    used. However, the tool in the spindle does
-                                    not have an offset.
+                                    {t(
+                                        'The file contains no tool change commands (M6) and the tool in the spindle will be used. However, the tool in the spindle does not have an offset.',
+                                    )}
                                 </p>
                                 <p>
-                                    Select <b>"Probe"</b> in the ATC tab to
-                                    establish an offset and re-zero the
-                                    workpiece before trying again.
+                                    {t(
+                                        'Select "Probe" in the ATC tab to establish an offset and re-zero the workpiece before trying again.',
+                                    )}
                                 </p>
                             </>
                         ),
@@ -202,21 +205,23 @@ const JobControl: React.FC<JobControlProps> = ({
                 true,
                 {
                     type: 'error',
-                    title: 'No Current Tool',
+                    title: t('No Current Tool'),
                     body: (
                         <>
                             <p>
-                                This file contains no tool change commands (M6)
-                                and there is no tool in the spindle.
+                                {t(
+                                    'This file contains no tool change commands (M6) and there is no tool in the spindle.',
+                                )}
                             </p>
                             <p>
-                                Load the tool you want to use into the spindle
-                                before trying again.
+                                {t(
+                                    'Load the tool you want to use into the spindle before trying again.',
+                                )}
                             </p>
                             <p>
-                                Alternatively, you can update your
-                                post-processor to include a tool change command
-                                with your file.
+                                {t(
+                                    'Alternatively, you can update your post-processor to include a tool change command with your file.',
+                                )}
                             </p>
                         </>
                     ),

@@ -41,6 +41,7 @@ import { PROBING_CATEGORY } from 'app/constants';
 import useKeybinding from 'app/lib/useKeybinding';
 import useShuttleEvents from 'app/hooks/useShuttleEvents';
 import { TOUCHPLATE_TYPE_3D } from 'app/lib/constants';
+import { t } from 'app/i18n';
 
 interface RunProbeProps {
     state: State;
@@ -80,7 +81,7 @@ const RunProbe = ({ actions, state }: RunProbeProps) => {
 
     const shuttleControlEvents = {
         START_PROBE: {
-            title: 'Begin probing',
+            title: t('Begin probing'),
             keys: '',
             cmd: 'START_PROBE',
             preventDefault: false,
@@ -94,7 +95,7 @@ const RunProbe = ({ actions, state }: RunProbeProps) => {
             },
         },
         CONFIRM_PROBE: {
-            title: 'Confirm probe popup',
+            title: t('Confirm probe popup'),
             keys: '',
             cmd: 'CONFIRM_PROBE',
             preventDefault: false,
@@ -105,7 +106,7 @@ const RunProbe = ({ actions, state }: RunProbeProps) => {
                     return;
                 }
 
-                toast.info('Probe Confirmed Manually', {
+                toast.info(t('Probe Confirmed Manually'), {
                     position: 'bottom-right',
                 });
 
@@ -123,7 +124,7 @@ const RunProbe = ({ actions, state }: RunProbeProps) => {
         const probeCommands = actionsRef.current.generateProbeCommands();
 
         actionsRef.current.runProbeCommands(probeCommands);
-        toast.info('Initiated probing cycle', { position: 'bottom-right' });
+        toast.info(t('Initiated probing cycle'), { position: 'bottom-right' });
         actionsRef.current.onOpenChange(false);
     }, []);
 
@@ -153,26 +154,33 @@ const RunProbe = ({ actions, state }: RunProbeProps) => {
                 )}
             >
                 <DialogHeader className="text-robin-700 flex items-start justify-center">
-                    <DialogTitle>{`Probe - ${probeCommand.id}`}</DialogTitle>
+                    <DialogTitle>
+                        {t('Probe - {{id}}', { id: probeCommand.id })}
+                    </DialogTitle>
                 </DialogHeader>
 
                 <div className="grid grid-cols-[1.5fr_1fr] gap-2 w-[600px] min-h-[200px]">
                     <div className="flex flex-col justify-between pb-4">
                         <div className="text-black leading-snug dark:text-white">
                             <p className="mb-3">
-                                1. Check the tool is positioned correctly
-                                (pictured).
+                                {t(
+                                    '1. Check the tool is positioned correctly (pictured).',
+                                )}
                             </p>
                             <p className="mb-3">
                                 {is3DProbe
-                                    ? '2. Gently push the probe needle to check the circuit is triggered properly (indicated by a green light).'
-                                    : '2. Lift your touch plate to the tool to check the circuit is good (indicated by a green light), then put it back where it was.'}
+                                    ? t(
+                                          '2. Gently push the probe needle to check the circuit is triggered properly (indicated by a green light).',
+                                      )
+                                    : t(
+                                          '2. Lift your touch plate to the tool to check the circuit is good (indicated by a green light), then put it back where it was.',
+                                      )}
                             </p>
                             {!is3DProbe && (
                                 <p className="mb-3">
-                                    3. In some cases, holding the touch plate
-                                    still while probing will give a more
-                                    consistent measurement.
+                                    {t(
+                                        '3. In some cases, holding the touch plate still while probing will give a more consistent measurement.',
+                                    )}
                                 </p>
                             )}
                         </div>
@@ -182,8 +190,8 @@ const RunProbe = ({ actions, state }: RunProbeProps) => {
                             onClick={startProbe}
                         >
                             {connectionMade
-                                ? 'Start Probe'
-                                : 'Waiting for probe circuit check...'}
+                                ? t('Start Probe')
+                                : t('Waiting for probe circuit check...')}
                         </Button>
                     </div>
                     <div className="flex flex-col sm:m-auto sm:mb-4">

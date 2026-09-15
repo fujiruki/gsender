@@ -32,6 +32,7 @@ import {
 import get from 'lodash/get';
 import reduxStore, { RootState } from 'app/store/redux';
 import { useTypedSelector } from 'app/hooks/useTypedSelector.ts';
+import { t } from 'app/i18n';
 
 type MACHINE_CONTROL_BUTTONS_T =
     (typeof MACHINE_CONTROL_BUTTONS)[keyof typeof MACHINE_CONTROL_BUTTONS];
@@ -174,7 +175,7 @@ const ControlButton: React.FC<ControlButtonProps> = ({
             case 'START':
                 return {
                     START_JOB: {
-                        title: 'Start job',
+                        title: t('Start job'),
                         keys: '~',
                         gamepadKeys: '9',
                         keysName: 'Start',
@@ -202,7 +203,7 @@ const ControlButton: React.FC<ControlButtonProps> = ({
                         },
                     },
                     RUN_OUTLINE: {
-                        title: 'Run outline',
+                        title: t('Run outline'),
                         preventDefault: false,
                         isActive: true,
                         category: CARVING_CATEGORY,
@@ -219,7 +220,7 @@ const ControlButton: React.FC<ControlButtonProps> = ({
             case 'PAUSE':
                 return {
                     PAUSE_JOB: {
-                        title: 'Pause job',
+                        title: t('Pause job'),
                         keys: '!',
                         gamepadKeys: '2',
                         keysName: 'X',
@@ -241,7 +242,7 @@ const ControlButton: React.FC<ControlButtonProps> = ({
             case 'STOP':
                 return {
                     STOP_JOB: {
-                        title: 'Global Stop',
+                        title: t('Global Stop'),
                         keys: '@',
                         gamepadKeys: '3',
                         keysName: 'Y',
@@ -337,9 +338,9 @@ const ControlButton: React.FC<ControlButtonProps> = ({
     };
 
     const message: Message = {
-        START: 'Start',
-        PAUSE: 'Pause',
-        STOP: 'Stop',
+        START: t('Start'),
+        PAUSE: t('Pause'),
+        STOP: t('Stop'),
     };
 
     const icons: Icons = {

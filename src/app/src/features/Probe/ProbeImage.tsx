@@ -42,6 +42,7 @@ import XYZ3D from './assets/3D-XYZ.gif';
 import X3D from './assets/3D-X.gif';
 import Y3D from './assets/3D-Y.gif';
 import { ProbeCommand, TOUCHPLATE_TYPES_T } from './definitions';
+import { t } from 'app/i18n';
 
 interface Props {
     probeCommand: ProbeCommand;
@@ -90,7 +91,7 @@ const ProbeImage: React.FC<Props> = ({
     return (
         <div className="flex items-center justify-center">
             <img
-                alt="Probe Block orientation guide image"
+                alt={t('Probe Block orientation guide image')}
                 src={imgSrc}
                 className="w-[15vh] my-0 mx-auto dark:invert portrait:w-[10vh]"
             />

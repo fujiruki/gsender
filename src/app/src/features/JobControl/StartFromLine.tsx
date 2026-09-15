@@ -24,6 +24,7 @@ import pubsub from 'pubsub-js';
 import { useWorkspaceState } from 'app/hooks/useWorkspaceState';
 import { convertToImperial } from 'app/lib/units';
 import { usePostHog } from '@posthog/react';
+import { t } from 'app/i18n';
 
 type StartFromLineProps = {
     disabled: boolean;
@@ -100,7 +101,7 @@ const StartFromLine = ({
         reduxStore.dispatch(
             updateJobOverrides({ isChecked: true, toggleStatus: 'overrides' }),
         );
-        toast.info('Running Start From Specific Line Command', {
+        toast.info(t('Running Start From Specific Line Command'), {
             position: 'bottom-right',
         });
 
@@ -138,7 +139,7 @@ const StartFromLine = ({
                     setState((prev) => ({ ...prev, showModal: true }));
                 }}
             >
-                <MdFormatListNumbered className="text-2xl mr-1" /> Start From
+                <MdFormatListNumbered className="text-2xl mr-1" /> {t('Start From')}
             </ShadButton>
             <Dialog
                 open={state.showModal}
@@ -150,36 +151,41 @@ const StartFromLine = ({
                     <DialogHeader>
                         <DialogTitle>
                             {state.needsRecovery
-                                ? 'Recovery: Start From Line'
-                                : 'Start From Line'}
+                                ? t('Recovery: Start From Line')
+                                : t('Start From Line')}
                         </DialogTitle>
                     </DialogHeader>
                     <div className="">
                         <div className="mb-4">
                             <p className="mb-2">
-                                Recover a job after power loss, mechanical
-                                malfunction, disconnection, or other failure.
+                                {t(
+                                    'Recover a job after power loss, mechanical malfunction, disconnection, or other failure.',
+                                )}
                             </p>
                             <p className="mb-0 text-black dark:text-white">
-                                Your job of <b>{lineTotal}</b> lines was last
-                                stopped around line: <b>{lastLine}</b>.
+                                {t(
+                                    'Your job of {{lineTotal}} lines was last stopped around line: {{lastLine}}.',
+                                    { lineTotal, lastLine },
+                                )}
                             </p>
                             {state.value > 0 && (
                                 <p>
-                                    For best success, we usually recommend
-                                    resuming about <strong>10 lines</strong>{' '}
-                                    earlier:{' '}
-                                    <strong>
-                                        line{' '}
-                                        {lastLine - 10 >= 0 ? lastLine - 10 : 0}
-                                    </strong>
+                                    {t(
+                                        'For best success, we usually recommend resuming about 10 lines earlier: line {{line}}',
+                                        {
+                                            line:
+                                                lastLine - 10 >= 0
+                                                    ? lastLine - 10
+                                                    : 0,
+                                        },
+                                    )}
                                 </p>
                             )}
                         </div>
                         <div className="mb-4">
                             <div className="grid grid-cols-4 gap-2 items-center">
                                 <label htmlFor="resumeJobLine">
-                                    Resume job at line:
+                                    {t('Resume job at line:')}
                                 </label>
                                 <ControlledInput
                                     id="resumeJobLine"
@@ -210,11 +216,13 @@ const StartFromLine = ({
                                     wont fire onBlur when you click off of it
                                 */}
                                 <Tooltip
-                                    content={`Default Value: ${state.defaultSafeHeight}`}
+                                    content={t('Default Value: {{value}}', {
+                                        value: state.defaultSafeHeight,
+                                    })}
                                 >
                                     <>
                                         <label htmlFor="safeHeight">
-                                            With Safe Height:
+                                            {t('With Safe Height:')}
                                         </label>
                                         <ControlledInput
                                             id="safeHeight"
@@ -233,15 +241,15 @@ const StartFromLine = ({
                                     </>
                                 </Tooltip>
                                 <span className="text-sm col-span-2">
-                                    (amount above the max height of the file)
+                                    {t('(amount above the max height of the file)')}
                                 </span>
                             </div>
                         </div>
                         <div className="mb-4">
                             <p className="text-[#E2943B]">
-                                Calculates all your CNC movements, attributes,
-                                and gSender automations to pick up right where
-                                you left off.
+                                {t(
+                                    'Calculates all your CNC movements, attributes, and gSender automations to pick up right where you left off.',
+                                )}
                             </p>
                         </div>
                         <div className="flex justify-center">
@@ -252,7 +260,7 @@ const StartFromLine = ({
                                 className="flex flex-row p-3 items-center gap-2 portrait:px-6 portrait:text-xl"
                             >
                                 <FaPlay className="ml-2" />
-                                <span>Start from Line</span>
+                                <span>{t('Start from Line')}</span>
                             </Button>
                         </div>
                     </div>

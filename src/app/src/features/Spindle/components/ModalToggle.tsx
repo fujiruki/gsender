@@ -24,6 +24,7 @@
 import { Switch } from 'app/components/shadcn/Switch';
 import { LASER_MODE } from 'app/constants';
 import Tooltip from 'app/components/Tooltip';
+import { t } from 'app/i18n';
 
 type Props = {
     mode: string;
@@ -35,16 +36,16 @@ const ModalToggle = ({ mode, onChange, ...props }: Props) => {
     const isToggled = mode === LASER_MODE;
 
     return (
-        <Tooltip content="Enable Spindle or Laser mode">
+        <Tooltip content={t('Enable Spindle or Laser mode')}>
             <div className="flex items-center gap-2 justify-center w-full dark:text-white">
-                <span>Spindle</span>
+                <span>{t('Spindle')}</span>
                 <Switch
                     checked={isToggled}
                     onChange={onChange}
                     {...props}
-                    aria-label="Toggle spindle or laser mode"
+                    aria-label={t('Toggle spindle or laser mode')}
                 />
-                <span>Laser</span>
+                <span>{t('Laser')}</span>
             </div>
         </Tooltip>
     );

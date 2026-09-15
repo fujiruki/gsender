@@ -44,6 +44,7 @@ import {
 
 import { WORKFLOW_STATE_IDLE, WORKFLOW_STATE_PAUSED } from '../../constants';
 import DroppableColumn, { Actions } from './DroppableColumn';
+import { t } from 'app/i18n';
 
 type ContainerProps = {
     children: React.ReactNode;
@@ -241,7 +242,7 @@ const Macro = ({ state, actions, workflow }: MacroProps) => {
         return (
             <div className="flex flex-col gap-1 p-1 h-full justify-center items-center">
                 <p className="text-center dark:text-white">
-                    No Macros...
+                    {t('No Macros...')}
                 </p>
             </div>
         );

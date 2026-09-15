@@ -7,6 +7,7 @@ import {
 import { SettingSection } from 'app/features/Config/components/SettingSection.tsx';
 import { useSettings } from 'app/features/Config/utils/SettingsContext.tsx';
 import cn from 'classnames';
+import { t } from 'app/i18n';
 
 interface SectionProps {
     title: string;
@@ -82,7 +83,7 @@ export const Section = React.forwardRef(
                         id={`h-${id}`}
                         ref={ref}
                     >
-                        {title}
+                        {t(title)}
                     </h1>
                     {connected && Wizard && <Wizard />}
                 </div>

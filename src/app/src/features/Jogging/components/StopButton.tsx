@@ -1,4 +1,5 @@
 import cn from 'classnames';
+import { t } from 'app/i18n';
 
 export function StopButton({ disabled = false, onClick }) {
     return (
@@ -8,7 +9,7 @@ export function StopButton({ disabled = false, onClick }) {
             viewBox="0 0 79 79"
             role="button"
             tabIndex={disabled ? -1 : 0}
-            aria-label="Stop Jogging"
+            aria-label={t('Stop Jogging')}
             onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();

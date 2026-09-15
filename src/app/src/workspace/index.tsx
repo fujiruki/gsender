@@ -46,6 +46,7 @@ import pubsub from 'pubsub-js';
 import ConfirmationDialog from 'app/components/ConfirmationDialog/ConfirmationDialog';
 import { SettingsProvider } from 'app/features/Config/utils/SettingsContext';
 import { Helper } from 'app/features/Helper';
+import { t } from 'app/i18n';
 
 const Workspace = () => {
     const location = useLocation();
@@ -96,7 +97,7 @@ const Workspace = () => {
 
     const shuttleControlEvents = {
         CONTROLLER_COMMAND_UNLOCK: {
-            title: 'Unlock',
+            title: t('Unlock'),
             keys: '$',
             cmd: 'CONTROLLER_COMMAND_UNLOCK',
             payload: {
@@ -108,7 +109,7 @@ const Workspace = () => {
             callback: shuttleControlFunctions.CONTROLLER_COMMAND,
         },
         CONTROLLER_COMMAND_RESET: {
-            title: 'Soft reset',
+            title: t('Soft reset'),
             keys: '%',
             cmd: 'CONTROLLER_COMMAND_RESET',
             payload: {
@@ -120,7 +121,7 @@ const Workspace = () => {
             callback: shuttleControlFunctions.CONTROLLER_COMMAND,
         },
         CONTROLLER_COMMAND_HOMING: {
-            title: 'Home machine',
+            title: t('Home machine'),
             keys: ['ctrl', 'alt', 'command', 'h'].join('+'),
             cmd: 'CONTROLLER_COMMAND_HOMING',
             payload: {
@@ -132,7 +133,7 @@ const Workspace = () => {
             callback: shuttleControlFunctions.CONTROLLER_COMMAND,
         },
         CONTROLLER_COMMAND_REALTIME_REPORT: {
-            title: 'Realtime report',
+            title: t('Realtime report'),
             keys: '`',
             cmd: 'CONTROLLER_COMMAND_REALTIME_REPORT',
             payload: {
@@ -145,7 +146,7 @@ const Workspace = () => {
             callback: shuttleControlFunctions.CONTROLLER_COMMAND,
         },
         CONTROLLER_COMMAND_ERROR_CLEAR: {
-            title: 'Clear error',
+            title: t('Clear error'),
             keys: '*',
             cmd: 'CONTROLLER_COMMAND_ERROR_CLEAR',
             payload: {
@@ -158,7 +159,7 @@ const Workspace = () => {
             callback: shuttleControlFunctions.CONTROLLER_COMMAND,
         },
         CONTROLLER_COMMAND_TOOLCHANGE_ACKNOWLEDGEMENT: {
-            title: 'Acknowledge tool change',
+            title: t('Acknowledge tool change'),
             keys: ['ctrl', 'alt', 'command', 'a'].join('+'),
             cmd: 'CONTROLLER_COMMAND_TOOLCHANGE_ACKNOWLEDGEMENT',
             payload: {
@@ -171,7 +172,7 @@ const Workspace = () => {
             callback: shuttleControlFunctions.CONTROLLER_COMMAND,
         },
         CONTROLLER_COMMAND_VIRTUAL_STOP_TOGGLE: {
-            title: 'Feed hold',
+            title: t('Feed hold'),
             keys: ['ctrl', '8'].join('+'),
             cmd: 'CONTROLLER_COMMAND_VIRTUAL_STOP_TOGGLE',
             payload: {
@@ -184,7 +185,7 @@ const Workspace = () => {
             callback: shuttleControlFunctions.CONTROLLER_COMMAND,
         },
         CUT: {
-            title: 'Cut',
+            title: t('Cut'),
             keys: ['ctrl', 'x'].join('+'),
             cmd: 'CUT',
             preventDefault: true,
@@ -195,7 +196,7 @@ const Workspace = () => {
             },
         },
         COPY: {
-            title: 'Copy',
+            title: t('Copy'),
             keys: ['ctrl', 'c'].join('+'),
             cmd: 'COPY',
             preventDefault: true,
@@ -206,7 +207,7 @@ const Workspace = () => {
             },
         },
         PASTE: {
-            title: 'Paste',
+            title: t('Paste'),
             keys: ['ctrl', 'v'].join('+'),
             cmd: 'PASTE',
             preventDefault: true,
@@ -217,7 +218,7 @@ const Workspace = () => {
             },
         },
         UNDO: {
-            title: 'Undo',
+            title: t('Undo'),
             keys: ['ctrl', 'z'].join('+'),
             cmd: 'UNDO',
             preventDefault: true,
@@ -228,7 +229,7 @@ const Workspace = () => {
             },
         },
         PROBE_ROTARY_Z_AXIS: {
-            title: 'Rotary Probe Z-axis',
+            title: t('Rotary Probe Z-axis'),
             keys: '',
             cmd: 'PROBE_ROTARY_Z_AXIS',
             preventDefault: false,
@@ -265,7 +266,7 @@ const Workspace = () => {
             },
         },
         PROBE_ROTARY_Y_AXIS: {
-            title: 'Rotary Y-axis Alignment',
+            title: t('Rotary Y-axis Alignment'),
             keys: '',
             cmd: 'PROBE_ROTARY_Y_AXIS',
             preventDefault: false,
@@ -298,7 +299,7 @@ const Workspace = () => {
             },
         },
         MIST_COOLANT: {
-            title: 'Mist coolant (M7)',
+            title: t('Mist coolant (M7)'),
             keys: '',
             cmd: 'MIST_COOLANT',
             preventDefault: false,
@@ -312,7 +313,7 @@ const Workspace = () => {
             },
         },
         FLOOD_COOLANT: {
-            title: 'Flood coolant (M8)',
+            title: t('Flood coolant (M8)'),
             keys: '',
             cmd: 'FLOOD_COOLANT',
             preventDefault: false,
@@ -326,7 +327,7 @@ const Workspace = () => {
             },
         },
         STOP_COOLANT: {
-            title: 'Stop coolant (M9)',
+            title: t('Stop coolant (M9)'),
             keys: '',
             cmd: 'STOP_COOLANT',
             preventDefault: false,
@@ -340,7 +341,7 @@ const Workspace = () => {
             },
         },
         TOGGLE_SPINDLE_LASER_MODE: {
-            title: 'Toggle Between Spindle and Laser Mode',
+            title: t('Toggle Between Spindle and Laser Mode'),
             keys: '',
             cmd: 'TOGGLE_SPINDLE_LASER_MODE',
             preventDefault: false,
@@ -351,7 +352,7 @@ const Workspace = () => {
             },
         },
         CW_LASER_ON: {
-            title: 'CW / Laser On',
+            title: t('CW / Laser On'),
             keys: '',
             cmd: 'CW_LASER_ON',
             preventDefault: false,
@@ -362,7 +363,7 @@ const Workspace = () => {
             },
         },
         CCW_LASER_TEST: {
-            title: 'CCW / Laser Test',
+            title: t('CCW / Laser Test'),
             keys: '',
             cmd: 'CCW_LASER_TEST',
             preventDefault: false,
@@ -373,7 +374,7 @@ const Workspace = () => {
             },
         },
         STOP_LASER_OFF: {
-            title: 'Stop / Laser Off',
+            title: t('Stop / Laser Off'),
             keys: '',
             cmd: 'STOP_LASER_OFF',
             preventDefault: false,
@@ -398,7 +399,7 @@ const Workspace = () => {
                 href="#main-content"
                 className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[10000] focus:bg-blue-600 focus:text-white focus:px-4 focus:py-2 focus:rounded-md"
             >
-                Skip to main content
+                {t('Skip to main content')}
             </a>
             <div className="flex flex-col h-full dark:bg-slate-800">
                 <header role="banner">

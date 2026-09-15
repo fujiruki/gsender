@@ -35,6 +35,7 @@ import {
     convertSecondsToDHMS,
 } from 'app/lib/datetime';
 import { WORKFLOW_STATE_PAUSED } from '../../constants';
+import { t } from 'app/i18n';
 
 import WoodcuttingProgress from './WoodcuttingProgress';
 
@@ -134,7 +135,7 @@ const ProgressArea = ({ senderStatus, workflowState }: Props) => {
             aria-valuenow={Math.round(percentageValue)}
             aria-valuemin={0}
             aria-valuemax={100}
-            aria-label="Job Progress"
+            aria-label={t('Job Progress')}
         >
             <div className="border-solid border border-gray-500 dark:border-gray-700 rounded-sm bg-gray-100 dark:bg-dark gap-2 flex flex-row justify-between items-center pr-1 pt-1 text-gray-900 dark:text-gray-200">
                 <div className="flex flex-col gap-0 w-full h-full -mt-6">
@@ -161,12 +162,12 @@ const ProgressArea = ({ senderStatus, workflowState }: Props) => {
                             <div className="flex flex-col  justify-center items-center w-32">
                                 {isFinalizing ? (
                                     <>
-                                        <span className="text-sm">Finalizing</span>
+                                        <span className="text-sm">{t('Finalizing')}</span>
                                     </>
                                 ) : (
                                     <>
                                         {timeComponent}
-                                        <span className="text-sm">remaining</span>
+                                        <span className="text-sm">{t('remaining')}</span>
                                     </>
                                 )}
                             </div>
@@ -179,10 +180,15 @@ const ProgressArea = ({ senderStatus, workflowState }: Props) => {
             </div>
             <div className="w-full flex flex-row justify-between gap-2 text-sm whitespace-nowrap mt-1.5">
                 <span className="px-2 py-0.5 rounded-md bg-gray-900/60 dark:bg-gray-100/70 text-gray-100 dark:text-gray-900">
-                    {`${currentLineRunning} / ${total} Lines`}
+                    {t('{{current}} / {{total}} Lines', {
+                        current: currentLineRunning,
+                        total,
+                    })}
                 </span>
                 <span className="px-2 py-0.5 rounded-md bg-gray-900/60 dark:bg-gray-100/70 text-gray-100 dark:text-gray-900">
-                    {convertMillisecondsToTimeStamp(elapsedTime, true)} cutting
+                    {t('{{time}} cutting', {
+                        time: convertMillisecondsToTimeStamp(elapsedTime, true),
+                    })}
                 </span>
             </div>
         </div>

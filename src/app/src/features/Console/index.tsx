@@ -11,6 +11,7 @@ import isElectron from 'is-electron';
 import controller from 'app/lib/controller';
 import { FIRMWARE_TYPES_T } from 'app/definitions/firmware';
 import { usePostHog } from 'posthog-js/react';
+import { t } from 'app/i18n';
 
 type ConsoleProps = {
     isActive: boolean;
@@ -46,7 +47,7 @@ const Console = ({ isActive, isChildWindow }: ConsoleProps) => {
         if (terminalRef.current) {
             terminalRef.current.clear();
 
-            toast.info('Console cleared', { position: 'bottom-right' });
+            toast.info(t('Console cleared'), { position: 'bottom-right' });
 
             posthog.capture('console_cleared');
         }
@@ -133,7 +134,7 @@ const Console = ({ isActive, isChildWindow }: ConsoleProps) => {
             >
                 <div className="flex justify-center items-center h-full ">
                     <h2 className="text-lg font-bold">
-                        Not connected to a device
+                        {t('Not connected to a device')}
                     </h2>
                 </div>
             </div>

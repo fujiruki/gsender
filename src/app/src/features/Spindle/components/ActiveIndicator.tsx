@@ -23,6 +23,7 @@
 
 import cx from 'classnames';
 import { FaExclamation } from 'react-icons/fa';
+import { t } from 'app/i18n';
 
 type Props = {
     active?: boolean;
@@ -32,7 +33,7 @@ const ActiveIndicator = ({ active = true }: Props) => {
     return (
         <div className="flex items-center w-full justify-end">
             <small className="text-gray-400 text-sm mr-2">
-                {active ? 'Active' : 'Not Active'}
+                {active ? t('Active') : t('Not Active')}
             </small>
             <div
                 className={cx(

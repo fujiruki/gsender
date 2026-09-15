@@ -50,6 +50,7 @@ import { convertValue } from './utils/units';
 import reduxStore from 'app/store/redux';
 import { UNITS_EN } from 'app/definitions/general';
 import { usePostHog } from '@posthog/react';
+import { t } from 'app/i18n';
 
 export interface JogValueObject {
     xyStep: number;
@@ -756,7 +757,11 @@ export function Jogging({ hideRotary = false }) {
             store.replace('workspace.mode', nextWorkspaceMode);
 
             toast.info(
-                `Workspace Mode set to ${nextWorkspaceMode.charAt(0).toUpperCase() + nextWorkspaceMode.slice(1).toLowerCase()}`,
+                t('Workspace Mode set to {{mode}}', {
+                    mode:
+                        nextWorkspaceMode.charAt(0).toUpperCase() +
+                        nextWorkspaceMode.slice(1).toLowerCase(),
+                }),
                 { position: 'bottom-right' },
             );
         },
@@ -766,7 +771,7 @@ export function Jogging({ hideRotary = false }) {
         JOG_A_PLUS: {
             // Jog A+
             id: 100,
-            title: 'Jog A+ (CCW)',
+            title: t('Jog A+ (CCW)'),
             keys: ['ctrl', '6'].join('+'),
             cmd: 'JOG_A_PLUS',
             payload: {
@@ -780,7 +785,7 @@ export function Jogging({ hideRotary = false }) {
         JOG_A_MINUS: {
             // Jog A-
             id: 101,
-            title: 'Jog A- (CW)',
+            title: t('Jog A- (CW)'),
             keys: ['ctrl', '4'].join('+'),
             cmd: 'JOG_A_MINUS',
             payload: {
@@ -793,7 +798,7 @@ export function Jogging({ hideRotary = false }) {
         },
         SWITCH_WORKSPACE_MODE: {
             id: 103,
-            title: 'Toggle Rotary Mode',
+            title: t('Toggle Rotary Mode'),
             keys: ['ctrl', '5'].join('+'),
             cmd: 'SWITCH_WORKSPACE_MODE',
             preventDefault: false,
@@ -802,7 +807,7 @@ export function Jogging({ hideRotary = false }) {
             callback: shuttleControlFunctions.UPDATE_WORKSPACE_MODE,
         },
         JOG_X_P: {
-            title: 'Jog X+ (right)',
+            title: t('Jog X+ (right)'),
             keys: 'shift+right',
             gamepadKeys: '15',
             keysName: 'Arrow Right',
@@ -816,7 +821,7 @@ export function Jogging({ hideRotary = false }) {
             callback: shuttleControlFunctions.JOG,
         },
         JOG_X_M: {
-            title: 'Jog X- (left)',
+            title: t('Jog X- (left)'),
             keys: 'shift+left',
             gamepadKeys: '14',
             keysName: 'Arrow Left',
@@ -830,7 +835,7 @@ export function Jogging({ hideRotary = false }) {
             callback: shuttleControlFunctions.JOG,
         },
         JOG_Y_P: {
-            title: 'Jog Y+ (back)',
+            title: t('Jog Y+ (back)'),
             keys: 'shift+up',
             gamepadKeys: '12',
             keysName: 'Arrow Up',
@@ -844,7 +849,7 @@ export function Jogging({ hideRotary = false }) {
             callback: shuttleControlFunctions.JOG,
         },
         JOG_Y_M: {
-            title: 'Jog Y- (fwd)',
+            title: t('Jog Y- (fwd)'),
             keys: 'shift+down',
             gamepadKeys: '13',
             keysName: 'Arrow Down',
@@ -858,7 +863,7 @@ export function Jogging({ hideRotary = false }) {
             callback: shuttleControlFunctions.JOG,
         },
         JOG_Z_P: {
-            title: 'Jog Z+ (up)',
+            title: t('Jog Z+ (up)'),
             keys: 'shift+pageup',
             gamepadKeys: '5',
             keysName: 'Left Button',
@@ -872,7 +877,7 @@ export function Jogging({ hideRotary = false }) {
             callback: shuttleControlFunctions.JOG,
         },
         JOG_Z_M: {
-            title: 'Jog Z- (down)',
+            title: t('Jog Z- (down)'),
             keys: 'shift+pagedown',
             gamepadKeys: '4',
             keysName: 'Right Button',
@@ -886,7 +891,7 @@ export function Jogging({ hideRotary = false }) {
             callback: shuttleControlFunctions.JOG,
         },
         JOG_X_P_Y_M: {
-            title: 'Jog X+ Y-',
+            title: t('Jog X+ Y-'),
             keys: '',
             gamepadKeys: '13+15',
             keysName: 'Arrow Right and Arrow Down',
@@ -900,7 +905,7 @@ export function Jogging({ hideRotary = false }) {
             callback: shuttleControlFunctions.JOG,
         },
         JOG_X_M_Y_P: {
-            title: 'Jog X- Y+',
+            title: t('Jog X- Y+'),
             keys: '',
             gamepadKeys: '13+14',
             keysName: 'Arrow Left and Arrow Down',
@@ -914,7 +919,7 @@ export function Jogging({ hideRotary = false }) {
             callback: shuttleControlFunctions.JOG,
         },
         JOG_X_Y_P: {
-            title: 'Jog X+ Y+',
+            title: t('Jog X+ Y+'),
             keys: '',
             gamepadKeys: '12+15',
             keysName: 'Arrow Right and Arrow Up',
@@ -928,7 +933,7 @@ export function Jogging({ hideRotary = false }) {
             callback: shuttleControlFunctions.JOG,
         },
         JOG_X_Y_M: {
-            title: 'Jog X- Y-',
+            title: t('Jog X- Y-'),
             keys: '',
             gamepadKeys: '13+14',
             keysName: 'Arrow Left and Arrow Down',
@@ -943,7 +948,7 @@ export function Jogging({ hideRotary = false }) {
         },
         STOP_CONT_JOG: {
             // this one is for other functions to call when continuous jogging
-            title: 'Stop Continuous Jog',
+            title: t('Stop Continuous Jog'),
             keys: '',
             cmd: 'STOP_CONT_JOG',
             payload: { force: true },
@@ -1017,7 +1022,7 @@ export function Jogging({ hideRotary = false }) {
                     <img
                         className="absolute top-0 left-0 pointer-events-none w-[180px] portrait:w-[210px] h-[180px] portrait:h-[210px]"
                         src={jogWheeelLabels}
-                        alt="Jog wheel arrows"
+                        alt={t('Jog wheel arrows')}
                     />
                     <StopButton
                         disabled={!isConnected}
@@ -1060,27 +1065,27 @@ export function Jogging({ hideRotary = false }) {
                     >
                         <JogInput
                             label="XY"
-                            screenReaderLabel="XY jog distance"
+                            screenReaderLabel={t('XY jog distance')}
                             currentValue={jogSpeed.xyStep}
                             onChange={updateXYStep}
                         />
                         <JogInput
                             label="Z"
-                            screenReaderLabel="Z jog distance"
+                            screenReaderLabel={t('Z jog distance')}
                             currentValue={jogSpeed.zStep}
                             onChange={updateZStep}
                         />
                         {showA && (
                             <JogInput
                                 label="A°"
-                                screenReaderLabel="A jog distance"
+                                screenReaderLabel={t('A jog distance')}
                                 currentValue={jogSpeed.aStep}
                                 onChange={updateAStep}
                             />
                         )}
                         <JogInput
                             label="at"
-                            screenReaderLabel="Jog feedrate"
+                            screenReaderLabel={t('Jog feedrate')}
                             currentValue={jogSpeed.feedrate}
                             onChange={updateFeedrate}
                         />

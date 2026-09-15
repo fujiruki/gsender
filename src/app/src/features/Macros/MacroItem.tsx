@@ -12,6 +12,7 @@ import Tooltip from 'app/components/Tooltip';
 import { toast } from 'app/lib/toaster';
 import Button from 'app/components/Button';
 import cx from 'classnames';
+import { t } from 'app/i18n';
 
 type Macro = {
     id: string;
@@ -58,7 +59,7 @@ const MacroButton = forwardRef<HTMLButtonElement, MacroButtonProps>(
                 )}
             >
                 <span className="block w-full text-left whitespace-nowrap overflow-hidden text-ellipsis">
-                    {running ? 'Running...' : macro.name}
+                    {running ? t('Running...') : macro.name}
                 </span>
             </button>
         );
@@ -78,7 +79,7 @@ const MacroItem = ({
         }
 
         onRun(macro);
-        toast.info(`Started running macro '${macro.name}'!`, {
+        toast.info(t("Started running macro '{{name}}'!", { name: macro.name }), {
             position: 'bottom-right',
         });
     };
@@ -103,9 +104,9 @@ const MacroItem = ({
             />
 
             <DropdownMenu>
-                <DropdownMenuTrigger 
+                <DropdownMenuTrigger
                     className="flex items-center justify-center w-10 h-8 cursor-pointer hover:bg-gray-200 rounded dark:hover:bg-dark-lighter"
-                    aria-label={`Options for macro ${macro.name}`}
+                    aria-label={t('Options for macro {{name}}', { name: macro.name })}
                 >
                     <FaEllipsisH className="text-xl" />
                 </DropdownMenuTrigger>
@@ -115,14 +116,14 @@ const MacroItem = ({
                         className="cursor-pointer py-3 px-4 text-lg hover:bg-gray-100"
                     >
                         <FaEdit className="mr-3 text-xl" />
-                        <span>Edit</span>
+                        <span>{t('Edit')}</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem
                         onClick={() => onDelete(macro.id)}
                         className="cursor-pointer py-3 px-4 text-lg hover:bg-gray-100"
                     >
                         <FaTrashAlt className="mr-3 text-xl" />
-                        <span>Delete</span>
+                        <span>{t('Delete')}</span>
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>

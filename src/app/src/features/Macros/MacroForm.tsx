@@ -15,6 +15,7 @@ import Tooltip from 'app/components/Tooltip';
 
 import { MACRO_VARIABLES } from './constants';
 import insertAtCaret from './insertAtCaret';
+import { t } from 'app/i18n';
 
 const MAX_CHARACTERS = 128;
 
@@ -92,9 +93,12 @@ const MacroForm = ({
         if (typeof v === 'object') {
             const { group, text } = v;
             if (v.type === 'header') {
-                acc.push({ label: text, options: [] });
+                acc.push({ label: t(text), options: [] });
             } else {
-                const existingGroup = acc.find((item) => item.label === group);
+                const translatedGroup = t(group);
+                const existingGroup = acc.find(
+                    (item) => item.label === translatedGroup,
+                );
                 if (existingGroup) {
                     existingGroup.options.push({
                         value: text,
@@ -102,7 +106,7 @@ const MacroForm = ({
                     });
                 } else {
                     acc.push({
-                        label: group,
+                        label: translatedGroup,
                         options: [{ value: text, label: text }],
                     });
                 }
@@ -126,11 +130,13 @@ const MacroForm = ({
                     </DialogHeader>
                     <DialogDescription className="mt-1 mb-4 text-sm text-gray-500">
                         {dialogDescription ??
-                            'Macros are a way to store and reuse commands. They can be used to speed up repetitive tasks and make your CNC more efficient.'}
+                            t(
+                                'Macros are a way to store and reuse commands. They can be used to speed up repetitive tasks and make your CNC more efficient.',
+                            )}
                     </DialogDescription>
                     {showNameField && (
                         <div className="flex flex-col gap-2 mb-4">
-                            <label>Name</label>
+                            <label>{t('Name')}</label>
                             <Input
                                 ref={nameRef}
                                 maxLength={MAX_CHARACTERS}
@@ -144,7 +150,7 @@ const MacroForm = ({
                     )}
                     <div className="flex flex-col gap-2 mb-4">
                         <div className="flex flex-row gap-2 items-center justify-between">
-                            <label>G-code</label>
+                            <label>{t('G-code')}</label>
                             <Select<OptionType>
                                 options={options}
                                 onChange={(selectedOption: OptionType) => {
@@ -161,7 +167,7 @@ const MacroForm = ({
                                     }
                                 }}
                                 className="w-1/2"
-                                placeholder="Variables"
+                                placeholder={t('Variables')}
                                 value={null}
                                 styles={{
                                     option: (provided: any, state: any) => ({
@@ -206,7 +212,11 @@ const MacroForm = ({
                             />
                         </div>
 
-                        <Tooltip content="Add your g-code here. Use the variables or JavaScript logic to create more complex commands.">
+                        <Tooltip
+                            content={t(
+                                'Add your g-code here. Use the variables or JavaScript logic to create more complex commands.',
+                            )}
+                        >
                             <textarea
                                 ref={contentRef}
                                 rows={10}
@@ -221,7 +231,7 @@ const MacroForm = ({
                     </div>
                     {showDescriptionField && (
                         <div className="flex flex-col gap-2 mb-4">
-                            <label>Macro Description</label>
+                            <label>{t('Macro Description')}</label>
                             <textarea
                                 ref={descriptionRef}
                                 rows={4}
@@ -253,7 +263,7 @@ const MacroForm = ({
                         >
                             {submitLabel}
                         </Button>
-                        <Button onClick={onCancel}>Cancel</Button>
+                        <Button onClick={onCancel}>{t('Cancel')}</Button>
                     </DialogFooter>
                 </form>
             </DialogContent>

@@ -26,6 +26,7 @@ import { toast } from 'app/lib/toaster';
 import { WORKFLOW_STATE_IDLE, WORKFLOW_STATE_PAUSED } from 'app/constants';
 import { useTypedSelector } from 'app/hooks/useTypedSelector';
 import { useWorkspaceState } from 'app/hooks/useWorkspaceState';
+import { t } from 'app/i18n';
 
 type MacroItem = {
     id: string;
@@ -96,7 +97,7 @@ function SortableMacroButton({
                     'text-gray-300 dark:text-gray-600 hover:text-gray-500 dark:hover:text-gray-400',
                     'touch-none',
                 )}
-                title="Drag to reorder"
+                title={t('Drag to reorder')}
             >
                 <FaGripVertical className="w-4 h-4" />
             </div>
@@ -146,10 +147,10 @@ export const PortraitMacroBar = () => {
             if (!canRun) return;
             controller.command('macro:run', macro.id, controller.context, (err: Error | null) => {
                 if (err) {
-                    toast.error(`Failed to run macro "${macro.name}"`, { position: 'bottom-right' });
+                    toast.error(t('Failed to run macro "{{name}}"', { name: macro.name }), { position: 'bottom-right' });
                     return;
                 }
-                toast.info(`Started running macro "${macro.name}"!`, { position: 'bottom-right' });
+                toast.info(t('Started running macro "{{name}}"!', { name: macro.name }), { position: 'bottom-right' });
             });
         },
         [canRun],

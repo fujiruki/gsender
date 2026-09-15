@@ -36,6 +36,7 @@ import { SPINDLE_LASER_T, SendM5Type } from './definitions';
 import { firmwarePastVersion } from 'app/lib/firmwareSemver.ts';
 import { ATCI_SUPPORTED_VERSION } from 'app/features/ATC/utils/ATCiConstants.ts';
 import posthog from 'posthog-js';
+import { t } from 'app/i18n';
 
 interface SpindleState {
     minimized: boolean;
@@ -131,7 +132,7 @@ const SpindleWidget = () => {
     } | null>(null);
 
     const fallbackSpindle = {
-        label: 'Default Spindle',
+        label: t('Default Spindle'),
         id: '0',
         enabled: true,
         capabilities: '',

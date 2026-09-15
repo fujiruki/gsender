@@ -23,6 +23,7 @@
 
 import cx from 'classnames';
 import { FaCheck, FaTimes } from 'react-icons/fa';
+import { t } from 'app/i18n';
 
 interface Props {
     probeActive: boolean;
@@ -35,8 +36,8 @@ const ProbeCircuitStatus: React.FC<Props> = ({ probeActive, connected }) => {
             {connected && (
                 <div className="w-full flex flex-col justify-center items-center sm:mt-4">
                     <div
-                        aria-label={probeActive ? 'Touch detected' : 'No touch'}
-                        title={probeActive ? 'Touch detected' : 'No touch'}
+                        aria-label={probeActive ? t('Touch detected') : t('No touch')}
+                        title={probeActive ? t('Touch detected') : t('No touch')}
                         className={cx(
                             'w-8 h-8 rounded-full relative flex items-center justify-center',
                             {
@@ -55,12 +56,12 @@ const ProbeCircuitStatus: React.FC<Props> = ({ probeActive, connected }) => {
                     </div>
                     <span className="mt-3">
                         {connected && probeActive
-                            ? 'Touch detected'
-                            : 'No Touch'}
+                            ? t('Touch detected')
+                            : t('No Touch')}
                     </span>
                 </div>
             )}
-            {!connected && 'No device connected'}
+            {!connected && t('No device connected')}
         </div>
     );
 };

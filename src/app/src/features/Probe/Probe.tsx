@@ -41,6 +41,7 @@ import useKeybinding from 'app/lib/useKeybinding';
 import useShuttleEvents from 'app/hooks/useShuttleEvents';
 import Tooltip from 'app/components/Tooltip';
 import { TOUCHPLATE_TYPES } from 'app/lib/constants';
+import { t } from 'app/i18n';
 
 type ProbeProps = {
     state: State;
@@ -86,7 +87,7 @@ const Probe = ({ state, actions }: ProbeProps) => {
 
     const shuttleControlEvents = {
         OPEN_PROBE: {
-            title: 'Display probe popup',
+            title: t('Display probe popup'),
             keys: '',
             cmd: 'OPEN_PROBE',
             preventDefault: false,
@@ -95,7 +96,7 @@ const Probe = ({ state, actions }: ProbeProps) => {
             callback: toggleProbeDialog,
         },
         PROBE_ROUTINE_SCROLL_RIGHT: {
-            title: 'Probe Routine scroll right',
+            title: t('Probe Routine scroll right'),
             keys: '',
             cmd: 'PROBE_ROUTINE_SCROLL_RIGHT',
             preventDefault: false,
@@ -104,7 +105,7 @@ const Probe = ({ state, actions }: ProbeProps) => {
             callback: probeRoutineScrollRight,
         },
         PROBE_ROUTINE_SCROLL_LEFT: {
-            title: 'Probe Routine scroll left',
+            title: t('Probe Routine scroll left'),
             keys: '',
             cmd: 'PROBE_ROUTINE_SCROLL_LEFT',
             preventDefault: false,
@@ -140,7 +141,7 @@ const Probe = ({ state, actions }: ProbeProps) => {
                     { touchplateTypeSwitcher &&
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                                <Button  aria-label="Change Probe Type" size="sm">{touchplateType}</Button>
+                                <Button  aria-label={t('Change Probe Type')} size="sm">{touchplateType}</Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent className="w-56 bg-white">
                                 { Object.values(TOUCHPLATE_TYPES).map((tpt) =>
@@ -158,7 +159,7 @@ const Probe = ({ state, actions }: ProbeProps) => {
                     <div className="flex w-full bg-white dark:bg-dark rounded-md border-solid border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-200 p-[2px]">
                         {availableProbeCommands.map((command, index) => (
                             <Tooltip
-                                content={`Probe using ${command.id}`}
+                                content={t('Probe using {{id}}', { id: command.id })}
                                 key={command.id}
                             >
                                 <ShadcnButton
@@ -167,7 +168,9 @@ const Probe = ({ state, actions }: ProbeProps) => {
                                         actions.handleProbeCommandChange(index)
                                     }
                                     size="icon"
-                                    aria-label={`Select probing routine ${command.id}`}
+                                    aria-label={t('Select probing routine {{id}}', {
+                                        id: command.id,
+                                    })}
                                     aria-pressed={index === selectedProbeCommand}
                                     className={cx(
                                         'rounded-md relative h-[calc(4vh+3px)]',
@@ -198,7 +201,7 @@ const Probe = ({ state, actions }: ProbeProps) => {
                             onClick={() => actions.onOpenChange(true)}
                             disabled={!canClick}
                         >
-                            Probe
+                            {t('Probe')}
                         </Button>
                     </div>
                 </div>

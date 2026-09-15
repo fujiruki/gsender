@@ -61,6 +61,7 @@ import { useTypedSelector } from 'app/hooks/useTypedSelector';
 import reduxStore from 'app/store/redux';
 import { cn } from 'app/lib/utils';
 import { usePostHog } from '@posthog/react';
+import { t } from 'app/i18n';
 
 interface DROProps {
     axes: AxesArray;
@@ -183,7 +184,7 @@ function DRO({
 
     const shuttleControlEvents = {
         ZERO_X_AXIS: {
-            title: 'Zero X-axis',
+            title: t('Zero X-axis'),
             keys: ['shift', 'w'].join('+'),
             cmd: 'ZERO_X_AXIS',
             preventDefault: true,
@@ -198,7 +199,7 @@ function DRO({
             },
         },
         ZERO_Y_AXIS: {
-            title: 'Zero Y-axis',
+            title: t('Zero Y-axis'),
             keys: ['shift', 'e'].join('+'),
             cmd: 'ZERO_Y_AXIS',
             preventDefault: true,
@@ -213,7 +214,7 @@ function DRO({
             },
         },
         ZERO_Z_AXIS: {
-            title: 'Zero Z-axis',
+            title: t('Zero Z-axis'),
             keys: ['shift', 'r'].join('+'),
             cmd: 'ZERO_Z_AXIS',
             preventDefault: true,
@@ -229,7 +230,7 @@ function DRO({
         },
         ZERO_A_AXIS: {
             id: 72,
-            title: 'Zero A-axis',
+            title: t('Zero A-axis'),
             keys: ['shift', 'y'].join('+'),
             cmd: 'ZERO_A_AXIS',
             preventDefault: true,
@@ -244,7 +245,7 @@ function DRO({
             },
         },
         ZERO_ALL_AXIS: {
-            title: 'Zero all axes',
+            title: t('Zero all axes'),
             keys: ['shift', 'q'].join('+'),
             cmd: 'ZERO_ALL_AXIS',
             payload: { axis: 'all' },
@@ -260,7 +261,7 @@ function DRO({
         },
         GO_TO_A_AXIS_ZERO: {
             id: 73,
-            title: 'Go to A zero',
+            title: t('Go to A zero'),
             keys: ['shift', 't'].join('+'),
             cmd: 'GO_TO_A_AXIS_ZERO',
             preventDefault: true,
@@ -275,7 +276,7 @@ function DRO({
             },
         },
         GO_TO_X_AXIS_ZERO: {
-            title: 'Go to X zero',
+            title: t('Go to X zero'),
             keys: ['shift', 's'].join('+'),
             cmd: 'GO_TO_X_AXIS_ZERO',
             preventDefault: true,
@@ -290,7 +291,7 @@ function DRO({
             },
         },
         GO_TO_Y_AXIS_ZERO: {
-            title: 'Go to Y zero',
+            title: t('Go to Y zero'),
             keys: ['shift', 'd'].join('+'),
             cmd: 'GO_TO_Y_AXIS_ZERO',
             preventDefault: true,
@@ -305,7 +306,7 @@ function DRO({
             },
         },
         GO_TO_Z_AXIS_ZERO: {
-            title: 'Go to Z zero',
+            title: t('Go to Z zero'),
             keys: ['shift', 'f'].join('+'),
             cmd: 'GO_TO_Z_AXIS_ZERO',
             preventDefault: true,
@@ -320,7 +321,7 @@ function DRO({
             },
         },
         GO_TO_XY_AXIS_ZERO: {
-            title: 'Go to XY zero',
+            title: t('Go to XY zero'),
             keys: ['shift', 'a'].join('+'),
             cmd: 'GO_TO_XY_AXIS_ZERO',
             payload: { axisList: [AXIS_X, AXIS_Y] },
@@ -335,7 +336,7 @@ function DRO({
             },
         },
         HOMING_GO_TO_BACK_LEFT_CORNER: {
-            title: 'Go to Back Left corner',
+            title: t('Go to Back Left corner'),
             keys: '',
             cmd: 'HOMING_GO_TO_BACK_LEFT_CORNER',
             payload: {},
@@ -350,7 +351,7 @@ function DRO({
             },
         },
         HOMING_GO_TO_BACK_RIGHT_CORNER: {
-            title: 'Go to Back Right corner',
+            title: t('Go to Back Right corner'),
             keys: '',
             cmd: 'HOMING_GO_TO_BACK_RIGHT_CORNER',
             payload: {},
@@ -365,7 +366,7 @@ function DRO({
             },
         },
         HOMING_GO_TO_FRONT_LEFT_CORNER: {
-            title: 'Go to Front Left corner',
+            title: t('Go to Front Left corner'),
             keys: '',
             cmd: 'HOMING_GO_TO_FRONT_LEFT_CORNER',
             payload: {},
@@ -380,7 +381,7 @@ function DRO({
             },
         },
         HOMING_GO_TO_FRONT_RIGHT_CORNER: {
-            title: 'Go to Front Right corner',
+            title: t('Go to Front Right corner'),
             keys: '',
             cmd: 'HOMING_GO_TO_FRONT_RIGHT_CORNER',
             payload: {},
@@ -439,8 +440,8 @@ function DRO({
                 />
             </div>
             <div className="w-full flex flex-row justify-between px-3 max-xl:px-5 max-xl:-mt-[4px] max-xl:-mb-[4px]">
-                <Label>{homingMode ? 'Home' : 'Zero'}</Label>
-                <Label>Go to</Label>
+                <Label>{homingMode ? t('Home') : t('Zero')}</Label>
+                <Label>{t('Go to')}</Label>
             </div>
             <div className="flex flex-col w-full gap-1 portrait:gap-2 space-between">
                 <AxisRow
@@ -485,39 +486,43 @@ function DRO({
             <div className="flex flex-row justify-between w-full max-xl:scale-95 mt-2 max-xl:mt-1 items-center">
                 {!shouldWarnZero ? (
                     <Button
-                        tooltip={{ content: 'Zero all axes', side: 'left' }}
-                        text="Zero"
+                        tooltip={{ content: t('Zero all axes'), side: 'left' }}
+                        text={t('Zero')}
                         icon={<VscTarget className="w-5 h-5" />}
                         onClick={() => {
                             zeroAllAxes();
                             posthog?.capture('zero_all_axes');
                         }}
                         disabled={!canClick}
-                        aria-label="Zero all axes: Set current position as work zero for all axes"
+                        aria-label={t(
+                            'Zero all axes: Set current position as work zero for all axes',
+                        )}
                         size="responsive"
                     />
                 ) : (
                     <AlertDialog>
                         <AlertDialogTrigger asChild>
                             <Button
-                                text="Zero"
+                                text={t('Zero')}
                                 icon={<VscTarget className="w-5 h-5" />}
                                 disabled={!canClick}
-                                aria-label="Zero all axes: Set current position as work zero for all axes"
+                                aria-label={t(
+                                    'Zero all axes: Set current position as work zero for all axes',
+                                )}
                                 size="responsive"
                             />
                         </AlertDialogTrigger>
                         <AlertDialogContent className="bg-white">
                             <AlertDialogHeader>
                                 <AlertDialogTitle>
-                                    Zero All Axes
+                                    {t('Zero All Axes')}
                                 </AlertDialogTitle>
                                 <AlertDialogDescription>
-                                    Are you sure you want to zero all axes?
+                                    {t('Are you sure you want to zero all axes?')}
                                 </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogCancel>{t('Cancel')}</AlertDialogCancel>
                                 <AlertDialogAction
                                     onClick={() => {
                                         zeroAllAxes();
@@ -526,7 +531,7 @@ function DRO({
                                         });
                                     }}
                                 >
-                                    Continue
+                                    {t('Continue')}
                                 </AlertDialogAction>
                             </AlertDialogFooter>
                         </AlertDialogContent>
@@ -550,8 +555,14 @@ function DRO({
                         );
                     }}
                     disabled={!canClick}
-                    tooltip={{ content: 'Go to XY zero', side: 'bottom' }}
-                    aria-label={`Go to ${isRotaryMode ? 'XA' : 'XY'} zero: Move ${isRotaryMode ? 'X and A' : 'X and Y'} axes to their current work zero position`}
+                    tooltip={{ content: t('Go to XY zero'), side: 'bottom' }}
+                    aria-label={t(
+                        'Go to {{corner}} zero: Move {{axes}} axes to their current work zero position',
+                        {
+                            corner: isRotaryMode ? 'XA' : 'XY',
+                            axes: isRotaryMode ? 'X and A' : 'X and Y',
+                        },
+                    )}
                     size="responsive"
                 >
                     <span className="font-mono text-lg">

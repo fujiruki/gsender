@@ -26,6 +26,7 @@ import { JogInput } from 'app/features/Config/components/SettingInputs/JogInput.
 import Tooltip from 'app/components/Tooltip';
 import pubsub from 'pubsub-js';
 import { EEPROM } from 'app/definitions/firmware';
+import { t } from 'app/i18n';
 
 interface SettingRowProps {
     setting: gSenderSetting;
@@ -197,9 +198,15 @@ export const SettingRow = React.memo(function SettingRow({
             return updated;
         });
         controller.command('gcode', [`${setting}=${value}`, '$$']);
-        toast.success(`Restored ${setting} to default value of ${value}`, {
-            position: 'bottom-right',
-        });
+        toast.success(
+            t('Restored {{setting}} to default value of {{value}}', {
+                setting,
+                value,
+            }),
+            {
+                position: 'bottom-right',
+            },
+        );
     }
 
     function handleProgramSettingReset(setting: gSenderSetting) {
@@ -224,7 +231,9 @@ export const SettingRow = React.memo(function SettingRow({
                         return updated;
                     });
                 } else {
-                    toast.error(`No default found for ${effectiveEID}.`);
+                    toast.error(
+                        t('No default found for {{id}}.', { id: effectiveEID }),
+                    );
                 }
             }
         }
@@ -291,19 +300,20 @@ export const SettingRow = React.memo(function SettingRow({
             )}
         >
             <span className="w-full sm:w-1/5 font-xl sm:mb-0 mb-2 dark:text-gray-400 flex items-center justify-between sm:block ">
-                <span>{setting.label}</span>
+                <span>{t(setting.label)}</span>
                 <span className="sm:hidden flex flex-row gap-2">
                     {!isDefault && (
-                        <Tooltip content="Reset to default value">
+                        <Tooltip content={t('Reset to default value')}>
                             <button
                                 className="text-3xl"
                                 title=""
                                 onClick={() => {
                                     Confirm({
-                                        title: 'Reset setting',
-                                        content:
+                                        title: t('Reset setting'),
+                                        content: t(
                                             'Are you sure you want to reset this value to default?',
-                                        confirmLabel: 'Yes',
+                                        ),
+                                        confirmLabel: t('Yes'),
                                         onConfirm: () => {
                                             handleProgramSettingReset(
                                                 populatedValue,
@@ -321,7 +331,7 @@ export const SettingRow = React.memo(function SettingRow({
             </span>
             <span className="w-full sm:w-2/5 order-2 sm:order-3 text-gray-500 text-sm flex flex-col gap-2 max-sm:mb-4 mb-2">
                 {setting.description.split('\n').map((line, index) => (
-                    <p key={index}>{line}</p>
+                    <p key={index}>{t(line)}</p>
                 ))}
             </span>
             <span className="w-full sm:w-1/5 sm:order-none order-3 text-xs px-4 dark:text-gray-200 sm:mb-0  max-sm:mb-2 mb-0">
@@ -337,16 +347,17 @@ export const SettingRow = React.memo(function SettingRow({
             </span>
             <span className="hidden sm:flex w-1/5 text-xs px-4 flex-row gap-2 justify-end">
                 {!isDefault && (
-                    <Tooltip content="Reset to default value">
+                    <Tooltip content={t('Reset to default value')}>
                         <button
                             className="text-3xl"
                             title=""
                             onClick={() => {
                                 Confirm({
-                                    title: 'Reset setting',
-                                    content:
+                                    title: t('Reset setting'),
+                                    content: t(
                                         'Are you sure you want to reset this value to default?',
-                                    confirmLabel: 'Yes',
+                                    ),
+                                    confirmLabel: t('Yes'),
                                     onConfirm: () => {
                                         handleProgramSettingReset(
                                             populatedValue,

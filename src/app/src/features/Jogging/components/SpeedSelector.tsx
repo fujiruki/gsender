@@ -13,6 +13,7 @@ import { useWorkspaceState } from 'app/hooks/useWorkspaceState';
 
 import { convertValue } from '../utils/units';
 import { usePostHog } from 'posthog-js/react';
+import { t } from 'app/i18n';
 
 export interface SpeedSelectButtonProps {
     active?: boolean;
@@ -164,7 +165,7 @@ export function SpeedSelector({ handleClick }: SpeedSelectorProps) {
 
     const shuttleControlEvents = {
         SET_R_JOG_PRESET: {
-            title: 'Set to Rapid Preset',
+            title: t('Set to Rapid Preset'),
             keys: ['shift', 'v'].join('+'),
             cmd: 'SET_R_JOG_PRESET',
             preventDefault: false,
@@ -173,7 +174,7 @@ export function SpeedSelector({ handleClick }: SpeedSelectorProps) {
             callback: () => handleSpeedChange('Rapid'),
         },
         SET_N_JOG_PRESET: {
-            title: 'Set to Normal Preset',
+            title: t('Set to Normal Preset'),
             keys: ['shift', 'c'].join('+'),
             cmd: 'SET_N_JOG_PRESET',
             preventDefault: false,
@@ -182,7 +183,7 @@ export function SpeedSelector({ handleClick }: SpeedSelectorProps) {
             callback: () => handleSpeedChange('Normal'),
         },
         SET_P_JOG_PRESET: {
-            title: 'Set to Precise Preset',
+            title: t('Set to Precise Preset'),
             keys: ['shift', 'x'].join('+'),
             cmd: 'SET_P_JOG_PRESET',
             preventDefault: false,
@@ -191,7 +192,7 @@ export function SpeedSelector({ handleClick }: SpeedSelectorProps) {
             callback: () => handleSpeedChange('Precise'),
         },
         CYCLE_JOG_PRESETS: {
-            title: 'Switch between Presets',
+            title: t('Switch between Presets'),
             keys: ['shift', 'z'].join('+'),
             cmd: 'CYCLE_JOG_PRESETS',
             preventDefault: false,
@@ -225,20 +226,20 @@ export function SpeedSelector({ handleClick }: SpeedSelectorProps) {
             <SpeedSelectButton
                 active={preciseActive}
                 onClick={() => handleSpeedChange('Precise')}
-                label="Precise"
-                screenReaderLabel="Set to Precise jog preset"
+                label={t('Precise')}
+                screenReaderLabel={t('Set to Precise jog preset')}
             />
             <SpeedSelectButton
                 active={normalActive}
                 onClick={() => handleSpeedChange('Normal')}
-                label="Normal"
-                screenReaderLabel="Set to Normal jog preset"
+                label={t('Normal')}
+                screenReaderLabel={t('Set to Normal jog preset')}
             />
             <SpeedSelectButton
                 active={rapidActive}
                 onClick={() => handleSpeedChange('Rapid')}
-                label="Rapid"
-                screenReaderLabel="Set to Rapid jog preset"
+                label={t('Rapid')}
+                screenReaderLabel={t('Set to Rapid jog preset')}
             />
         </div>
     );

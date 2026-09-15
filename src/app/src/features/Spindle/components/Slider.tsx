@@ -22,6 +22,7 @@
  */
 
 import { ChangeEvent } from 'react';
+import { t } from 'app/i18n';
 
 type Props = {
     step?: number;
@@ -39,7 +40,7 @@ const Slider = ({
     max = 100,
     value = 50,
     onChange = null,
-    label = 'Range',
+    label = t('Range'),
     unitString = 'RPM',
 }: Props) => {
     return (

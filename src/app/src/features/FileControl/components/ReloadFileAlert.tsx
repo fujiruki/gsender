@@ -13,6 +13,7 @@ import { Button } from 'app/components/Button';
 import { FaRedo } from 'react-icons/fa';
 
 import { Tooltip } from 'app/components/Tooltip';
+import { t } from 'app/i18n';
 
 type ReloadFileAlertProps = {
     fileLoaded: boolean;
@@ -25,7 +26,7 @@ export function ReloadFileAlert({
 }: ReloadFileAlertProps) {
     return (
         <AlertDialog>
-            <Tooltip content="Reload File">
+            <Tooltip content={t('Reload File')}>
                 <AlertDialogTrigger asChild>
                     <Button
                         disabled={!fileLoaded}
@@ -34,21 +35,21 @@ export function ReloadFileAlert({
                         }
                         variant="ghost"
                         className="h-full rounded-none"
-                        aria-label="Reload File"
+                        aria-label={t('Reload File')}
                     />
                 </AlertDialogTrigger>
             </Tooltip>
             <AlertDialogContent className="bg-white">
                 <AlertDialogHeader>
-                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                    <AlertDialogTitle>{t('Are you sure?')}</AlertDialogTitle>
                     <AlertDialogDescription>
-                        This will reload the current file from disk.
+                        {t('This will reload the current file from disk.')}
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogCancel>{t('Cancel')}</AlertDialogCancel>
                     <AlertDialogAction onClick={handleFileReload}>
-                        Reload File
+                        {t('Reload File')}
                     </AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>

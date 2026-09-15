@@ -3,6 +3,7 @@ import { MouseEventHandler } from 'react';
 import { SettingsMenuSection } from '../assets/SettingsMenu';
 import { useSettings } from 'app/features/Config/utils/SettingsContext.tsx';
 import React from 'react';
+import { t } from 'app/i18n';
 
 interface MenuProps {
     menu: SettingsMenuSection[];
@@ -54,7 +55,7 @@ function MenuItem({ label, active, onClick, icon, available }: MenuItemProps) {
                         : 'text-gray-600 group-hover:text-blue-500 hover:text-blue-500 dark:text-white',
                 })}
             </span>
-            <span>{label}</span>
+            <span>{t(label)}</span>
         </button>
     );
 }
