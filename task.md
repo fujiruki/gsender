@@ -78,6 +78,19 @@
 
 ---
 
+## Agent-Config画面残翻訳 【完了・master直接コミット済み】
+
+> M0〜M2完了後、ブラウザ最終確認で発見した残存3箇所。コミット`fd45ddcbb`
+
+### タスク
+- [x] 未接続警告バナー（`EEPROMNotConnectedWarning.tsx`, `MenuWarning.tsx`）
+- [x] Config画面ヘッダー/フッター（Search/Clear/View Modified/All Config/EEPROM/Reset/Import/Export/Defaults/Flash/Apply Settings）
+- [x] Probe/Macros/Coolant/Consoleタブ名（`features/Tools/index.tsx`のタブ定義配列はラベル文字列をフィルタ判定にも使っており直接t()ラップ不可と判明。`SettingsMenu.ts`と同じ方針で描画側`components/Tabs/index.tsx`のみ変更、`i18n-sync.mjs`のDATA_SOURCESに`Tools/index.tsx`を追加)
+- [x] `npm run i18n:sync`(exit 0, keys 1000, untranslated 1=ATC・M3スコープ), `test:app`, `build`確認
+- [x] ブラウザで最終確認: メイン画面・設定画面・タブ名すべて日本語化、レイアウト崩れなし
+
+---
+
 <!-- M3(余力)は時間に応じて以下をコピーして追加:
 
 ## Agent-設定説明文・周辺機能(M3)
@@ -85,6 +98,8 @@
 ### タスク
 - [ ] SettingsDescriptions.ts(EEPROMSection.tsxで対応)
 - [ ] AccessoryInstaller/ATC, Rotary, SDCard, RemoteMode, サーバー起点メッセージ
+- [ ] M2からの引き継ぎ: Config/Macros/navbar/RemoteMode/Rotary/SDCard/Visualizer/workspace/wizards配下のConfirmationDialog/toast呼び出し元(約15ファイル)
+- [ ] ATCタブ名の翻訳（`features/Tools/index.tsx`のDATA_SOURCES化で新規検出済み、未翻訳のまま残存）
 
 ### 完了タスク
 
