@@ -29,7 +29,6 @@ import useShuttleEvents from 'app/hooks/useShuttleEvents';
 import useKeybinding from 'app/lib/useKeybinding';
 import store from 'app/store';
 import { usePostHog } from 'posthog-js/react';
-import { t } from 'app/i18n';
 
 const MountingSetup = ({ isDisabled = false }: { isDisabled?: boolean }) => {
     const [open, setOpen] = useState(false);
