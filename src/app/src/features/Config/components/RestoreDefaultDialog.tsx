@@ -21,6 +21,7 @@ import { resolveGrblCoreDefaults } from 'app/features/Config/utils/grblCoreMigra
 import { useSettings } from 'app/features/Config/utils/SettingsContext.tsx';
 import controller from 'app/lib/controller.ts';
 import { toast } from 'app/lib/toaster';
+import { t } from 'app/i18n';
 import { cn } from 'app/lib/utils.ts';
 import store from 'app/store';
 import { RootState } from 'app/store/redux';
@@ -130,7 +131,7 @@ export function RestoreDefaultDialog({
                             <AlertDialogTrigger asChild>
                                 <ActionButton
                                     icon={<GrRevert />}
-                                    label="Defaults"
+                                    label={t('Defaults')}
                                     disabled={
                                         !isConnected || !canRestoreDefaults
                                     }

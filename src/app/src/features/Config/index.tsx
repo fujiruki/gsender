@@ -12,6 +12,7 @@ import { ProfileBar } from 'app/features/Config/components/ProfileBar.tsx';
 import { Search } from 'app/features/Config/components/Search.tsx';
 import { useSettings } from 'app/features/Config/utils/SettingsContext';
 import { useTypedSelector } from 'app/hooks/useTypedSelector.ts';
+import { t } from 'app/i18n';
 import controller from 'app/lib/controller.ts';
 import store from 'app/store';
 import type { RootState } from 'app/store/redux';
@@ -220,14 +221,14 @@ export function Config() {
                             className="w-full dark:text-content-primary"
                             onClick={() => setActiveTab('config')}
                         >
-                            All Config
+                            {t('All Config')}
                         </TabsTrigger>
                         <TabsTrigger
                             value="eeprom"
                             className="w-full dark:text-content-primary"
                             onClick={() => setActiveTab('eeprom')}
                         >
-                            EEPROM
+                            {t('EEPROM')}
                         </TabsTrigger>
                     </TabsList>
                     <TabsContent

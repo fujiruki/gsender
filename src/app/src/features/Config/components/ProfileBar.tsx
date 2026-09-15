@@ -12,6 +12,7 @@ import { useSettings } from 'app/features/Config/utils/SettingsContext.tsx';
 import controller from 'app/lib/controller.ts';
 import { toast } from 'app/lib/toaster';
 import type { RootState } from 'app/store/redux';
+import { t } from 'app/i18n';
 import cn from 'classnames';
 import cx from 'classnames';
 import { useRef, useState } from 'react';
@@ -139,12 +140,12 @@ export function ProfileBar() {
                     />
                     <ActionButton
                         icon={<PiLightning />}
-                        label="Flash"
+                        label={t('Flash')}
                         onClick={toggleFlash}
                     />
                     <ActionButton
                         icon={<PiDownloadSimpleBold />}
-                        label="Import"
+                        label={t('Import')}
                         onClick={() => {
                             inputRef.current.click();
                             inputRef.current.value = null;
@@ -154,7 +155,7 @@ export function ProfileBar() {
                     />
                     <ActionButton
                         icon={<PiUploadSimpleBold />}
-                        label="Export"
+                        label={t('Export')}
                         onClick={() => exportFirmwareSettings(rawEEPROM)}
                         disabled={!connected}
                         testId="firmware-settings-export-button"
@@ -182,7 +183,7 @@ export function ProfileBar() {
                     disabled={!settingsAreDirty}
                     onClick={updateSettingsHandler}
                 >
-                    Apply<span className="max-xl:hidden"> Settings</span>
+                    {t('Apply Settings')}
                 </button>
                 {settingsAreDirty && (
                     <span className="w-4 h-4 animate-ping absolute -top-2 -left-2 bg-blue-400 rounded-xl"></span>

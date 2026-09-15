@@ -1,3 +1,4 @@
+import { t } from 'app/i18n';
 import { TiWarning } from 'react-icons/ti';
 
 export function MenuWarning() {
@@ -10,10 +11,10 @@ export function MenuWarning() {
                 <span>
                     <TiWarning />
                 </span>
-                Disconnected
+                {t('Disconnected')}
             </p>
             <p className="text-sm text-center">
-                Some settings may not appear unless connected to a machine.
+                {t('Some settings may not appear unless connected to a machine.')}
             </p>
         </div>
     );

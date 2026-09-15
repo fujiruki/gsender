@@ -8,6 +8,7 @@ const args = new Set(process.argv.slice(2));
 const T_CALL = /(?<![\w.$])t\(\s*(['"`])((?:\\.|(?!\1)[^\\])*)\1/g;
 const DATA_SOURCES = [
     { file: 'features/Config/assets/SettingsMenu.ts', re: /\b(?:label|description):\s*(['"])((?:\\.|(?!\1)[^\\])*)\1/g },
+    { file: 'features/Tools/index.tsx', re: /\blabel:\s*(['"])((?:\\.|(?!\1)[^\\])*)\1/g },
 ];
 const EXCLUDE = /(\.test\.|__mocks__|[\\/]mocks[\\/]|[\\/]tests[\\/]|[\\/]i18n[\\/])/;
 
