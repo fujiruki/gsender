@@ -50,6 +50,7 @@ const defaultState: State = {
         token: '',
     },
     workspace: {
+        language: 'en',
         units: METRIC_UNITS,
         reverseWidgets: false,
         spindleFunctions: false,

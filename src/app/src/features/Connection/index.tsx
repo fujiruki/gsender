@@ -5,6 +5,7 @@ import {
     PopoverTrigger,
 } from 'app/components/shadcn/Popover';
 import { GRBL } from 'app/constants';
+import { t } from 'app/i18n';
 import controller from 'app/lib/controller';
 import { isIPv4 } from 'app/lib/utils';
 import store from 'app/store';
@@ -304,7 +305,7 @@ function Connection(props: ConnectionProps) {
                 role="button"
                 aria-haspopup="true"
                 aria-expanded={isDropdownOpen}
-                aria-label="Connection menu"
+                aria-label={t('Connection menu')}
                 tabIndex={0}
             >
                 {connectionState !== ConnectionState.CONNECTED && (
@@ -325,20 +326,20 @@ function Connection(props: ConnectionProps) {
                         />
                         {connectionState === ConnectionState.DISCONNECTED && (
                             <span className="max-sm:hidden portrait:hidden animate-pulse">
-                                Connect to CNC
+                                {t('Connect to CNC')}
                             </span>
                         )}
                         {connectionState === ConnectionState.DISCONNECTED && (
                             <span className="max-sm:hidden landscape:hidden animate-pulse">
-                                Connect
+                                {t('Connect')}
                             </span>
                         )}
                         {connectionState === ConnectionState.CONNECTING && (
-                            <span className="max-sm:hidden">Connecting...</span>
+                            <span className="max-sm:hidden">{t('Connecting...')}</span>
                         )}
                         {connectionState === ConnectionState.ERROR && (
                             <span className="max-sm:hidden">
-                                Unable to connect.
+                                {t('Unable to connect.')}
                             </span>
                         )}
                         {connectionState == ConnectionState.CONNECTED && (

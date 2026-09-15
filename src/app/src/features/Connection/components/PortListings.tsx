@@ -1,6 +1,7 @@
 /** biome-ignore-all lint/a11y/useButtonType: <> */
 import store from 'app/store';
 import cn from 'classnames';
+import { t } from 'app/i18n';
 import { type JSX, useEffect, useState } from 'react';
 import { BsEthernet, BsUsbPlug } from 'react-icons/bs';
 import { FaArrowAltCircleRight } from 'react-icons/fa';
@@ -44,7 +45,7 @@ export function PortListingButton({
             <div className="flex flex-col gap-1 text-right">
                 <span className="font-bold">{truncatePortName(port.port)}</span>
                 <span className="text-sm text-gray-600 font-normal">
-                    USB ({baud})
+                    {t('USB ({{baud}})', { baud })}
                 </span>
             </div>
         </button>
@@ -83,7 +84,7 @@ export function PortListings(props: PortListingsProps): JSX.Element {
         <div className="w-full bg-white dark:bg-surface-raised divide-y divide-dotted divide-blue-300">
             {props.ports.length === 0 && (
                 <p className="font-normal flex items-center justify-center p-2 mt-2">
-                    No USB devices found
+                    {t('No USB devices found')}
                 </p>
             )}
             {props.ports.map((port) => (
@@ -107,7 +108,7 @@ export function PortListings(props: PortListingsProps): JSX.Element {
                 <div className="flex flex-col gap-1 text-right">
                     <span className="font-bold">{ip}</span>
                     <span className="text-sm text-gray-600 font-normal">
-                        Ethernet (port {port})
+                        {t('Ethernet (port {{port}})', { port })}
                     </span>
                 </div>
             </button>
@@ -117,7 +118,7 @@ export function PortListings(props: PortListingsProps): JSX.Element {
                         className="text-base text-gray-700 dark:text-content-secondary my-2 flex flex-row justify-between items-center px-2 outline-none"
                         onClick={toggleUnrecognizedPorts}
                     >
-                        <span>Unrecognized Ports</span>
+                        <span>{t('Unrecognized Ports')}</span>
                         <span
                             className={cn(
                                 'transition-transform duration-300 ease-in-out',

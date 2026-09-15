@@ -1,3 +1,5 @@
+import { t } from 'app/i18n';
+
 interface DisconnectButtonProps {
     disconnectHandler: () => void;
 }
@@ -13,7 +15,7 @@ export function DisconnectButton({ disconnectHandler }: DisconnectButtonProps) {
                 if (e.key === 'Enter' || e.key === ' ') disconnectHandler();
             }}
         >
-            Disconnect
+            {t('Disconnect')}
         </div>
     );
 }

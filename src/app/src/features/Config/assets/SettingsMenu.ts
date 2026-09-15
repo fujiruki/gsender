@@ -181,6 +181,13 @@ export const SettingsMenu: SettingsMenuSection[] = [
                 label: '',
                 settings: [
                     {
+                        label: 'Language',
+                        key: 'workspace.language',
+                        type: 'select',
+                        description: 'Restart gSender to apply.',
+                        options: ['en', 'ja'],
+                    },
+                    {
                         label: 'Carve screen units',
                         key: 'workspace.units',
                         type: 'radio',
