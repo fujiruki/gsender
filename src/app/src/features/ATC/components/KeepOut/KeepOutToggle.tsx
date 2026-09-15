@@ -3,6 +3,7 @@ import { Shield, ShieldOff } from 'lucide-react';
 import controller from 'app/lib/controller.ts';
 import { useTypedSelector } from 'app/hooks/useTypedSelector.ts';
 import { RootState } from 'app/store/redux';
+import { t } from 'app/i18n';
 
 export function KeepoutToggle() {
     const [flags, setFlags] = useState<string[]>([]);
@@ -30,7 +31,7 @@ export function KeepoutToggle() {
         }
     };
 
-    if (!flags) return <div>OK</div>;
+    if (!flags) return <div>{t('OK')}</div>;
 
     return (
         <button

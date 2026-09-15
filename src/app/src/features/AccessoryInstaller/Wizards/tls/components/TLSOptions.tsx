@@ -11,6 +11,7 @@ import pubsub from 'pubsub-js';
 import controller from "app/lib/controller.ts";
 import { firmwarePastVersion } from 'app/lib/firmwareSemver.ts';
 import { ATCI_SUPPORTED_VERSION } from 'app/features/ATC/utils/ATCiConstants.ts';
+import { t } from 'app/i18n';
 
 const FIRST_TOOL_BEHAVIOUR_OPTIONS: FirstToolBehavior[] = [
     'Always run full wizard',
@@ -18,14 +19,21 @@ const FIRST_TOOL_BEHAVIOUR_OPTIONS: FirstToolBehavior[] = [
     'Always probe length only',
 ];
 
-const FIRST_TOOL_BEHAVIOUR_EXPLANATIONS: Record<FirstToolBehavior, string> = {
-    'Always run full wizard':
-        'Runs the complete tool change process every time, including for the first tool.',
-    'Prompt for first tool':
-        'Asks whether to run the full wizard or just probe the current tool length for the first tool change.',
-    'Always probe length only':
-        'Skips the tool change prompt and only measures the current tool for the first tool change.',
-};
+function getFirstToolBehaviourExplanation(
+    behaviour: FirstToolBehavior,
+): string {
+    return {
+        'Always run full wizard': t(
+            'Runs the complete tool change process every time, including for the first tool.',
+        ),
+        'Prompt for first tool': t(
+            'Asks whether to run the full wizard or just probe the current tool length for the first tool change.',
+        ),
+        'Always probe length only': t(
+            'Skips the tool change prompt and only measures the current tool for the first tool change.',
+        ),
+    }[behaviour];
+}
 
 export function TLSOptions({ onComplete, onUncomplete }: StepProps) {
     const [error, setError] = useState<string>('');
@@ -72,7 +80,7 @@ export function TLSOptions({ onComplete, onUncomplete }: StepProps) {
         store.set('widgets.probe.probeFastFeedrate', 1000);
         updateToolchangeContext();
         pubsub.publish('repopulate');
-        setSuccess('Tool change options configured.');
+        setSuccess(t('Tool change options configured.'));
         setIsComplete(true);
         onComplete();
     };
@@ -80,13 +88,14 @@ export function TLSOptions({ onComplete, onUncomplete }: StepProps) {
     return (
         <div className="flex flex-col gap-5 justify-start">
             <p className="dark:text-white">
-                Configure how gSender should handle tool changes with your
-                Tool Length Sensor (TLS).
+                {t(
+                    'Configure how gSender should handle tool changes with your Tool Length Sensor (TLS).',
+                )}
             </p>
 
             <div>
                 <label className="block text-sm font-semibold text-gray-900 dark:text-white mb-2">
-                    First tool behaviour
+                    {t('First tool behaviour')}
                 </label>
                 <select
                     value={firstToolBehaviour}
@@ -99,12 +108,12 @@ export function TLSOptions({ onComplete, onUncomplete }: StepProps) {
                 >
                     {FIRST_TOOL_BEHAVIOUR_OPTIONS.map((option) => (
                         <option key={option} value={option}>
-                            {option}
+                            {t(option)}
                         </option>
                     ))}
                 </select>
                 <p className="text-sm text-gray-600 dark:text-gray-300 mt-2">
-                    {FIRST_TOOL_BEHAVIOUR_EXPLANATIONS[firstToolBehaviour]}
+                    {getFirstToolBehaviourExplanation(firstToolBehaviour)}
                 </p>
             </div>
 
@@ -117,23 +126,25 @@ export function TLSOptions({ onComplete, onUncomplete }: StepProps) {
                 />
                 <span>
                     <span className="block text-lg font-semibold text-gray-900 dark:text-white">
-                        Set manual tool change location
+                        {t('Set manual tool change location')}
                     </span>
                     <span className="block text-sm text-gray-600 dark:text-gray-300">
-                        Move the CNC to a more convenient location for manual
-                        tool changes instead of prompting to change over the
-                        sensor.
+                        {t(
+                            'Move the CNC to a more convenient location for manual tool changes instead of prompting to change over the sensor.',
+                        )}
                     </span>
                 </span>
             </label>
 
             <p className="dark:text-white">
-                Select <b>"Apply"</b> to set your tool change strategy to
-                Fixed Tool Sensor and save these options.
+                {t('Select')} <b>"{t('Apply')}"</b>{' '}
+                {t(
+                    'to set your tool change strategy to Fixed Tool Sensor and save these options.',
+                )}
             </p>
             <StepActionButton
-                label={'Apply'}
-                runningLabel="Applying..."
+                label={t('Apply')}
+                runningLabel={t('Applying...')}
                 onApply={applySettings}
                 isComplete={isComplete}
                 error={error}

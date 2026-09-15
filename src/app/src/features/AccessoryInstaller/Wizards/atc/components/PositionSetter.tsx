@@ -1,5 +1,6 @@
 import { useState, useEffect, ReactNode } from 'react';
 import { MapPin } from 'lucide-react';
+import { t } from 'app/i18n';
 
 interface PositionSetterProps {
     xPosition: string;
@@ -20,7 +21,7 @@ export function PositionSetter({
     zPosition: initialZ,
     onPositionChange,
     showZ = false,
-    label = 'Position',
+    label = t('Position'),
     units = 'mm',
     actionButton,
     showGoTo = false,
@@ -117,7 +118,7 @@ export function PositionSetter({
                             className="shrink-0 flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors bg-gray-200 text-gray-900 hover:bg-gray-300"
                         >
                             <MapPin size={18} />
-                            Go To
+                            {t('Go To')}
                         </button>
                     )}
                 </div>

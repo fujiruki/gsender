@@ -1,3 +1,5 @@
+import { t } from 'app/i18n';
+
 interface ProgressBarProps {
     currentStep: number;
     totalSteps: number;
@@ -22,11 +24,16 @@ export function ProgressBar({
                 <div className="flex items-center justify-between mb-2">
                     <span className="text-sm text-gray-600 dark:text-gray-300">
                         {isCompleted
-                            ? 'All Steps Complete'
-                            : `Step ${displayStep} of ${totalSteps}`}
+                            ? t('All Steps Complete')
+                            : t('Step {{displayStep}} of {{totalSteps}}', {
+                                  displayStep,
+                                  totalSteps,
+                              })}
                     </span>
                     <span className="text-sm text-gray-600 dark:text-gray-300">
-                        {progressPercentage}% Complete
+                        {t('{{percentage}}% Complete', {
+                            percentage: progressPercentage,
+                        })}
                     </span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
@@ -52,7 +59,7 @@ export function ProgressBar({
                 >
                     <path d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
-                Exit
+                {t('Exit')}
             </button>
         </div>
     );

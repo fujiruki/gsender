@@ -6,6 +6,7 @@ import { RootState } from 'app/store/redux';
 import {StepProps} from "app/features/AccessoryInstaller/types";
 import { firmwarePastVersion } from 'app/lib/firmwareSemver.ts';
 import { SPINDLE_395_V7_VERSION } from 'app/features/ATC/utils/ATCiConstants.ts';
+import { t } from 'app/i18n';
 
 export function SpindleSetRestart({ onComplete, onUncomplete }: StepProps) {
     const [isComplete, setIsComplete] = useState<boolean>(false);
@@ -49,17 +50,21 @@ export function SpindleSetRestart({ onComplete, onUncomplete }: StepProps) {
     return (
         <div className="flex flex-col gap-5 justify-start">
             <p className="dark:text-white">
-                Your spindle settings are applied in this step and the controller will restart automatically.
+                {t(
+                    'Your spindle settings are applied in this step and the controller will restart automatically.',
+                )}
             </p>
             <ol className="list-decimal p-5 gap-4 space-y-2">
                 <li>
-                    Press <b>"Apply And Restart"</b>
+                    {t('Press')} <b>"{t('Apply And Restart')}"</b>
                 </li>
-                <li>Click <b>"Next"</b></li>
+                <li>
+                    {t('Click')} <b>"{t('Next')}"</b>
+                </li>
             </ol>
             <StepActionButton
-                label="Apply and Restart"
-                runningLabel="Applying..."
+                label={t('Apply and Restart')}
+                runningLabel={t('Applying...')}
                 onApply={setupSpindleAndReboot}
                 isComplete={hasSetupSpindle}
                 error={error}

@@ -8,6 +8,7 @@ import controller from 'app/lib/controller.ts';
 import { useWorkspaceState } from 'app/hooks/useWorkspaceState';
 import { mapPositionToUnits, in2mm } from 'app/lib/units.ts';
 import { IMPERIAL_UNITS } from 'app/constants';
+import { t } from 'app/i18n';
 
 export function TLSPosition({ onComplete, onUncomplete }: StepProps) {
     const applySettings = async () => {
@@ -51,9 +52,10 @@ export function TLSPosition({ onComplete, onUncomplete }: StepProps) {
     return (
         <div className="flex flex-col gap-5 justify-start">
             <p className="dark:text-white">
-                Please jog until just above the Tool Length Sensor and set the
-                position of your tool length sensor using the <b>“Set Position”</b>
-                button.
+                {t(
+                    'Please jog until just above the Tool Length Sensor and set the position of your tool length sensor using the',
+                )}{' '}
+                <b>“{t('Set Position')}”</b> {t('button.')}
             </p>
             <PositionSetter
                 showZ={false}
@@ -66,8 +68,8 @@ export function TLSPosition({ onComplete, onUncomplete }: StepProps) {
                 }}
                 actionButton={
                     <StepActionButton
-                        label={'Set Position'}
-                        runningLabel="Setting..."
+                        label={t('Set Position')}
+                        runningLabel={t('Setting...')}
                         onApply={setTLSPosition}
                         isComplete={isComplete}
                         error={error}

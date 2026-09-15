@@ -1,6 +1,7 @@
 import controller from 'app/lib/controller';
 import { toast } from 'app/lib/toaster';
 import { getUnitModal } from 'app/lib/toolChangeUtils';
+import { t } from 'app/i18n';
 
 const processValue = (value: number) => {
     const unitModal = getUnitModal();
@@ -132,7 +133,7 @@ export const getYAxisAlignmentProbing = () => {
 };
 
 export const runProbing = (name = 'rotary', commands: string) => {
-    toast.info(`Running ${name} probing commands`, {
+    toast.info(t('Running {{name}} probing commands', { name }), {
         position: 'bottom-right',
     });
     const unitModal = getUnitModal();

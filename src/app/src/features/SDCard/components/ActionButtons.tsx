@@ -7,6 +7,7 @@ import {
     refreshSDCardFiles,
 } from 'app/features/SDCard/utils/utils.ts';
 import Button from 'app/components/Button';
+import { t } from 'app/i18n';
 
 export function ActionButtons() {
     const { isMounted, isConnected, isLoading, setIsLoading, firmwareType, hasFTP, hasYM } = useSDCard();
@@ -27,7 +28,7 @@ export function ActionButtons() {
                     <RefreshCw
                         className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`}
                     />
-                    <span>Refresh Files</span>
+                    <span>{t('Refresh Files')}</span>
                 </Button>
 
                 <Button
@@ -36,7 +37,7 @@ export function ActionButtons() {
                     className="flex flex-row items-center gap-2"
                 >
                     <Upload className="w-4 h-4" />
-                    <span>Upload</span>
+                    <span>{t('Upload')}</span>
                 </Button>
             </div>
 

@@ -4,6 +4,7 @@ import { RootState } from 'app/store/redux';
 import { firmwarePastVersion } from 'app/lib/firmwareSemver.ts';
 import { ATCI_SUPPORTED_VERSION } from 'app/features/ATC/utils/ATCiConstants.ts';
 import cx from 'classnames';
+import { t } from 'app/i18n';
 
 export function SettingBadge({ label, ok }: { label: string; ok: boolean }) {
     return (
@@ -36,18 +37,18 @@ export function TLSContinuitySidebar() {
     return (
         <div className="flex flex-col gap-3">
             <h3 className="text-sm font-semibold text-gray-700 dark:text-white">
-                Related Settings
+                {t('Related Settings')}
             </h3>
             <div className="flex items-center justify-between bg-white dark:bg-dark-darker rounded-lg px-3 py-2">
                 <span className="text-sm dark:text-white">
-                    $6 - Invert Probe Pin
+                    {t('$6 - Invert Probe Pin')}
                 </span>
                 <div className="flex items-center gap-2">
                     <span className="text-sm font-mono dark:text-white">
                         {invertProbePin ?? '-'}
                     </span>
                     <SettingBadge
-                        label={invertProbePinOk ? 'OK' : 'Expected 1'}
+                        label={invertProbePinOk ? t('OK') : t('Expected 1')}
                         ok={invertProbePinOk}
                     />
                 </div>
@@ -55,14 +56,14 @@ export function TLSContinuitySidebar() {
             {showLegacySetting && (
                 <div className="flex items-center justify-between bg-white dark:bg-dark-darker rounded-lg px-3 py-2">
                     <span className="text-sm dark:text-white">
-                        $668 - Legacy Tool Sensor
+                        {t('$668 - Legacy Tool Sensor')}
                     </span>
                     <div className="flex items-center gap-2">
                         <span className="text-sm font-mono dark:text-white">
                             {legacyToolSensor ?? '-'}
                         </span>
                         <SettingBadge
-                            label={legacyToolSensorOk ? 'OK' : 'Expected 0'}
+                            label={legacyToolSensorOk ? t('OK') : t('Expected 0')}
                             ok={legacyToolSensorOk}
                         />
                     </div>

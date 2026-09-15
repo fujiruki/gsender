@@ -11,6 +11,7 @@ import { TemplatesTab } from './TemplatesTab';
 import controller from 'app/lib/controller.ts';
 import { repopulateFromSDCard } from 'app/features/ATC/components/Configuration/utils/ConfigUtils.ts';
 import { useConfigContext } from 'app/features/ATC/components/Configuration/hooks/useConfigStore.tsx';
+import { t } from 'app/i18n';
 
 interface ConfigModalProps {
     open: boolean;
@@ -63,8 +64,8 @@ export const ConfigModal: React.FC<ConfigModalProps> = ({
                     className="w-full flex flex-col flex-1 gap-2 min-h-0 h-full"
                 >
                     <TabsList className="grid w-full grid-cols-2 flex-shrink-0">
-                        <TabsTrigger value="config">ATC Config</TabsTrigger>
-                        <TabsTrigger value="templates">Templates</TabsTrigger>
+                        <TabsTrigger value="config">{t('ATC Config')}</TabsTrigger>
+                        <TabsTrigger value="templates">{t('Templates')}</TabsTrigger>
                     </TabsList>
 
                     <TabsContent

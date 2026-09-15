@@ -22,6 +22,7 @@ import controller from 'app/lib/controller.ts';
 import { RootState } from 'app/store/redux';
 import { Confirm } from 'app/components/ConfirmationDialog/ConfirmationDialogLib.ts';
 import { isIPv4 } from 'app/lib/utils';
+import { t } from 'app/i18n';
 
 import { actions } from './apiActions.ts';
 
@@ -84,13 +85,15 @@ export function RemoteModeDialog({
 
         // Validations
         if (Number(port) < 1025 || Number(port) > 65535) {
-            toast.error('Invalid Port Number - Must be between 1025 and 65535');
+            toast.error(
+                t('Invalid Port Number - Must be between 1025 and 65535'),
+            );
             return;
         }
 
         if (!isIPv4(ip)) {
             toast.error(
-                `Invalid IP Address - ${ip} does not look like a valid V4 IP address`,
+                t('Invalid IP Address - {{ip}} does not look like a valid V4 IP address', { ip }),
             );
             return;
         }
@@ -98,7 +101,7 @@ export function RemoteModeDialog({
         onClose(false);
         actions.saveSettings(payload);
         setHeadlessSettings(payload);
-        toast.success('Updated Wireless Control Settings', {
+        toast.success(t('Updated Wireless Control Settings'), {
             position: 'bottom-right',
         });
     }
@@ -108,10 +111,11 @@ export function RemoteModeDialog({
 
         Confirm({
             onConfirm: onConfirmUpdate,
-            confirmLabel: 'Save Settings',
-            title: 'Save Wireless CNC Settings',
-            content:
+            confirmLabel: t('Save Settings'),
+            title: t('Save Wireless CNC Settings'),
+            content: t(
                 'Are you sure you want to save these settings?  This will restart the application.',
+            ),
         });
     }
 
@@ -120,13 +124,13 @@ export function RemoteModeDialog({
             <DialogContent className="bg-white w-[750px] text-sm">
                 <form>
                     <DialogHeader>
-                        <DialogTitle>Wireless CNC Control</DialogTitle>
+                        <DialogTitle>{t('Wireless CNC Control')}</DialogTitle>
                     </DialogHeader>
                     <div className="grid grid-cols-2 text-gray-600 grid-">
                         <div className="flex flex-col gap-8 px-4">
                             <div className="flex flex-row gap-4 items-center">
                                 <span className="font-bold dark:text-white">
-                                    Enable Wireless Control
+                                    {t('Enable Wireless Control')}
                                 </span>
                                 <Switch
                                     onChange={toggleRemoteMode}
@@ -134,11 +138,12 @@ export function RemoteModeDialog({
                                 />
                             </div>
                             <p className="dark:text-white">
-                                Choose your settings below. In most cases the
-                                default values should work:
+                                {t(
+                                    'Choose your settings below. In most cases the default values should work:',
+                                )}
                             </p>
                             <div className="flex flex-row w-full justify-between items-center gap-4">
-                                <span className="dark:text-white">Addr:</span>
+                                <span className="dark:text-white">{t('Addr:')}</span>
                                 <Select onValueChange={onIPSelect} value={ip}>
                                     <SelectTrigger className="">
                                         <SelectValue placeholder={ip} />
@@ -156,7 +161,7 @@ export function RemoteModeDialog({
                                 </Select>
                             </div>
                             <div className="flex flex-row w-full justify-start items-center gap-4">
-                                <span className="dark:text-white">Port:</span>
+                                <span className="dark:text-white">{t('Port:')}</span>
                                 <input
                                     className="border border-gray-200 rounded p-2 focus:outline-none w-full dark:bg-dark dark:text-white"
                                     type="number"
@@ -165,9 +170,10 @@ export function RemoteModeDialog({
                                 />
                             </div>
                             <p className="dark:text-white text-sm">
-                                <b>Note:</b> Clicking "Save" will ask you to
-                                restart gSender so that the settings can be
-                                updated.
+                                <b>{t('Note:')}</b>{' '}
+                                {t(
+                                    'Clicking "Save" will ask you to restart gSender so that the settings can be updated.',
+                                )}
                             </p>
                             <hr />
                             <Button
@@ -175,7 +181,7 @@ export function RemoteModeDialog({
                                 disabled={!dirty}
                                 onClick={saveRemotePreferences}
                             >
-                                Save
+                                {t('Save')}
                             </Button>
                         </div>
 

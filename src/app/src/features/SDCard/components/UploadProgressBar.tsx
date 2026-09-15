@@ -1,6 +1,7 @@
 import { CheckCircle2 } from 'lucide-react';
 import cn from 'classnames';
 import { UploadState } from '../hooks/useSDCard';
+import { t } from 'app/i18n';
 
 interface UploadProgressBarProps {
     uploadState: UploadState;
@@ -23,7 +24,7 @@ export function UploadProgressBar({
             {uploadState === 'uploading' && (
                 <div className="space-y-2">
                     <div className="flex justify-between items-center text-sm text-slate-600">
-                        <span className="font-medium">Uploading...</span>
+                        <span className="font-medium">{t('Uploading...')}</span>
                         <span className="tabular-nums">
                             {Math.round(uploadProgress)}%
                         </span>
@@ -42,7 +43,7 @@ export function UploadProgressBar({
             {uploadState === 'complete' && (
                 <div className="flex items-center justify-center space-x-2 text-green-600 animate-in fade-in-0 duration-300">
                     <CheckCircle2 className="w-5 h-5" />
-                    <span className="font-medium">Upload complete!</span>
+                    <span className="font-medium">{t('Upload complete!')}</span>
                 </div>
             )}
         </div>

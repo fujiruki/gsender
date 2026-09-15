@@ -1,4 +1,5 @@
 import { Check, AlertTriangle } from 'lucide-react';
+import { t } from 'app/i18n';
 import './ContinuityIndicator.css';
 
 export type ContinuityPhase =
@@ -7,12 +8,14 @@ export type ContinuityPhase =
     | 'success'
     | 'stuck-on';
 
-const COPY: Record<ContinuityPhase, string> = {
-    'checking-idle': 'Checking continuity…',
-    waiting: 'Waiting for probe contact…',
-    success: 'Continuity confirmed',
-    'stuck-on': 'Sensor triggered immediately',
-};
+function getCopy(phase: ContinuityPhase): string {
+    return {
+        'checking-idle': t('Checking continuity…'),
+        waiting: t('Waiting for probe contact…'),
+        success: t('Continuity confirmed'),
+        'stuck-on': t('Sensor triggered immediately'),
+    }[phase];
+}
 
 interface ContinuityIndicatorProps {
     phase: ContinuityPhase;
@@ -25,7 +28,7 @@ export function ContinuityIndicator({
     size = 140,
     label,
 }: ContinuityIndicatorProps) {
-    const text = label ?? COPY[phase];
+    const text = label ?? getCopy(phase);
 
     return (
         <div className="continuity-indicator" data-phase={phase}>

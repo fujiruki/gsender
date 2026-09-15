@@ -6,6 +6,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from 'app/components/shadcn/Select';
+import { t } from 'app/i18n';
 interface OffsetManagementWidgetProps {
     value?: number;
     onChange?: (value: number) => void;
@@ -49,17 +50,17 @@ export default function OffsetManagementWidget({
                         className="h-8 text-xs dark:border-slate-600 dark:bg-slate-900 dark:text-white"
                         disabled={disabled}
                     >
-                        <SelectValue placeholder="Select mode" />
+                        <SelectValue placeholder={t('Select mode')} />
                     </SelectTrigger>
                     <SelectContent className="z-[10001] bg-white dark:bg-slate-900 dark:text-gray-100">
                         <SelectItem value="0">
-                            Probe new offset after loading
+                            {t('Probe new offset after loading')}
                         </SelectItem>
                         <SelectItem value="1">
-                            Use Tool Table without verification
+                            {t('Use Tool Table without verification')}
                         </SelectItem>
                         <SelectItem value="2">
-                            Use Tool Table and probe to verify
+                            {t('Use Tool Table and probe to verify')}
                         </SelectItem>
                     </SelectContent>
                 </Select>

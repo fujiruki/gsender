@@ -2,6 +2,7 @@ import { ArrowLeft, ArrowRight, HelpCircle } from 'lucide-react';
 import { SubWizard, ValidationResult } from '../../types/wizard';
 import { ValidationBanner } from 'app/features/AccessoryInstaller/components/wizard/ValidationBanner.tsx';
 import DefaultImage from '../../Wizards/atc/assets/placeholder_1.png';
+import { t } from 'app/i18n';
 
 interface WizardLandingProps {
     title: string;
@@ -76,7 +77,7 @@ export function WizardLanding({
                         className="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 mb-8 self-start"
                     >
                         <ArrowLeft size={20} />
-                        Back to Wizards
+                        {t('Back to Wizards')}
                     </button>
                 )}
 
@@ -87,14 +88,14 @@ export function WizardLanding({
                     {activeSubWizard?.estimatedTime && (
                         <p className="text-gray-700 dark:text-gray-400 mb-1">
                             <span className="font-semibold">
-                                Estimated time:
+                                {t('Estimated time:')}
                             </span>{' '}
                             {activeSubWizard.estimatedTime}
                         </p>
                     )}
                     {activeSubWizard?.configVersion && (
                         <p className="text-gray-700 dark:text-gray-400 mb-8">
-                            Configuration File Version:{' '}
+                            {t('Configuration File Version:')}{' '}
                             {activeSubWizard.configVersion}
                         </p>
                     )}
@@ -127,7 +128,7 @@ export function WizardLanding({
             <div className="w-2/5 portrait:w-full portrait:h-2/5 bg-gray-200 dark:bg-dark p-12 flex flex-col justify-between overflow-y-auto">
                 <div className="flex items-center justify-center flex-1">
                     <img
-                        alt="Wizard image"
+                        alt={t('Wizard image')}
                         src={image ?? DefaultImage}
                         className="rounded-2xl"
                     />
@@ -141,17 +142,17 @@ export function WizardLanding({
                         />
                         <div>
                             <h3 className="font-semibold text-lg text-gray-900 dark:text-white mb-1">
-                                Need Help?
+                                {t('Need Help?')}
                             </h3>
                             <p className="text-gray-600 dark:text-gray-400">
-                                Follow along in our{' '}
+                                {t('Follow along in our')}{' '}
                                 <a
                                     href={helpUrl ?? 'https://resources.sienci.com/'}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="text-blue-500 font-bold"
                                 >
-                                    online resources
+                                    {t('online resources')}
                                 </a>
                             </p>
                         </div>

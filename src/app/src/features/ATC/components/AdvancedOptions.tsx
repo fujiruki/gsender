@@ -6,6 +6,7 @@ import {
     releaseToolFromSpindle,
     unloadTool,
 } from 'app/features/ATC/utils/ATCFunctions.ts';
+import { t } from 'app/i18n';
 
 export function AdvancedOptions() {
     const {
@@ -33,14 +34,14 @@ export function AdvancedOptions() {
             <div className="flex flex-col gap-2 border-t border-gray-200 pt-3">
                 <LongPressButton
                     disabled={disabled}
-                    label="Load"
+                    label={t('Load')}
                     icon={<Download className="h-5 w-5" />}
                     onClick={handleLoad}
                     onLongPress={handleManualLoad}
                 />
                 <LongPressButton
                     disabled={disabled}
-                    label="Unload"
+                    label={t('Unload')}
                     icon={<Upload className="h-5 w-5" />}
                     onClick={unloadTool}
                     onLongPress={releaseToolFromSpindle}

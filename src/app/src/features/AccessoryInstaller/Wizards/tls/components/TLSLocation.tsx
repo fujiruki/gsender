@@ -10,6 +10,7 @@ import { useWorkspaceState } from 'app/hooks/useWorkspaceState';
 import { mapPositionToUnits, in2mm } from 'app/lib/units.ts';
 import { IMPERIAL_UNITS } from 'app/constants';
 import pubsub from 'pubsub-js';
+import { t } from 'app/i18n';
 
 type Position = { x?: number; y?: number; z?: number };
 
@@ -62,7 +63,7 @@ export function TLSLocation({ onComplete, onUncomplete }: StepProps) {
             '$#',
         );
         pubsub.publish('repopulate');
-        setSuccess('TLS location set.');
+        setSuccess(t('TLS location set.'));
         setIsComplete(true);
         lastSetMposRef.current = mpos;
         onComplete();
@@ -71,15 +72,15 @@ export function TLSLocation({ onComplete, onUncomplete }: StepProps) {
     return (
         <div className="flex flex-col gap-5 justify-start">
             <p className="dark:text-white">
-                Install the tallest bit you own in your spindle or router.
-                Jog until it's positioned just above (10-20mm) the Tool Length Sensor,
-                then set the position using the <b>"Set Position"</b> button.
+                {t(
+                    "Install the tallest bit you own in your spindle or router. Jog until it's positioned just above (10-20mm) the Tool Length Sensor, then set the position using the",
+                )}{' '}
+                <b>"{t('Set Position')}"</b> {t('button.')}
             </p>
             <p className="text-sm text-gray-600 dark:text-gray-300">
-                Using your tallest tool gives the most Z-axis clearance above
-                the sensor, so its measured position ends up negative — this
-                is what lets gSender accurately probe tools of any length
-                during a tool change without running out of travel.
+                {t(
+                    'Using your tallest tool gives the most Z-axis clearance above the sensor, so its measured position ends up negative — this is what lets gSender accurately probe tools of any length during a tool change without running out of travel.',
+                )}
             </p>
             <PositionSetter
                 showZ={true}
@@ -98,8 +99,8 @@ export function TLSLocation({ onComplete, onUncomplete }: StepProps) {
                 }}
                 actionButton={
                     <StepActionButton
-                        label={'Set Position'}
-                        runningLabel="Setting..."
+                        label={t('Set Position')}
+                        runningLabel={t('Setting...')}
                         onApply={setTLSLocation}
                         isComplete={isComplete}
                         error={error}

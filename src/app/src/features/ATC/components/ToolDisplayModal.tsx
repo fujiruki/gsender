@@ -7,6 +7,7 @@ import Button from 'app/components/Button';
 import { Table2 } from 'lucide-react';
 import { useToolChange } from 'app/features/ATC/utils/ToolChangeContext.tsx';
 import controller from 'app/lib/controller.ts';
+import { t } from 'app/i18n';
 
 export function ToolDisplayModal() {
     const { connected, setShowTable, showTable, tools, disabled } =
@@ -33,7 +34,7 @@ export function ToolDisplayModal() {
                     size="sm"
                 >
                     <Table2 className="h-4 w-4" />
-                    Tools
+                    {t('Tools')}
                 </Button>
             </DialogTitle>
             <DialogContent className="overflow-hidden p-0 shadow-lg w-3/5 portrait:w-4/5">

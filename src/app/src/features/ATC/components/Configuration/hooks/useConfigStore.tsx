@@ -15,6 +15,7 @@ import { ATCIMacroConfig } from 'app/features/ATC/assets/defaultATCIMacros.ts';
 import store from 'app/store';
 import { generateAllMacros } from 'app/features/ATC/components/Configuration/utils/ConfigUtils.ts';
 import delay from '../../../../../../../server/lib/delay';
+import { t } from 'app/i18n';
 
 export const defaultPosition: Position = {
     x: 0,
@@ -211,14 +212,17 @@ export const ConfigProvider: React.FC<ConfigProviderProps> = ({ children }) => {
     const applyConfig = async () => {
         setIsApplying(true);
         setProgress(0);
-        setStatus({ type: 'idle', message: 'Applying configuration...' });
+        setStatus({ type: 'idle', message: t('Applying configuration...') });
 
         const content = generateAllMacros(config, true);
 
         const handleComplete = () => {
             controller.removeListener('ymodem:complete', handleComplete);
             controller.removeListener('ymodem:error', handleError);
-            setStatus({ type: 'success', message: 'Configuration applied successfully!' });
+            setStatus({
+                type: 'success',
+                message: t('Configuration applied successfully!'),
+            });
             setTimeout(() => {
                 setStatus({ type: 'idle', message: '' });
             }, 5000);

@@ -28,6 +28,7 @@ import {
 } from 'app/features/ATC/utils/ATCFunctions.ts';
 import { toolStateThemes } from 'app/features/ATC/utils/ATCiConstants.ts';
 import { ToolStatusBadges } from 'app/features/ATC/components/ui/ToolStatusBadges.tsx';
+import { t } from 'app/i18n';
 
 interface ToolChangerPopoverProps {
     isOpen: boolean;
@@ -97,14 +98,14 @@ const ToolChangerPopover: React.FC<ToolChangerPopoverProps> = ({
             case 'probed':
                 return {
                     ...styling,
-                    title: 'Probed',
-                    description: 'Offset found for selected tool.',
+                    title: t('Probed'),
+                    description: t('Offset found for selected tool.'),
                 };
             case 'unprobed':
                 return {
                     ...styling,
-                    title: 'Unprobed Tool',
-                    description: 'Offset not found for selected tool.',
+                    title: t('Unprobed Tool'),
+                    description: t('Offset not found for selected tool.'),
                 };
         }
     };
@@ -112,13 +113,13 @@ const ToolChangerPopover: React.FC<ToolChangerPopoverProps> = ({
     const getModeTitle = (tcMode: LoadToolMode) => {
         switch (tcMode) {
             case 'load':
-                return 'Load Tool';
+                return t('Load Tool');
             case 'manual':
-                return 'Manual Load Tool';
+                return t('Manual Load Tool');
             case 'unload':
-                return 'Unload Tool Manually';
+                return t('Unload Tool Manually');
             case 'loadAndSave':
-                return 'Load and Save Tool';
+                return t('Load and Save Tool');
         }
     };
 
@@ -215,10 +216,10 @@ const ToolChangerPopover: React.FC<ToolChangerPopoverProps> = ({
                             {isLoading ? (
                                 <>
                                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                                    Loading...
+                                    {t('Loading...')}
                                 </>
                             ) : (
-                                'Load'
+                                t('Load')
                             )}
                         </Button>
                     </div>

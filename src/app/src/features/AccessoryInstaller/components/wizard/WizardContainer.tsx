@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { SubWizard } from '../../types/wizard';
 import { ProgressBar } from './ProgressBar';
 import { SecondaryContentPanel } from './SecondaryContentPanel';
+import { t } from 'app/i18n';
 
 interface WizardContainerProps {
     subWizard: SubWizard;
@@ -119,7 +120,7 @@ export function WizardContainer({ subWizard, onExit }: WizardContainerProps) {
                         >
                             <path d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                         </svg>
-                        Exit
+                        {t('Exit')}
                     </button>
                 </div>
             ) : (
@@ -159,7 +160,7 @@ export function WizardContainer({ subWizard, onExit }: WizardContainerProps) {
                                 {subWizard.configVersion &&
                                     !subWizard.hideVersionPrintout && (
                                         <p className="text-gray-600 dark:text-gray-400 mb-8">
-                                            Configuration File Version:{' '}
+                                            {t('Configuration File Version:')}{' '}
                                             {subWizard.configVersion}
                                         </p>
                                     )}
@@ -215,7 +216,7 @@ export function WizardContainer({ subWizard, onExit }: WizardContainerProps) {
                                 onClick={onExit}
                                 className="flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors bg-gray-900 text-white hover:bg-gray-800"
                             >
-                                Exit Wizard
+                                {t('Exit Wizard')}
                             </button>
                         </>
                     ) : (
@@ -233,7 +234,7 @@ export function WizardContainer({ subWizard, onExit }: WizardContainerProps) {
               `}
                             >
                                 <ChevronLeft size={20} />
-                                Previous
+                                {t('Previous')}
                             </button>
 
                             <button
@@ -248,7 +249,7 @@ export function WizardContainer({ subWizard, onExit }: WizardContainerProps) {
                 }
               `}
                             >
-                                Next
+                                {t('Next')}
                                 <ChevronRight size={20} />
                             </button>
                         </>

@@ -17,6 +17,7 @@ import cn from 'classnames';
 import { toast } from 'app/lib/toaster';
 import { ACCEPTED_EXTENSIONS, validateSDFilename } from 'app/features/SDCard/components/UploadModal.tsx';
 import store from 'app/store';
+import { t } from 'app/i18n';
 
 const formatFileSize = (bytes: number): string => {
     const units = ['B', 'KB', 'MB', 'GB'];
@@ -32,7 +33,10 @@ const formatFileSize = (bytes: number): string => {
 };
 
 function getUnusableReason(filename: string): string {
-    return validateSDFilename(filename) ?? 'File flagged as unusable by firmware';
+    return (
+        validateSDFilename(filename) ??
+        t('File flagged as unusable by firmware')
+    );
 }
 
 export function isFileATCIRelated(filename, atciMacros) {
@@ -65,8 +69,10 @@ export const FileList: React.FC = () => {
 
     function handleDelete(fileName: string) {
         Confirm({
-            title: 'Delete File',
-            content: `Are you sure you want to delete ${fileName}?`,
+            title: t('Delete File'),
+            content: t('Are you sure you want to delete {{fileName}}?', {
+                fileName,
+            }),
             onConfirm: () => {
                 controller.command('sdcard:delete', fileName);
                 reduxStore.dispatch(clearSDCardFiles({ path: fileName }));
@@ -84,7 +90,7 @@ export const FileList: React.FC = () => {
             const extension = '.' + file.name.split('.').pop()?.toLowerCase();
 
             if (!ACCEPTED_EXTENSIONS.includes(extension)) {
-                errors.push(`${file.name}: Invalid file type`);
+                errors.push(`${file.name}: ${t('Invalid file type')}`);
                 return;
             }
 
@@ -98,7 +104,9 @@ export const FileList: React.FC = () => {
         });
 
         if (errors.length > 0) {
-            toast.error(`Some files were rejected:\n${errors.join('\n')}`);
+            toast.error(
+                `${t('Some files were rejected:')}\n${errors.join('\n')}`,
+            );
         }
 
         if (validFiles.length > 0) {
@@ -142,7 +150,7 @@ export const FileList: React.FC = () => {
     if (!isConnected) {
         return (
             <div className="border-gray-300 bg-white dark:bg-dark text-center py-12 text-gray-500 rounded-lg shadow-sm border">
-                Must be connected to use SD card functionality.
+                {t('Must be connected to use SD card functionality.')}
             </div>
         );
     }
@@ -150,7 +158,7 @@ export const FileList: React.FC = () => {
     if (firmwareType !== 'grblHAL') {
         return (
             <div className="border-gray-300 bg-white dark:bg-dark text-center py-12 text-gray-500 rounded-lg shadow-sm border">
-                SD card tools are only available for grblHAL devices.
+                {t('SD card tools are only available for grblHAL devices.')}
             </div>
         );
     }
@@ -158,7 +166,7 @@ export const FileList: React.FC = () => {
     if (!hasFTP && !hasYM) {
         return (
             <div className="border-gray-300 bg-white dark:bg-dark text-center py-12 text-gray-500 rounded-lg shadow-sm border">
-                Enable FTP or YMODEM in firmware to use SD card tools.
+                {t('Enable FTP or YMODEM in firmware to use SD card tools.')}
             </div>
         );
     }
@@ -186,9 +194,9 @@ export const FileList: React.FC = () => {
                 }}
             >
                 <File className="w-12 h-12 mx-auto mb-4 opacity-30" />
-                <p className="text-lg font-medium">No files found</p>
+                <p className="text-lg font-medium">{t('No files found')}</p>
                 <p className="text-sm">
-                    Upload files or refresh to see SD card contents
+                    {t('Upload files or refresh to see SD card contents')}
                 </p>
                 <input
                     ref={fileInputRef}
@@ -234,18 +242,18 @@ export const FileList: React.FC = () => {
                 />
                 <div className="px-6 py-4 border-b border-gray-200">
                     <h2 className="text-lg font-semibold text-gray-900">
-                        Files ({files.length})
+                        {t('Files ({{count}})', { count: files.length })}
                     </h2>
                 </div>
 
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>File Name</TableHead>
-                            <TableHead>Size</TableHead>
+                            <TableHead>{t('File Name')}</TableHead>
+                            <TableHead>{t('Size')}</TableHead>
                             <TableHead></TableHead>
                             <TableHead className="text-right">
-                                Actions
+                                {t('Actions')}
                             </TableHead>
                         </TableRow>
                     </TableHeader>
@@ -280,7 +288,7 @@ export const FileList: React.FC = () => {
                                     <TableCell>
                                         {isATCI && (
                                             <span className="italic">
-                                                ATC Macro
+                                                {t('ATC Macro')}
                                             </span>
                                         )}
                                         {file.unusable && (
@@ -288,7 +296,7 @@ export const FileList: React.FC = () => {
                                                 className="text-xs font-medium text-red-600 bg-red-50 px-2 py-0.5 rounded"
                                                 title={getUnusableReason(file.name)}
                                             >
-                                                Unusable
+                                                {t('Unusable')}
                                             </span>
                                         )}
                                     </TableCell>
@@ -302,7 +310,7 @@ export const FileList: React.FC = () => {
                                                 className="flex items-center space-x-1 px-3 py-1.5 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
                                             >
                                                 <Play className="w-3.5 h-3.5" />
-                                                <span>Run</span>
+                                                <span>{t('Run')}</span>
                                             </button>
 
                                             <button
@@ -313,7 +321,7 @@ export const FileList: React.FC = () => {
                                                 className="flex items-center space-x-1 px-3 py-1.5 text-sm bg-red-500 text-white rounded hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
                                             >
                                                 <Trash2 className="w-3.5 h-3.5" />
-                                                <span>Delete</span>
+                                                <span>{t('Delete')}</span>
                                             </button>
                                         </div>
                                     </TableCell>

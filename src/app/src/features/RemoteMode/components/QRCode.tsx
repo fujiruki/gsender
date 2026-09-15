@@ -3,6 +3,7 @@ import { FaCopy } from 'react-icons/fa';
 
 import Button from 'app/components/Button';
 import { toast } from 'app/lib/toaster';
+import { t } from 'app/i18n';
 
 import { copyToClipboard } from '../utils';
 
@@ -11,12 +12,14 @@ export function QRCodeDisplay({ address = '192.168.0.10:8000' }) {
         const { success } = await copyToClipboard(address);
 
         if (success) {
-            toast.success('Copied link to clipboard');
+            toast.success(t('Copied link to clipboard'));
             return;
         }
 
         toast.error(
-            'There was an error copying the link to the clipboard, please copy it manually.',
+            t(
+                'There was an error copying the link to the clipboard, please copy it manually.',
+            ),
         );
     };
 
@@ -25,13 +28,15 @@ export function QRCodeDisplay({ address = '192.168.0.10:8000' }) {
 
     return (
         <div className="flex flex-col items-center text-sm text-gray-600 gap-4 px-4 justify-center dark:text-white">
-            <h1 className="text-blue-500 text-2xl">Scan QR Code</h1>
-            <p>Scan with your phone camera to control your CNC</p>
+            <h1 className="text-blue-500 text-2xl">{t('Scan QR Code')}</h1>
+            <p>{t('Scan with your phone camera to control your CNC')}</p>
             <div className="border-8 border-gray-900 dark:border-white rounded-md bg-white p-2">
                 <QRCode size={200} value={phoneAddress} viewBox="0 0 200 200" />
             </div>
             <p>
-                Or type the text below into a web browser for any other device:
+                {t(
+                    'Or type the text below into a web browser for any other device:',
+                )}
             </p>
             <div className="flex flex-row items-center gap-2  text-xs font-semibold text-blue-500 bg-gray-100 border border-gray-200 rounded-lg dark:bg-dark dark:border-gray-700 dark:text-white">
                 <div className="px-2 select-text">{webAddress}</div>
@@ -41,7 +46,7 @@ export function QRCodeDisplay({ address = '192.168.0.10:8000' }) {
                     type="button"
                     className="flex flex-row items-center justify-center gap-1"
                     onClick={() => handleCopy(webAddress)}
-                    text="Copy"
+                    text={t('Copy')}
                     icon={<FaCopy />}
                 />
             </div>

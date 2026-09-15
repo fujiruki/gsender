@@ -16,6 +16,7 @@ import {
 import { useNavigate } from 'react-router';
 import { useWorkspaceState } from 'app/hooks/useWorkspaceState';
 import { Confirm } from 'app/components/ConfirmationDialog/ConfirmationDialogLib';
+import { t } from 'app/i18n';
 
 const Actions = () => {
     const navigate = useNavigate();
@@ -38,10 +39,10 @@ const Actions = () => {
                 onClick={() => navigate('/tools/rotary-surfacing')}
                 disabled={firmwareType === GRBL && !isInRotaryMode}
                 tooltip={{
-                    content: 'Open rotary surfacing tool',
+                    content: t('Open rotary surfacing tool'),
                 }}
             >
-                Rotary Surfacing
+                {t('Rotary Surfacing')}
             </Button>
             <MountingSetup
                 isDisabled={
@@ -55,10 +56,11 @@ const Actions = () => {
                 variant="primary"
                 onClick={() => {
                     Confirm({
-                        title: 'Rotary Z-Axis probing',
-                        content:
+                        title: t('Rotary Z-Axis probing'),
+                        content: t(
                             "Click 'Run' to start the Rotary Z-Axis probing cycle",
-                        confirmLabel: 'Run',
+                        ),
+                        confirmLabel: t('Run'),
                         onConfirm: () => {
                             runProbing('Rotary Z-Axis', getZAxisProbing());
                         },
@@ -71,21 +73,22 @@ const Actions = () => {
                     activeState !== GRBL_ACTIVE_STATE_IDLE
                 }
                 tooltip={{
-                    content: 'Run rotary Z-axis probing',
+                    content: t('Run rotary Z-axis probing'),
                     side: 'left',
                 }}
             >
-                Probe Rotary Z-Axis
+                {t('Probe Rotary Z-Axis')}
             </Button>
             <Button
                 size="sm"
                 variant="primary"
                 onClick={() => {
                     Confirm({
-                        title: 'Rotary Y-Axis alignment',
-                        content:
+                        title: t('Rotary Y-Axis alignment'),
+                        content: t(
                             "Click 'Run' to start the Rotary Y-Axis alignment cycle",
-                        confirmLabel: 'Run',
+                        ),
+                        confirmLabel: t('Run'),
                         onConfirm: () => {
                             runProbing(
                                 'Y-Axis Alignment',
@@ -101,11 +104,11 @@ const Actions = () => {
                     activeState !== GRBL_ACTIVE_STATE_IDLE
                 }
                 tooltip={{
-                    content: 'Run rotary Y-axis alignment',
+                    content: t('Run rotary Y-axis alignment'),
                     side: 'left',
                 }}
             >
-                Y-Axis Alignment
+                {t('Y-Axis Alignment')}
             </Button>
         </div>
     );

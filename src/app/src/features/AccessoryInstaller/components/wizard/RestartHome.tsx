@@ -1,7 +1,9 @@
+import { t } from 'app/i18n';
+
 export function RestartHome() {
     return (
         <div>
-            <p>Restart Home</p>
+            <p>{t('Restart Home')}</p>
         </div>
     );
 }

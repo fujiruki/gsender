@@ -6,6 +6,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from 'app/components/shadcn/Popover';
+import { t } from 'app/i18n';
 
 export function NavFlyoutLink({
     href,
@@ -32,7 +33,7 @@ export function RemoteMenuFlyout() {
                     <button
                         className="flex flex-col h-full w-12 border-2 border-gray-400 rounded justify-center items-center group"
                         type="button"
-                        aria-label="Menu"
+                        aria-label={t('Menu')}
                         aria-expanded={open}
                     >
                         <div
@@ -67,9 +68,11 @@ export function RemoteMenuFlyout() {
                     side="bottom"
                     sideOffset={8}
                 >
-                    <p className="text-gray-800 text-md font-medium">Menu</p>
-                    <NavFlyoutLink href="/remote" label="Home" />
-                    <NavFlyoutLink href="/remote/config" label="Config" />
+                    <p className="text-gray-800 text-md font-medium">
+                        {t('Menu')}
+                    </p>
+                    <NavFlyoutLink href="/remote" label={t('Home')} />
+                    <NavFlyoutLink href="/remote/config" label={t('Config')} />
                 </PopoverContent>
             </Popover>
         </div>

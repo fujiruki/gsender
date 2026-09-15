@@ -8,6 +8,7 @@ import {
     VISUALIZER_PRIMARY,
     VISUALIZER_SECONDARY,
 } from 'app/constants';
+import { t } from 'app/i18n';
 
 type VisualizerPreviewProps = {
     gcode: string;
@@ -27,8 +28,8 @@ const VisualizerPreview = ({ gcode }: VisualizerPreviewProps) => {
         return (
             <div className="flex flex-col h-full items-center justify-center">
                 <p className="text-gray-500 text-center text-sm">
-                    No g-code generated yet. <br /> Please generate g-code
-                    first.
+                    {t('No g-code generated yet.')} <br />{' '}
+                    {t('Please generate g-code first.')}
                 </p>
             </div>
         );

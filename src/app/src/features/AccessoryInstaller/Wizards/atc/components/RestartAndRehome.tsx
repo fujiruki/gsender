@@ -5,6 +5,7 @@ import { RootState } from 'app/store/redux';
 import { StepActionButton } from 'app/features/AccessoryInstaller/components/wizard/StepActionButton.tsx';
 import { StepProps } from 'app/features/AccessoryInstaller/types';
 import {GRBL_ACTIVE_STATE_ALARM} from "app/constants";
+import { t } from 'app/i18n';
 
 export function RestartAndRehome({ onComplete, onUncomplete }: StepProps) {
     const [rehomed, setRehomed] = useState<boolean>(false);
@@ -31,7 +32,7 @@ export function RestartAndRehome({ onComplete, onUncomplete }: StepProps) {
 
     useEffect(() => {
         if (activeState === GRBL_ACTIVE_STATE_ALARM && alarmCode === 9) {
-            setError('Homing failed.');
+            setError(t('Homing failed.'));
             setTimeout(() => {
                 setError(null);
             }, 2500)
@@ -48,18 +49,20 @@ export function RestartAndRehome({ onComplete, onUncomplete }: StepProps) {
     return (
         <div className="flex flex-col gap-5 justify-start">
             <label className="block text-sm font-semibold text-gray-900 dark:text-white mb-2">
-                Rehome
+                {t('Rehome')}
             </label>
             <p className="dark:text-white">
-                Homing movements have been updated and require the machine to be rehomed.
+                {t(
+                    'Homing movements have been updated and require the machine to be rehomed.',
+                )}
             </p>
             <p className="dark:text-white">
-                Select <b>"Re-home"</b> to continue.
+                {t('Select')} <b>"{t('Re-home')}"</b> {t('to continue.')}
             </p>
 
             <StepActionButton
-                label={'Re-home'}
-                runningLabel="Homing..."
+                label={t('Re-home')}
+                runningLabel={t('Homing...')}
                 onApply={handleRehome}
                 isComplete={rehomed}
                 error={error}

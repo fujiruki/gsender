@@ -1,5 +1,6 @@
 import { ArrowRight, Settings } from 'lucide-react';
 import { Wizard } from '../../types/wizard';
+import { t } from 'app/i18n';
 
 interface WizardsHubProps {
     wizards: Wizard[];
@@ -24,7 +25,7 @@ export function WizardsHub({
                             className="text-gray-700 dark:text-white"
                         />
                         <h1 className="text-5xl font-bold text-gray-900 dark:text-white">
-                            {title || 'CNC Accessory Wizards'}
+                            {title || t('CNC Accessory Wizards')}
                         </h1>
                     </div>
                     {description && (
@@ -72,11 +73,19 @@ export function WizardsHub({
                                                 />
                                             </svg>
                                             <span>
-                                                {wizard.subWizards.length}{' '}
-                                                configuration
-                                                {wizard.subWizards.length !== 1
-                                                    ? 's'
-                                                    : ''}
+                                                {t(
+                                                    '{{count}} configuration{{plural}}',
+                                                    {
+                                                        count: wizard
+                                                            .subWizards
+                                                            .length,
+                                                        plural:
+                                                            wizard.subWizards
+                                                                .length !== 1
+                                                                ? 's'
+                                                                : '',
+                                                    },
+                                                )}
                                             </span>
                                         </div>
 
@@ -95,7 +104,9 @@ export function WizardsHub({
                                                 />
                                             </svg>
                                             <span>
-                                                {totalSteps} total steps
+                                                {t('{{count}} total steps', {
+                                                    count: totalSteps,
+                                                })}
                                             </span>
                                         </div>
 
@@ -120,7 +131,7 @@ export function WizardsHub({
                                     </div>
 
                                     <div className="flex items-center gap-2 text-blue-600 font-semibold group-hover:gap-3 transition-all">
-                                        <span>Start Wizard</span>
+                                        <span>{t('Start Wizard')}</span>
                                         <ArrowRight
                                             size={20}
                                             className="group-hover:translate-x-1 transition-transform"
@@ -138,7 +149,7 @@ export function WizardsHub({
                             <Settings size={32} className="text-gray-400" />
                         </div>
                         <p className="text-xl text-gray-500">
-                            No wizards available
+                            {t('No wizards available')}
                         </p>
                     </div>
                 )}

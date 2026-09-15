@@ -26,6 +26,7 @@ import {
     ShieldCheck,
     SlidersHorizontal,
 } from 'lucide-react';
+import { t } from 'app/i18n';
 
 export interface ConfigTabProps {
     uploading: boolean;
@@ -82,7 +83,7 @@ export const ConfigTab: React.FC = ({ uploading, uploadError, macroReadFailed }:
                     <CardHeader className="px-4 py-3 border-b border-border dark:border-slate-700 bg-muted/30 dark:bg-slate-800/60">
                         <div className="flex items-center justify-between gap-2 w-full">
                             <CardTitle className="text-sm font-semibold text-foreground">
-                                Tool Rack
+                                {t('Tool Rack')}
                             </CardTitle>
                             <Crosshair className={`${iconClass} shrink-0`} />
                         </div>
@@ -95,11 +96,13 @@ export const ConfigTab: React.FC = ({ uploading, uploadError, macroReadFailed }:
                             className="w-fit"
                             onClick={() => navigate('/tools/accessoryInstall/sienci-atc/initial-setup')}
                         >
-                            Go to ATC Setup
+                            {t('Go to ATC Setup')}
                             <ArrowRight className="h-4 w-4 ml-1" />
                         </Button>
                         <p className="text-sm text-gray-600 dark:text-gray-200">
-                            Tool rack configuration is managed through the ATC setup process. Re-run setup to reconfigure your rack.
+                            {t(
+                                'Tool rack configuration is managed through the ATC setup process. Re-run setup to reconfigure your rack.',
+                            )}
                         </p>
                     </CardContent>
                 </Card>
@@ -109,15 +112,15 @@ export const ConfigTab: React.FC = ({ uploading, uploadError, macroReadFailed }:
                     <CardHeader className="px-4 py-3 border-b border-border dark:border-slate-700 bg-muted/30 dark:bg-slate-800/60">
                         <div className="flex items-center justify-between gap-2 w-full">
                             <CardTitle className="text-sm font-semibold text-foreground">
-                                Tool Length Sensor
+                                {t('Tool Length Sensor')}
                             </CardTitle>
                             <Fingerprint className={`${iconClass} shrink-0`} />
                         </div>
                     </CardHeader>
                     <CardContent className="p-5 !pt-4 min-h-[170px] flex flex-col justify-center gap-4">
-                        <Label className={labelClass}>Sensor Position</Label>
+                        <Label className={labelClass}>{t('Sensor Position')}</Label>
                         <PositionInput
-                            label="Tool Length Sensor Position"
+                            label={t('Tool Length Sensor Position')}
                             position={config.tlsPosition}
                             onPositionChange={(position) =>
                                 updatePosition(
@@ -127,7 +130,7 @@ export const ConfigTab: React.FC = ({ uploading, uploadError, macroReadFailed }:
                             }
                             onUseCurrent={() => setWorkspacePosition('P9')}
                             disableZ
-                            actionLabel="Set Manually"
+                            actionLabel={t('Set Manually')}
                             hideLabel
                         />
                     </CardContent>
@@ -139,7 +142,7 @@ export const ConfigTab: React.FC = ({ uploading, uploadError, macroReadFailed }:
                 <CardHeader className="px-4 py-3 border-b border-border dark:border-slate-700 bg-muted/30 dark:bg-slate-800/60">
                     <div className="flex items-center justify-between gap-2 w-full">
                         <CardTitle className="text-sm font-semibold text-foreground">
-                            Advanced Settings
+                            {t('Advanced Settings')}
                         </CardTitle>
                         <BookOpen className={`${iconClass} shrink-0`} />
                     </div>
@@ -151,12 +154,12 @@ export const ConfigTab: React.FC = ({ uploading, uploadError, macroReadFailed }:
                                 <div className="flex items-center gap-2">
                                     <SlidersHorizontal className={iconClass} />
                                     <Label className="text-xs font-semibold text-gray-900 dark:text-white">
-                                        Offset Management
+                                        {t('Offset Management')}
                                     </Label>
                                 </div>
                                 <div className="space-y-1">
                                     <Label className={subLabelClass}>
-                                        When loading from tool rack:
+                                        {t('When loading from tool rack:')}
                                     </Label>
                                     <OffsetManagementWidget
                                         value={
@@ -184,7 +187,7 @@ export const ConfigTab: React.FC = ({ uploading, uploadError, macroReadFailed }:
                                 </div>
                                 <div className="space-y-1">
                                     <Label className={subLabelClass}>
-                                        When loading manually:
+                                        {t('When loading manually:')}
                                     </Label>
                                     <OffsetManagementWidget
                                         value={
@@ -214,11 +217,11 @@ export const ConfigTab: React.FC = ({ uploading, uploadError, macroReadFailed }:
                                 <div className="flex items-center gap-2">
                                     <Move className={iconClass} />
                                     <Label className="text-xs font-semibold text-gray-900 dark:text-white">
-                                        Manual Change Position
+                                        {t('Manual Change Position')}
                                     </Label>
                                 </div>
                                 <PositionInput
-                                    label="Manual Tool Change Position"
+                                    label={t('Manual Tool Change Position')}
                                     position={config.manualLoadPosition}
                                     onPositionChange={(position) =>
                                         updatePosition(
@@ -230,7 +233,7 @@ export const ConfigTab: React.FC = ({ uploading, uploadError, macroReadFailed }:
                                         setWorkspacePosition('P8')
                                     }
                                     disableZ
-                                    actionLabel="Set Manually"
+                                    actionLabel={t('Set Manually')}
                                     hideLabel
                                 />
                             </div>
@@ -238,7 +241,7 @@ export const ConfigTab: React.FC = ({ uploading, uploadError, macroReadFailed }:
                                 <div className="flex items-center gap-2">
                                     <SlidersHorizontal className={iconClass} />
                                     <Label className="text-xs font-semibold text-gray-900 dark:text-white">
-                                        Advanced
+                                        {t('Advanced')}
                                     </Label>
                                 </div>
                                 <div
@@ -256,8 +259,9 @@ export const ConfigTab: React.FC = ({ uploading, uploadError, macroReadFailed }:
                                     )}
                                 >
                                     <Label className="text-xs font-medium text-gray-700 dark:text-white flex-1">
-                                        Retain tool table settings when rack
-                                        removed
+                                        {t(
+                                            'Retain tool table settings when rack removed',
+                                        )}
                                     </Label>
                                     <Switch
                                         checked={
@@ -289,7 +293,7 @@ export const ConfigTab: React.FC = ({ uploading, uploadError, macroReadFailed }:
                                 <div className="flex items-center gap-2">
                                     <ShieldCheck className={iconClass} />
                                     <Label className="text-xs font-semibold text-gray-900 dark:text-white">
-                                        Safety Checks
+                                        {t('Safety Checks')}
                                     </Label>
                                 </div>
                                 <div className="space-y-3">
@@ -308,11 +312,12 @@ export const ConfigTab: React.FC = ({ uploading, uploadError, macroReadFailed }:
                                         <div className="flex items-center justify-between gap-2">
                                             <div className="space-y-1">
                                                 <Label className={rowLabelClass}>
-                                                    Pressure Sensor
+                                                    {t('Pressure Sensor')}
                                                 </Label>
                                                 <div className={helperTextClass}>
-                                                    Check pressure before tool
-                                                    change
+                                                    {t(
+                                                        'Check pressure before tool change',
+                                                    )}
                                                 </div>
                                             </div>
                                             <Switch
@@ -353,11 +358,12 @@ export const ConfigTab: React.FC = ({ uploading, uploadError, macroReadFailed }:
                                         <div className="flex items-center justify-between gap-2">
                                             <div className="space-y-1">
                                                 <Label className={rowLabelClass}>
-                                                    Tool-stud Sensor
+                                                    {t('Tool-stud Sensor')}
                                                 </Label>
                                                 <div className={helperTextClass}>
-                                                    Check tool collision before
-                                                    tool unload
+                                                    {t(
+                                                        'Check tool collision before tool unload',
+                                                    )}
                                                 </div>
                                             </div>
                                             <Switch
@@ -390,7 +396,7 @@ export const ConfigTab: React.FC = ({ uploading, uploadError, macroReadFailed }:
                                 <div className="flex items-center gap-2">
                                     <SlidersHorizontal className={iconClass} />
                                     <Label className="text-xs font-semibold text-gray-900 dark:text-white">
-                                        Other
+                                        {t('Other')}
                                     </Label>
                                 </div>
                                 <div
@@ -408,10 +414,10 @@ export const ConfigTab: React.FC = ({ uploading, uploadError, macroReadFailed }:
                                     <div className="flex items-center justify-between gap-2">
                                         <div className="space-y-1">
                                             <Label className={rowLabelClass}>
-                                                Tool Fork Spacing (mm)
+                                                {t('Tool Fork Spacing (mm)')}
                                             </Label>
                                             <div className={helperTextClass}>
-                                                Distance between each fork.
+                                                {t('Distance between each fork.')}
                                             </div>
                                         </div>
                                         <Input
@@ -495,7 +501,11 @@ export const ConfigTab: React.FC = ({ uploading, uploadError, macroReadFailed }:
                         <div className="flex items-start gap-2 rounded-md border border-amber-400 bg-amber-50 dark:bg-amber-950/40 dark:border-amber-700 px-3 py-2 text-xs text-amber-800 dark:text-amber-300">
                             <AlertTriangle className="h-3.5 w-3.5 shrink-0 mt-0.5" />
                             <p>
-                                Unable to read board config (<code>ATCI.macro</code>). Ensure the file exists and SD card is installed — apply disabled.
+                                {t('Unable to read board config (')}
+                                <code>ATCI.macro</code>
+                                {t(
+                                    '). Ensure the file exists and SD card is installed — apply disabled.',
+                                )}
                             </p>
                         </div>
                     )}
@@ -504,7 +514,7 @@ export const ConfigTab: React.FC = ({ uploading, uploadError, macroReadFailed }:
                 {/* Apply Button - 40% */}
                 <div className="w-2/5 flex items-center justify-end">
                     <Button onClick={applyConfig} disabled={uploading || !!macroReadFailed}>
-                        {uploading ? 'Applying...' : 'Apply'}
+                        {uploading ? t('Applying...') : t('Apply')}
                     </Button>
                 </div>
             </div>

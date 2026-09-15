@@ -1,5 +1,7 @@
+import { t } from 'app/i18n';
+
 export function ControllerReboot() {
     return (
-        <div><p>I am step 2</p></div>
+        <div><p>{t('I am step 2')}</p></div>
     )
 }

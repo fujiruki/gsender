@@ -29,6 +29,7 @@ import { ToolStatusBadges } from 'app/features/ATC/components/ui/ToolStatusBadge
 import { useTypedSelector } from 'app/hooks/useTypedSelector.ts';
 import { RootState } from 'app/store/redux';
 import get from 'lodash/get';
+import { t } from 'app/i18n';
 
 interface ToolRemapDialogProps {
     open: boolean;
@@ -113,16 +114,20 @@ export function ToolRemapDialog({
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="sm:max-w-[500px] gap-2">
                 <DialogHeader>
-                    <DialogTitle>Remap Tool T{originalTool}</DialogTitle>
+                    <DialogTitle>
+                        {t('Remap Tool T{{originalTool}}', { originalTool })}
+                    </DialogTitle>
                     <DialogDescription>
-                        Select a new tool number to remap T{originalTool}.
-                        Unavailable tools are shown but disabled.
+                        {t(
+                            'Select a new tool number to remap T{{originalTool}}. Unavailable tools are shown but disabled.',
+                            { originalTool },
+                        )}
                     </DialogDescription>
                 </DialogHeader>
 
                 <div className="grid gap-4">
                     <div className="grid gap-2">
-                        <Label htmlFor="tool-select">New Tool Number</Label>
+                        <Label htmlFor="tool-select">{t('New Tool Number')}</Label>
                         <Select
                             value={selectedTool}
                             onValueChange={setSelectedTool}
@@ -151,7 +156,7 @@ export function ToolRemapDialog({
                                         </div>
                                     ) : (
                                         <span className="text-muted-foreground">
-                                            Select a tool
+                                            {t('Select a tool')}
                                         </span>
                                     )}
                                 </SelectValue>
@@ -235,7 +240,7 @@ export function ToolRemapDialog({
                                     variant="outline"
                                     className={cn('text-xs font-medium')}
                                 >
-                                    {toolStateThemes.current.label}
+                                    {t(toolStateThemes.current.label)}
                                 </Badge>
                             )}
                         </div>
@@ -265,10 +270,10 @@ export function ToolRemapDialog({
 
                 <DialogFooter>
                     <Button variant="outline" onClick={handleCancel}>
-                        Cancel
+                        {t('Cancel')}
                     </Button>
                     <Button onClick={handleConfirm} disabled={!selectedTool}>
-                        Confirm Remap
+                        {t('Confirm Remap')}
                     </Button>
                 </DialogFooter>
             </DialogContent>

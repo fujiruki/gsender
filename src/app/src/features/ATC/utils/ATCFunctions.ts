@@ -12,9 +12,10 @@ import { Confirm } from 'app/components/ConfirmationDialog/ConfirmationDialogLib
 import * as THREE from 'three';
 import { TOOLPATH_COLOR_HEXES } from 'app/features/Visualizer/constants';
 import pubsub from 'pubsub-js';
+import { t } from 'app/i18n';
 
 export function unimplemented() {
-    toast.info('Unimplemented :(');
+    toast.info(t('Unimplemented :('));
 }
 
 export function mapToolNicknamesAndStatus(
@@ -106,7 +107,7 @@ export function lookupSpecificTool(
 export function getToolAxisOffset(tool, axis, table: ToolInstance[]): string {
     const tableTool = table.find((tool) => tool.id === tool);
     if (!tableTool) {
-        return 'Empty';
+        return t('Empty');
     }
 
     return get(tableTool, `toolOffsets.${axis}`, '-') as string;

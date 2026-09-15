@@ -13,6 +13,7 @@ import { ToolStatusBadges } from 'app/features/ATC/components/ui/ToolStatusBadge
 import { Badge } from 'app/features/ATC/components/ui/Badge.tsx';
 import cn from 'classnames';
 import store from 'app/store';
+import { t } from 'app/i18n';
 
 export function CurrentToolInfo({ disabled }: { disabled?: boolean }) {
     const { rackSize, connected, atcAvailable } = useToolChange();
@@ -151,16 +152,16 @@ export function CurrentToolInfo({ disabled }: { disabled?: boolean }) {
                                     'font-semibold text-base dark:text-white',
                                 )}
                             >
-                                {isEmptyTool ? 'Empty' : `T${selectedTool.id}`}
+                                {isEmptyTool ? t('Empty') : `T${selectedTool.id}`}
                             </span>
                             {!isEmptyTool && isRackTool && (
                                 <span className="text-gray-600 text-xs dark:text-gray-300">
-                                    Rack
+                                    {t('Rack')}
                                 </span>
                             )}
                             {!isEmptyTool && !isRackTool && allowManualBadge && (
                                 <span className="text-gray-600 text-xs dark:text-gray-300">
-                                    Manual
+                                    {t('Manual')}
                                 </span>
                             )}
                         </div>
@@ -171,7 +172,7 @@ export function CurrentToolInfo({ disabled }: { disabled?: boolean }) {
                             className={`${state.backgroundColor} ${state.borderColor} border-2 min-w-18 ${state.textColor} text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1`}
                         >
                             <EmptyIcon size={12} />
-                            {state.label}
+                            {t(state.label)}
                         </Badge>
                     ) : (
                         <ToolStatusBadges
@@ -204,7 +205,7 @@ export function CurrentToolInfo({ disabled }: { disabled?: boolean }) {
                         size="custom"
                         className="h-9 px-4 text-sm"
                     >
-                        Probe
+                        {t('Probe')}
                     </Button>
                 </div>
             </div>

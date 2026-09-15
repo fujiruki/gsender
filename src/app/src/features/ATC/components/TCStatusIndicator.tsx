@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import cn from 'classnames';
 import { TiWarning } from "react-icons/ti";
 import { FaCheckCircle } from "react-icons/fa";
+import { t } from 'app/i18n';
 
 export enum TCStatus {
     NO_OFFSET,
@@ -13,26 +14,26 @@ export enum TCStatus {
 function getStatusString(status: TCStatus) {
     switch (status) {
         case TCStatus.NO_OFFSET:
-            return 'Offset not found';
+            return t('Offset not found');
         case TCStatus.OFF_RACK:
-            return 'Off Rack';
+            return t('Off Rack');
         case TCStatus.READY:
-            return 'Ready';
+            return t('Ready');
         case TCStatus.EMPTY:
-            return 'Empty';
+            return t('Empty');
     }
 }
 
 function getStatusDescription(status: TCStatus) {
     switch (status) {
         case TCStatus.NO_OFFSET:
-            return 'Make sure the tool is in the rack before proceeding.';
+            return t('Make sure the tool is in the rack before proceeding.');
         case TCStatus.OFF_RACK:
-            return 'Off Rack tool selected.';
+            return t('Off Rack tool selected.');
         case TCStatus.READY:
-            return 'Tool is ready to be loaded.';
+            return t('Tool is ready to be loaded.');
             case TCStatus.EMPTY:
-                return 'Tool is empty.';
+                return t('Tool is empty.');
     }
 }
 
