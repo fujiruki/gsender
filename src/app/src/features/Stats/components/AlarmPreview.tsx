@@ -1,6 +1,7 @@
 import { EmptyAlarmList } from 'app/features/Stats/components/EmptyAlarmList.tsx';
 import { StatCard } from 'app/features/Stats/components/StatCard.tsx';
 import { StatContext } from 'app/features/Stats/utils/StatContext.tsx';
+import { t } from 'app/i18n';
 import { useContext } from 'react';
 import { tv } from 'tailwind-variants';
 import { CardHeader } from './CardHeader.tsx';
@@ -21,8 +22,8 @@ export function AlarmPreview() {
 
     return (
         <StatCard>
-            <CardHeader link={'/stats/alarms'} linkLabel={'View all'}>
-                Alarms & Errors
+            <CardHeader link={'/stats/alarms'} linkLabel={t('View all')}>
+                {t('Alarms & Errors')}
             </CardHeader>
             <div className="flex flex-col gap-2 justify-around">
                 {shortlist.length == 0 && <EmptyAlarmList />}
@@ -34,7 +35,7 @@ export function AlarmPreview() {
                         <span className="font-2xl">
                             {event.type} {event.CODE}
                         </span>
-                        <span>on {event.time}</span>
+                        <span>{t('on {{time}}', { time: event.time })}</span>
                     </div>
                 ))}
             </div>

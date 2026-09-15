@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router';
 import { tv } from 'tailwind-variants';
+import { t } from 'app/i18n';
 
 const linkStyle = tv({
     base: 'inline-block px-2 py-2 text-white bg-gray-600 rounded-lg active bg-white dark:text-content-primary dark:bg-surface-elevated',
@@ -33,11 +34,14 @@ export function StatMenu() {
     return (
         <div className="w-fit mx-auto">
             <ul className="fixed bottom-4 left-[55%] -translate-x-[55%] rounded-md flex text-sm font-medium text-center bg-white text-gray-500 items-center justify-center border-gray-200 ring-1 ring-gray-200 dark:ring-outline p-1 dark:bg-surface-elevated dark:border-outline dark:text-content-primary">
-                <StatMenuLink label="Overview" href={'/stats'} end />
-                <StatMenuLink label="Jobs" href={'/stats/jobs'} />
-                <StatMenuLink label="Maintenance" href={'/stats/maintenance'} />
-                <StatMenuLink label="Alarms" href={'/stats/alarms'} />
-                <StatMenuLink label="About" href={'/stats/about'} />
+                <StatMenuLink label={t('Overview')} href={'/stats'} end />
+                <StatMenuLink label={t('Jobs')} href={'/stats/jobs'} />
+                <StatMenuLink
+                    label={t('Maintenance')}
+                    href={'/stats/maintenance'}
+                />
+                <StatMenuLink label={t('Alarms')} href={'/stats/alarms'} />
+                <StatMenuLink label={t('About')} href={'/stats/about'} />
             </ul>
         </div>
     );

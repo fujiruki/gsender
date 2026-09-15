@@ -24,6 +24,7 @@
 import { Info } from 'lucide-react';
 import type React from 'react';
 import Actions from './Actions';
+import { t } from 'app/i18n';
 
 interface WizardAction {
     label: string;
@@ -49,13 +50,13 @@ const Substep = ({ step, index, stepIndex, firstRunOnly }: SubstepProps) => {
     return (
         <div className="flex flex-col gap-3" id={`step-${stepIndex}-${index}`}>
             <div className="text-xs font-semibold uppercase tracking-widest text-gray-500 dark:text-amber-400">
-                {step.title}
+                {t(step.title)}
             </div>
 
             <div className="text-sm leading-relaxed text-gray-600 dark:text-content-muted">
                 {typeof step.description === 'function'
                     ? step.description()
-                    : step.description}
+                    : t(step.description)}
             </div>
 
             {firstRunOnly && (
@@ -65,9 +66,12 @@ const Substep = ({ step, index, stepIndex, firstRunOnly }: SubstepProps) => {
                         className="shrink-0 mt-0.5 text-orange-500 dark:text-orange-400"
                     />
                     <span className="text-sm text-orange-800 dark:text-orange-300">
-                        <span className="font-semibold">One-time setup:</span>{' '}
-                        measures the initial tool so subsequent tools can be
-                        compared against it.
+                        <span className="font-semibold">
+                            {t('One-time setup:')}
+                        </span>{' '}
+                        {t(
+                            'measures the initial tool so subsequent tools can be compared against it.',
+                        )}
                     </span>
                 </div>
             )}

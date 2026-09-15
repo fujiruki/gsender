@@ -1,4 +1,5 @@
 import { Button } from 'app/components/Button';
+import { t } from 'app/i18n';
 import GamepadManager from 'app/lib/gamepad';
 import { toast } from 'app/lib/toaster';
 import store from 'app/store';
@@ -78,7 +79,7 @@ const Profile = ({ data }) => {
 
         dispatch(setGamepadProfileList(updatedProfiles));
 
-        toast.info('Updated Profile Name', { position: 'bottom-right' });
+        toast.info(t('Updated Profile Name'), { position: 'bottom-right' });
     };
 
     const handleExportProfile = () => {
@@ -100,13 +101,13 @@ const Profile = ({ data }) => {
             document.body.removeChild(link);
             URL.revokeObjectURL(url);
 
-            toast.success('Gamepad profile exported successfully!', {
+            toast.success(t('Gamepad profile exported successfully!'), {
                 duration: 3000,
                 position: 'bottom-right',
             });
         } catch (error) {
             console.error('Export error:', error);
-            toast.error('Failed to export gamepad profile.', {
+            toast.error(t('Failed to export gamepad profile.'), {
                 position: 'bottom-right',
             });
         }
@@ -159,14 +160,16 @@ const Profile = ({ data }) => {
 
                     dispatch(setGamepadProfileList(updatedProfiles));
 
-                    toast.success('Gamepad profile imported successfully!', {
+                    toast.success(t('Gamepad profile imported successfully!'), {
                         duration: 3000,
                         position: 'bottom-right',
                     });
                 } catch (error) {
                     console.error('Import error:', error);
                     toast.error(
-                        'Failed to import gamepad profile. Please check the file format.',
+                        t(
+                            'Failed to import gamepad profile. Please check the file format.',
+                        ),
                         {
                             position: 'bottom-right',
                         },
@@ -186,7 +189,7 @@ const Profile = ({ data }) => {
                 <Button
                     onClick={() => dispatch(setCurrentGamepadProfile(null))}
                     icon={<ArrowLeft className="w-6 h-6" />}
-                    text="Back to Profiles"
+                    text={t('Back to Profiles')}
                 />
                 <div className="flex gap-2">
                     <input
@@ -199,24 +202,24 @@ const Profile = ({ data }) => {
                     <span
                         className={`p-2 px-4 rounded-full w-full text-white ${isConnected ? 'bg-green-500 text-green-800' : 'bg-gray-500'} text-center`}
                     >
-                        {isConnected ? 'Connected' : 'Disconnected'}
+                        {isConnected ? t('Connected') : t('Disconnected')}
                     </span>
                 </div>
                 <div className="flex gap-2">
                     <Button
                         onClick={handleImportProfile}
                         icon={<DownloadIcon size={16} />}
-                        text="Import"
+                        text={t('Import')}
                         tooltip={{
-                            content: 'Import profile settings from a file',
+                            content: t('Import profile settings from a file'),
                         }}
                     />
                     <Button
                         onClick={handleExportProfile}
                         icon={<UploadIcon size={16} />}
-                        text="Export"
+                        text={t('Export')}
                         tooltip={{
-                            content: 'Export profile settings to a file',
+                            content: t('Export profile settings to a file'),
                         }}
                     />
                     <Button
@@ -225,7 +228,7 @@ const Profile = ({ data }) => {
                         }
                         className="bg-orange-400 dark:bg-orange-700 border-orange-700 dark:border-orange-400 text-white hover:bg-orange-50"
                     >
-                        Help
+                        {t('Help')}
                     </Button>
                 </div>
             </div>
@@ -233,12 +236,12 @@ const Profile = ({ data }) => {
             <div className="flex gap-4 mt-3">
                 <div className="w-3/5 flex flex-col gap-2">
                     <h3 className="text-xl font-bold dark:text-content-primary">
-                        Button Actions
+                        {t('Button Actions')}
                     </h3>
                     <p className="dark:text-content-primary">
-                        Assign a &quot;Lockout&quot; button for gamepad safety,
-                        or a &quot;2nd Action&quot; button to use like a
-                        Function key and give your gamepad double the functions!
+                        {t(
+                            'Assign a "Lockout" button for gamepad safety, or a "2nd Action" button to use like a Function key and give your gamepad double the functions!',
+                        )}
                     </p>
                     <div className="relative h-full bg-white rounded border border-gray-300 dark:bg-surface-raised dark:border-outline">
                         <div className="overflow-y-auto absolute top-0 left-0 w-full h-full">
@@ -249,7 +252,7 @@ const Profile = ({ data }) => {
 
                 <div className="w-2/5">
                     <h3 className="text-xl font-bold dark:text-content-primary">
-                        Joystick Options
+                        {t('Joystick Options')}
                     </h3>
                     <JoystickOptions />
                 </div>

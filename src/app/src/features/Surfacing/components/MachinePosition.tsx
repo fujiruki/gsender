@@ -10,6 +10,7 @@ import {
     START_POSITION_FRONT_RIGHT,
     ZIG_ZAG_MOVEMENT,
 } from 'app/constants';
+import { t } from 'app/i18n';
 import { cx } from 'class-variance-authority';
 import type React from 'react';
 import type { Surfacing } from '../definitions';
@@ -28,31 +29,31 @@ const MachinePosition: React.FC<Props> = ({ surfacing, setSurfacing }) => {
         {
             key: 0,
             className: 'm-0 absolute -left-5 -top-5',
-            title: 'Start at the Back Left',
+            title: t('Start at the Back Left'),
             value: START_POSITION_BACK_LEFT,
         },
         {
             key: 1,
             className: 'm-0 absolute -right-5 -top-5',
-            title: 'Start at the Back Right',
+            title: t('Start at the Back Right'),
             value: START_POSITION_BACK_RIGHT,
         },
         {
             key: 2,
             className: 'm-0 absolute -bottom-7 -left-5',
-            title: 'Start at the Front Left',
+            title: t('Start at the Front Left'),
             value: START_POSITION_FRONT_LEFT,
         },
         {
             key: 3,
             className: 'm-0 absolute -bottom-7 -right-5',
-            title: 'Start at the Front Right',
+            title: t('Start at the Front Right'),
             value: START_POSITION_FRONT_RIGHT,
         },
         {
             key: 4,
             className: 'absolute top-3 left-3',
-            title: 'Start at the Center',
+            title: t('Start at the Center'),
             value: START_POSITION_CENTER,
         },
     ];
@@ -86,7 +87,7 @@ const MachinePosition: React.FC<Props> = ({ surfacing, setSurfacing }) => {
 
             <div>
                 <div className="flex items-center gap-4 justify-between">
-                    <Tooltip content="Spiral surfacing pattern">
+                    <Tooltip content={t('Spiral surfacing pattern')}>
                         <SpiralIcon
                             checked={surfacing.type === SPIRAL_MOVEMENT}
                             className={cx(
@@ -105,7 +106,7 @@ const MachinePosition: React.FC<Props> = ({ surfacing, setSurfacing }) => {
                         />
                     </Tooltip>
 
-                    <Tooltip content="Zig-Zag surfacing pattern">
+                    <Tooltip content={t('Zig-Zag surfacing pattern')}>
                         <ZigZagIcon
                             checked={surfacing.type === ZIG_ZAG_MOVEMENT}
                             className={cx(
@@ -127,7 +128,7 @@ const MachinePosition: React.FC<Props> = ({ surfacing, setSurfacing }) => {
 
                 <div className="flex mt-1 justify-between items-center">
                     <span className="leading-[1.3] font-light text-sm max-w-20 dark:text-content-primary">
-                        Flip Cut Direction
+                        {t('Flip Cut Direction')}
                     </span>
                     <Switch
                         onChange={(value) =>

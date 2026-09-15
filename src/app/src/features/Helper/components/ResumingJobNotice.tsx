@@ -21,6 +21,7 @@
  *
  */
 
+import { t } from 'app/i18n';
 import { Clock, Zap } from 'lucide-react';
 
 const ResumingJobNotice = () => {
@@ -66,15 +67,15 @@ const ResumingJobNotice = () => {
                 </div>
 
                 <div className="text-xs font-medium tracking-widest uppercase text-gray-400 dark:text-content-muted">
-                    Resuming Job
+                    {t('Resuming Job')}
                 </div>
                 <div className="text-lg font-medium mt-1 mb-3 text-gray-900 dark:text-[#e5e5ea]">
-                    Job resuming
+                    {t('Job resuming')}
                 </div>
                 <div className="text-sm leading-relaxed mb-6 text-gray-600 dark:text-content-muted">
-                    The machine needs to move back into position and may need to
-                    spin the spindle back up to speed. The job will continue
-                    automatically once this is complete.
+                    {t(
+                        'The machine needs to move back into position and may need to spin the spindle back up to speed. The job will continue automatically once this is complete.',
+                    )}
                 </div>
 
                 <div className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-amber-50 dark:bg-orange-950/40 border border-orange-200 dark:border-orange-800">
@@ -83,7 +84,7 @@ const ResumingJobNotice = () => {
                         className="shrink-0 text-orange-500 dark:text-orange-400"
                     />
                     <span className="text-sm text-orange-800 dark:text-orange-300">
-                        Do not interrupt the machine during this phase
+                        {t('Do not interrupt the machine during this phase')}
                     </span>
                 </div>
             </div>

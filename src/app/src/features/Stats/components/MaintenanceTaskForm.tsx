@@ -1,4 +1,5 @@
 import { ControlledInput } from 'app/components/ControlledInput';
+import { t } from 'app/i18n';
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import type { MaintenanceTask } from '../utils/StatContext';
 
@@ -40,7 +41,7 @@ export const MaintenanceTaskForm = forwardRef<MaintenanceTaskFormRef, Props>(
             if (!value.trim()) {
                 setErrors((prev) => ({
                     ...prev,
-                    name: 'Task name is required',
+                    name: t('Task name is required'),
                 }));
                 return false;
             }
@@ -55,7 +56,7 @@ export const MaintenanceTaskForm = forwardRef<MaintenanceTaskFormRef, Props>(
             if (isNaN(start) || start < 0) {
                 setErrors((prev) => ({
                     ...prev,
-                    rangeStart: 'Start range must be a valid number',
+                    rangeStart: t('Start range must be a valid number'),
                 }));
                 return false;
             }
@@ -63,7 +64,7 @@ export const MaintenanceTaskForm = forwardRef<MaintenanceTaskFormRef, Props>(
             if (isNaN(end) || end < 0) {
                 setErrors((prev) => ({
                     ...prev,
-                    rangeEnd: 'End range must be a valid number',
+                    rangeEnd: t('End range must be a valid number'),
                 }));
                 return false;
             }
@@ -71,7 +72,7 @@ export const MaintenanceTaskForm = forwardRef<MaintenanceTaskFormRef, Props>(
             if (end <= start) {
                 setErrors((prev) => ({
                     ...prev,
-                    rangeEnd: 'End range must be greater than start range',
+                    rangeEnd: t('End range must be greater than start range'),
                 }));
                 return false;
             }
@@ -124,7 +125,7 @@ export const MaintenanceTaskForm = forwardRef<MaintenanceTaskFormRef, Props>(
                             className="block mb-2"
                             htmlFor="grid-task-name dark:text-content-primary"
                         >
-                            Task Name
+                            {t('Task Name')}
                         </label>
                         <ControlledInput
                             className={`border w-full rounded-md py-3 px-4 mb-1 dark:text-content-primary text-black dark:bg-surface-raised ${
@@ -135,7 +136,7 @@ export const MaintenanceTaskForm = forwardRef<MaintenanceTaskFormRef, Props>(
                             id="grid-task-name"
                             name="taskName"
                             type="text"
-                            placeholder="New Task"
+                            placeholder={t('New Task')}
                             value={name}
                             onChange={handleNameChange}
                             onBlur={() => validateName(name)}
@@ -147,8 +148,9 @@ export const MaintenanceTaskForm = forwardRef<MaintenanceTaskFormRef, Props>(
                             </p>
                         ) : (
                             <p className="text-gray-600 text-xs italic dark:text-content-primary mb-2">
-                                Keeping these unique makes it easier for you to
-                                remember what it is you need to do.
+                                {t(
+                                    'Keeping these unique makes it easier for you to remember what it is you need to do.',
+                                )}
                             </p>
                         )}
                     </div>
@@ -159,7 +161,7 @@ export const MaintenanceTaskForm = forwardRef<MaintenanceTaskFormRef, Props>(
                             className="block mb-2 dark:text-content-primary"
                             htmlFor="grid-start-range"
                         >
-                            Task Start Range (Hrs)
+                            {t('Task Start Range (Hrs)')}
                         </label>
                         <ControlledInput
                             className={`border w-full rounded-md py-3 px-4 mb-1 dark:text-content-primary text-black dark:bg-surface-raised ${
@@ -188,7 +190,7 @@ export const MaintenanceTaskForm = forwardRef<MaintenanceTaskFormRef, Props>(
                             className="block mb-2 dark:text-content-primary"
                             htmlFor="grid-end-range"
                         >
-                            Task End Range (Hrs)
+                            {t('Task End Range (Hrs)')}
                         </label>
                         <ControlledInput
                             className={`border w-full rounded-md py-3 px-4 mb-1 dark:text-content-primary text-black dark:bg-surface-raised ${
@@ -220,7 +222,7 @@ export const MaintenanceTaskForm = forwardRef<MaintenanceTaskFormRef, Props>(
                             className="block mb-2 dark:text-content-primary"
                             htmlFor="grid-description"
                         >
-                            Task Description
+                            {t('Task Description')}
                         </label>
                         <textarea
                             name="description"
@@ -228,7 +230,7 @@ export const MaintenanceTaskForm = forwardRef<MaintenanceTaskFormRef, Props>(
                             className="border border-gray-300 w-full rounded-md py-3 px-4 mb-3 dark:text-content-primary dark:bg-surface-raised dark:border-outline" //"appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                             id="grid-description"
                             value={description}
-                            placeholder="What do I want to do"
+                            placeholder={t('What do I want to do')}
                             onChange={(e) => setDescription(e.target.value)}
                         />
                     </div>

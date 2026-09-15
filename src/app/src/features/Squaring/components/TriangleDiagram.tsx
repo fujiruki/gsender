@@ -1,5 +1,6 @@
 /** biome-ignore-all lint/a11y/noSvgWithoutTitle: <> */
 import { useWorkspaceState } from 'app/hooks/useWorkspaceState';
+import { t } from 'app/i18n';
 import React from 'react';
 import { useSquaring } from '../context/SquaringContext';
 
@@ -126,7 +127,7 @@ const TriangleDiagram = () => {
         ];
         return distances[lineIndex].value
             ? `${distances[lineIndex].value}${units}`
-            : `Measure ${distances[lineIndex].points}`;
+            : t('Measure {{points}}', { points: distances[lineIndex].points });
     };
 
     return (
@@ -207,7 +208,7 @@ const TriangleDiagram = () => {
                             }}
                         >
                             {currentSubStepData?.value}
-                            {units} X-axis
+                            {units} {t('X-axis')}
                         </text>
                     </>
                 )}
@@ -232,7 +233,7 @@ const TriangleDiagram = () => {
                             }}
                         >
                             {currentSubStepData?.value}
-                            {units} Y-axis
+                            {units} {t('Y-axis')}
                         </text>
                     </>
                 )}

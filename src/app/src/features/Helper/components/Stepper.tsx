@@ -23,6 +23,7 @@
 
 import { useWizardContext } from 'app/features/Helper/context';
 import cx from 'classnames';
+import { t } from 'app/i18n';
 import { Check } from 'lucide-react';
 import React from 'react';
 
@@ -62,11 +63,11 @@ const Stepper = () => {
                                               : 'text-gray-400 dark:text-[#9ca3af]',
                                     )}
                                 >
-                                    {step.title}
+                                    {t(step.title)}
                                 </span>
                                 {step.firstRunOnly && (
                                     <span className="inline-block text-[10px] px-1.5 py-0.5 rounded bg-amber-100 dark:bg-[#2a1e00] text-amber-800 dark:text-amber-400">
-                                        First run only
+                                        {t('First run only')}
                                     </span>
                                 )}
                             </div>
@@ -111,7 +112,7 @@ const Stepper = () => {
                                                       : 'text-gray-400 dark:text-[#9ca3af]',
                                             )}
                                         >
-                                            {sub.title}
+                                            {t(sub.title)}
                                         </span>
                                     </div>
                                 );

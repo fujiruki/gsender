@@ -21,6 +21,7 @@
  *
  */
 
+import { t } from 'app/i18n';
 import { Clock, Wrench } from 'lucide-react';
 
 const PendingToolchangeNotice = () => {
@@ -66,14 +67,15 @@ const PendingToolchangeNotice = () => {
                 </div>
 
                 <div className="text-xs font-medium tracking-widest uppercase text-gray-400 dark:text-content-muted">
-                    Toolchange pending
+                    {t('Toolchange pending')}
                 </div>
                 <div className="text-lg font-medium mt-1 mb-3 text-gray-900 dark:text-[#e5e5ea]">
-                    Waiting for cutting motions to finish
+                    {t('Waiting for cutting motions to finish')}
                 </div>
                 <div className="text-sm leading-relaxed mb-6 text-gray-600 dark:text-content-muted">
-                    The toolchange process will resume automatically once all
-                    pending cutting motions are complete.
+                    {t(
+                        'The toolchange process will resume automatically once all pending cutting motions are complete.',
+                    )}
                 </div>
 
                 <div className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-amber-50 dark:bg-orange-950/40 border border-orange-200 dark:border-orange-800">
@@ -82,7 +84,7 @@ const PendingToolchangeNotice = () => {
                         className="shrink-0 text-orange-500 dark:text-orange-400"
                     />
                     <span className="text-sm text-orange-800 dark:text-orange-300">
-                        Do not interrupt the machine during this phase
+                        {t('Do not interrupt the machine during this phase')}
                     </span>
                 </div>
             </div>

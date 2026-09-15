@@ -2,6 +2,7 @@
 import Button from 'app/components/Button';
 import { ControlledInput } from 'app/components/ControlledInput';
 import { useWorkspaceState } from 'app/hooks/useWorkspaceState';
+import { t } from 'app/i18n';
 import { useEffect, useState } from 'react';
 import { FaClipboard, FaClipboardCheck, FaClipboardList } from 'react-icons/fa';
 import { useSquaring } from '../context/SquaringContext';
@@ -70,10 +71,10 @@ const MeasurementStep = ({ onComplete }: Props) => {
             <div className="flex flex-col gap-4">
                 <div className="space-y-1">
                     <h3 className="text-lg font-semibold dark:text-content-primary">
-                        Instructions
+                        {t('Instructions')}
                     </h3>
                     <p className="text-gray-600 dark:text-content-primary h-20">
-                        {currentSubStepData.description}
+                        {t(currentSubStepData.description)}
                     </p>
                 </div>
 
@@ -113,12 +114,14 @@ const MeasurementStep = ({ onComplete }: Props) => {
                                     <div className="flex items-center gap-4">
                                         <div className="flex-1">
                                             <h4 className="font-medium">
-                                                {step.buttonLabel}
+                                                {t(step.buttonLabel)}
                                             </h4>
                                             <div className="flex items-center gap-2 mt-2">
                                                 <ControlledInput
                                                     type="number"
-                                                    placeholder="Enter measurement"
+                                                    placeholder={t(
+                                                        'Enter measurement',
+                                                    )}
                                                     value={
                                                         measurementInputs[
                                                             measurementKey
@@ -156,8 +159,8 @@ const MeasurementStep = ({ onComplete }: Props) => {
                                                     testId={`sq-confirm-${measurementKey}`}
                                                 >
                                                     {step.completed
-                                                        ? 'Update'
-                                                        : 'Confirm'}
+                                                        ? t('Update')
+                                                        : t('Confirm')}
                                                 </Button>
                                             </div>
                                         </div>

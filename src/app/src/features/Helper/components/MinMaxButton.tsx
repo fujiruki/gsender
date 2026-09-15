@@ -22,6 +22,7 @@
  */
 
 import { useWizardAPI, useWizardContext } from 'app/features/Helper/context';
+import { t } from 'app/i18n';
 import { Maximize2, Minus } from 'lucide-react';
 import React from 'react';
 
@@ -32,7 +33,7 @@ const MinMaxButton = () => {
         <button
             type="button"
             onClick={() => toggleMinimized(minimized)}
-            aria-label={minimized ? 'Restore wizard' : 'Minimise wizard'}
+            aria-label={minimized ? t('Restore wizard') : t('Minimise wizard')}
             className="flex items-center justify-center w-7 h-7 rounded border border-gray-300 dark:border-[#3a3a48] bg-transparent text-gray-500 dark:text-content-muted hover:bg-gray-200 dark:hover:bg-white/10 transition-colors mr-1"
         >
             {minimized ? <Maximize2 size={12} /> : <Minus size={12} />}

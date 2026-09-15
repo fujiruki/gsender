@@ -1,4 +1,5 @@
 import { Button } from 'app/components/Button';
+import { t } from 'app/i18n';
 import React, { useContext } from 'react';
 
 import ProfileItem from './ProfileItem';
@@ -24,14 +25,14 @@ const ProfileList = () => {
                 className="flex items-center gap-2"
             >
                 <i className="fas fa-plus" />
-                <span>Add New Gamepad Profile</span>
+                <span>{t('Add New Gamepad Profile')}</span>
             </Button>
 
             <Button
                 onClick={() => dispatch(setCurrentModal(GAMEPAD_MODAL.HELP))}
                 className="bg-orange-400 dark:bg-orange-700 border-orange-700 dark:border-orange-400 text-white hover:bg-orange-50"
             >
-                <span>Help</span>
+                <span>{t('Help')}</span>
             </Button>
         </div>
     );
@@ -40,7 +41,7 @@ const ProfileList = () => {
         return (
             <div className="flex flex-col items-center justify-center gap-8 p-8 h-full">
                 <p className="text-2xl">
-                    No Profiles, Click the Button Below to Add One
+                    {t('No Profiles, Click the Button Below to Add One')}
                 </p>
 
                 <ActionArea />

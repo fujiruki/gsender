@@ -1,3 +1,4 @@
+import { t } from 'app/i18n';
 import { PiMaskHappyBold } from 'react-icons/pi';
 
 export function EmptyAlarmList() {
@@ -7,7 +8,7 @@ export function EmptyAlarmList() {
                 <PiMaskHappyBold />
             </span>
             <p className="text-gray-600 dark:text-content-primary">
-                No Alarms or Errors recorded. Hooray!
+                {t('No Alarms or Errors recorded. Hooray!')}
             </p>
         </div>
     );

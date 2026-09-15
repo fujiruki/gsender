@@ -10,6 +10,7 @@ import { useWorkspaceState } from 'app/hooks/useWorkspaceState';
 import { useEffect } from 'react';
 import { FaClipboard, FaClipboardCheck, FaClipboardList } from 'react-icons/fa';
 import { useSquaring } from '../context/SquaringContext';
+import { t } from 'app/i18n';
 
 interface Props {
     onComplete: () => void;
@@ -57,10 +58,10 @@ const MarkingStep = ({ onComplete }: Props) => {
             <div className="flex flex-col gap-4">
                 <div className="space-y-1">
                     <h3 className="text-lg font-semibold dark:text-content-primary">
-                        Instructions
+                        {t('Instructions')}
                     </h3>
                     <p className="text-gray-600 dark:text-content-primary h-20">
-                        {currentSubStepData.description}
+                        {t(currentSubStepData.description)}
                     </p>
                 </div>
 
@@ -128,7 +129,7 @@ const MarkingStep = ({ onComplete }: Props) => {
                                             variant={step.buttonVariant}
                                             testId={`sq-mark-location-${step}-${index}`}
                                         >
-                                            {step.buttonLabel}
+                                            {t(step.buttonLabel)}
                                         </Button>
 
                                         <div className="flex items-center gap-2">

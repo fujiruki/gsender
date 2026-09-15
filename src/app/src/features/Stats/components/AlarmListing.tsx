@@ -3,6 +3,7 @@ import {
     type FirmwareEvent,
     StatContext,
 } from 'app/features/Stats/utils/StatContext.tsx';
+import { t } from 'app/i18n';
 import cx from 'classnames';
 import { useContext } from 'react';
 import { IoIosWarning } from 'react-icons/io';
@@ -48,13 +49,13 @@ function AlarmItem({ alarm }: AlarmItemProps) {
                 {alarm.type} {alarm.CODE} - {alarm.source}
             </h3>
             <time className="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-content-muted">
-                {`at ${dateString}`}
+                {t('at {{date}}', { date: dateString })}
             </time>
             <p className="text-base font-normal text-gray-500 dark:text-content-secondary">
-                {alarm.MESSAGE || 'No associated message'}
+                {alarm.MESSAGE || t('No associated message')}
             </p>
             <p className="text-base font-normal text-gray-500">
-                Line: <b>{alarm.line}</b>
+                {t('Line:')} <b>{alarm.line}</b>
             </p>
         </li>
     );

@@ -4,6 +4,7 @@ import {
     StatContext,
 } from 'app/features/Stats/utils/StatContext.tsx';
 import { truncatePort } from 'app/features/Stats/utils/statUtils.ts';
+import { t } from 'app/i18n';
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js';
 import { useContext } from 'react';
 import { Doughnut } from 'react-chartjs-2';
@@ -35,7 +36,7 @@ export function RunTimePerComPort() {
         labels: labels,
         datasets: [
             {
-                label: 'Hours per port',
+                label: t('Hours per port'),
                 data: runtimes,
                 backgroundColor: [
                     '#7ca7d0',
@@ -61,7 +62,9 @@ export function RunTimePerComPort() {
                         tooltip: {
                             callbacks: {
                                 label: (d) => {
-                                    return `${d.raw} hours`;
+                                    return t('{{value}} hours', {
+                                        value: Number(d.raw),
+                                    });
                                 },
                             },
                         },

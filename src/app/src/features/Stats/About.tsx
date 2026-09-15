@@ -1,5 +1,6 @@
 import { Button } from 'app/components/Button';
 import { UpdateGSender } from 'app/features/Stats/components/UpdateGSender.tsx';
+import { t } from 'app/i18n';
 import { cn } from 'app/lib/utils';
 import type { RootState } from 'app/store/redux';
 import { version } from 'app-root/package.json';
@@ -20,13 +21,13 @@ const About = () => {
     );
 
     const team = [
-        { name: 'Chris T.', title: 'Project Lead' },
-        { name: 'Kevin G.', title: 'Lead Dev' },
-        { name: 'Walid K.', title: 'Dev Manager' },
-        { name: 'Sophia B.', title: 'Dev' },
-        { name: 'Shilpa G', title: 'QA' },
-        { name: 'Stephen C.', title: 'Docs' },
-        { name: 'Kelly Z.', title: 'Icon Design' },
+        { name: 'Chris T.', title: t('Project Lead') },
+        { name: 'Kevin G.', title: t('Lead Dev') },
+        { name: 'Walid K.', title: t('Dev Manager') },
+        { name: 'Sophia B.', title: t('Dev') },
+        { name: 'Shilpa G', title: t('QA') },
+        { name: 'Stephen C.', title: t('Docs') },
+        { name: 'Kelly Z.', title: t('Icon Design') },
     ];
 
     const gSenderLogo = new URL(
@@ -51,23 +52,25 @@ const About = () => {
             return (
                 <div className="flex flex-col gap-2 items-center justify-center h-full">
                     <p>
-                        There was a problem loading the release notes. Please
-                        try again.
+                        {t(
+                            'There was a problem loading the release notes. Please try again.',
+                        )}
                     </p>
                     <p>
-                        If this issue persists, please checkout the release
-                        notes on{' '}
+                        {t(
+                            'If this issue persists, please checkout the release notes on',
+                        )}{' '}
                         <a
                             href="https://github.com/Sienci-Labs/gsender/releases"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-blue-500 underline"
                         >
-                            GitHub.
+                            {t('GitHub.')}
                         </a>
                     </p>
                     <Button onClick={fetchReleaseNotes} variant="outline">
-                        Retry
+                        {t('Retry')}
                     </Button>
                 </div>
             );
@@ -76,10 +79,10 @@ const About = () => {
         if (releaseNotes.length === 0) {
             return (
                 <div className="flex flex-col items-center justify-center h-full gap-2">
-                    <p>No release notes found</p>
+                    <p>{t('No release notes found')}</p>
 
                     <Button onClick={fetchReleaseNotes} variant="outline">
-                        Retry
+                        {t('Retry')}
                     </Button>
                 </div>
             );
@@ -130,29 +133,31 @@ const About = () => {
                 <div className="flex items-center gap-2">
                     <img
                         src={gSenderLogo.href}
-                        alt="gSender Logo"
+                        alt={t('gSender Logo')}
                         width={125}
                         height={125}
                     />
                     <div className="dark:text-content-primary">
                         <h1 className="text-3xl font-bold">gSender</h1>
                         <p className="text-sm text-gray-500 dark:text-content-primary">
-                            By Sienci Labs
+                            {t('By Sienci Labs')}
                         </p>
                         <p className="text-sm text-gray-500 dark:text-content-primary">
-                            Version {version}
+                            {t('Version {{version}}', { version })}
                         </p>
                     </div>
                 </div>
                 <div className="flex flex-col items-end gap-2 text-sm">
                     <p className=" text-gray-500 dark:text-content-primary">
-                        Copyright © {new Date().getFullYear()} Sienci Labs Inc.
+                        {t('Copyright © {{year}} Sienci Labs Inc.', {
+                            year: new Date().getFullYear(),
+                        })}
                     </p>
                     <div className="flex items-center gap-2">
                         <span className="text-sm text-gray-500 dark:text-content-primary">
-                            Made in Canada
+                            {t('Made in Canada')}
                         </span>
-                        <img src={canadaFlag.href} alt="Canada Flag" />
+                        <img src={canadaFlag.href} alt={t('Canada Flag')} />
                     </div>
                     <p>
                         <a
@@ -161,23 +166,22 @@ const About = () => {
                             rel="noopener noreferrer"
                             className="text-blue-500 underline"
                         >
-                            GNU GPLv3 License
+                            {t('GNU GPLv3 License')}
                         </a>
                     </p>
                 </div>
             </div>
 
             <p className="text-md md:text-lg dark:text-content-primary">
-                gSender is a free and feature-packed CNC control software,
-                designed to be clean and easy to learn while retaining a depth
-                of capabilities for advanced users. Many thousands of people
-                trust gSender to control their grbl and grblHAL-based CNCs every
-                day, and they keep coming back for its ease of use, engaged
-                community, and reliability.
+                {t(
+                    'gSender is a free and feature-packed CNC control software, designed to be clean and easy to learn while retaining a depth of capabilities for advanced users. Many thousands of people trust gSender to control their grbl and grblHAL-based CNCs every day, and they keep coming back for its ease of use, engaged community, and reliability.',
+                )}
             </p>
 
             <div>
-                <h2 className="text-2xl text-blue-500 mb-2">gSender Team</h2>
+                <h2 className="text-2xl text-blue-500 mb-2">
+                    {t('gSender Team')}
+                </h2>
                 <div className="text-md md:text-lg dark:text-content-primary">
                     {team.map((member, index) => (
                         <span key={member.name}>
@@ -192,7 +196,7 @@ const About = () => {
                 <div className="h-full flex flex-col gap-2">
                     <div className="flex gap-2 items-center justify-between">
                         <h2 className="text-2xl text-blue-500">
-                            Release Notes
+                            {t('Release Notes')}
                         </h2>
 
                         <a
@@ -202,7 +206,7 @@ const About = () => {
                             rel="noreferrer"
                         >
                             <div className="flex items-center gap-1">
-                                <span>See all latest updates made</span>
+                                <span>{t('See all latest updates made')}</span>
                                 <FaExternalLinkAlt />
                             </div>
                         </a>

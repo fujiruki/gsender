@@ -22,6 +22,7 @@ import {
     calculateHypotenuse,
     determineEEPROMAdjustment,
 } from '../utils';
+import { t } from 'app/i18n';
 
 const FM_LOWER_OFFSET_THRESHOLD =
     store.get('workspace.units', METRIC_UNITS) === METRIC_UNITS ? 2 : 0.079;
@@ -56,7 +57,7 @@ const ResultsStep = () => {
 
             controller.command('gcode', [`$100=${$100}`, `$101=${$101}`, '$$']);
 
-            toast.info('Updated EEPROM values', { position: 'bottom-right' });
+            toast.info(t('Updated EEPROM values'), { position: 'bottom-right' });
         } catch (error) {
             console.error('Failed to update EEPROM:', error);
         } finally {
@@ -70,9 +71,9 @@ const ResultsStep = () => {
             return (
                 <div className="text-green-950 bg-green-100 p-4 rounded-lg space-y-2">
                     <p className="font-bold text-lg">
-                        Your machine is properly squared!
+                        {t('Your machine is properly squared!')}
                     </p>
-                    <p className="text-sm">No adjustments are needed.</p>
+                    <p className="text-sm">{t('No adjustments are needed.')}</p>
                 </div>
             );
         }
@@ -82,20 +83,20 @@ const ResultsStep = () => {
             return (
                 <div className="text-yellow-800 bg-yellow-100 p-4 rounded-lg space-y-2 dark:bg-yellow-900 dark:text-content-primary">
                     <p className="font-bold text-lg">
-                        Your machine is slightly out of square
+                        {t('Your machine is slightly out of square')}
                     </p>
                     <p>
-                        The deviation is minor ({hypotenuseDiff}
-                        {units}) but you may want to adjust the right Y-axis
-                        rail to achieve better squareness.
+                        {t(
+                            'The deviation is minor ({{diff}}{{units}}) but you may want to adjust the right Y-axis rail to achieve better squareness.',
+                            { diff: hypotenuseDiff, units },
+                        )}
                     </p>
 
                     <p>
-                        You can move your either the right y-axis rail forward
-                        by {hypotenuseDiff}
-                        {units} or the left y-axis rail backward by{' '}
-                        {hypotenuseDiff}
-                        {units}.
+                        {t(
+                            'You can move your either the right y-axis rail forward by {{diff}}{{units}} or the left y-axis rail backward by {{diff}}{{units}}.',
+                            { diff: hypotenuseDiff, units },
+                        )}
                     </p>
                 </div>
             );
@@ -105,23 +106,27 @@ const ResultsStep = () => {
         return (
             <div className="text-red-950 bg-red-100 p-4 rounded-lg space-y-2 dark:bg-red-950 dark:text-content-primary">
                 <p className="font-bold text-lg">
-                    Your machine needs adjustment
+                    {t('Your machine needs adjustment')}
                 </p>
                 <p>
-                    The machine is off by {angle.toFixed(2)}° or{' '}
+                    {t('The machine is off by {{angle}}° or', {
+                        angle: angle.toFixed(2),
+                    })}{' '}
                     <strong>
                         {hypotenuseDiff}
                         {units}
                     </strong>{' '}
-                    on the diagonal.
+                    {t('on the diagonal.')}
                 </p>
                 <p>
-                    You can move your either the right y-axis rail forward by{' '}
+                    {t(
+                        'You can move your either the right y-axis rail forward by',
+                    )}{' '}
                     <strong>
                         {hypotenuseDiff}
                         {units}
                     </strong>{' '}
-                    or the left y-axis rail backward by{' '}
+                    {t('or the left y-axis rail backward by')}{' '}
                     <strong>
                         {hypotenuseDiff}
                         {units}
@@ -138,19 +143,19 @@ const ResultsStep = () => {
                 <div className="flex flex-row items-start gap-4">
                     <div className="space-y-1">
                         <h3 className="text-lg font-semibold dark:text-content-primary">
-                            Results
+                            {t('Results')}
                         </h3>
                         {renderResult()}
                     </div>
 
                     <div className="space-y-1">
                         <h3 className="text-lg font-semibold dark:text-content-primary">
-                            Measured Dimensions
+                            {t('Measured Dimensions')}
                         </h3>
                         <div className="grid grid-cols-2 gap-2">
                             <div className="p-2 bg-gray-50 rounded-lg dark:bg-surface-raised dark:text-content-primary">
                                 <div className="text-sm text-gray-600 dark:text-content-primary">
-                                    Bottom Edge (1-2)
+                                    {t('Bottom Edge (1-2)')}
                                 </div>
                                 <div className="text-xl font-bold">
                                     {triangle.a}
@@ -159,7 +164,7 @@ const ResultsStep = () => {
                             </div>
                             <div className="p-2 bg-gray-50 rounded-lg dark:bg-surface-raised dark:text-content-primary">
                                 <div className="text-sm text-gray-600 dark:text-content-primary">
-                                    Right Edge (2-3)
+                                    {t('Right Edge (2-3)')}
                                 </div>
                                 <div className="text-xl font-bold">
                                     {triangle.b}
@@ -168,7 +173,7 @@ const ResultsStep = () => {
                             </div>
                             <div className="p-2 bg-gray-50 rounded-lg dark:bg-surface-raised dark:text-content-primary">
                                 <div className="text-sm text-gray-600 dark:text-content-primary">
-                                    Diagonal (1-3)
+                                    {t('Diagonal (1-3)')}
                                 </div>
                                 <div className="text-xl font-bold">
                                     {triangle.c}
@@ -177,7 +182,7 @@ const ResultsStep = () => {
                             </div>
                             <div className="p-2 bg-gray-50 rounded-lg dark:bg-surface-raised dark:text-content-primary">
                                 <div className="text-sm text-gray-600 dark:text-content-primary">
-                                    Angle Deviation
+                                    {t('Angle Deviation')}
                                 </div>
                                 <div className="text-xl font-bold">
                                     {angle.toFixed(2)}°
@@ -190,38 +195,48 @@ const ResultsStep = () => {
                 {needsEEPROMAdjustment && (
                     <div className="flex flex-col justify-center items-start space-y-1">
                         <h3 className="text-lg font-semibold dark:text-content-primary">
-                            Other Recommendations
+                            {t('Other Recommendations')}
                         </h3>
                         <div className="text-yellow-800 bg-yellow-100 p-4 rounded-lg border min-h-52 flex flex-col justify-center items-start space-y-1 dark:bg-yellow-950 dark:text-content-primary dark:border-yellow-950">
                             <p>
-                                We also noticed from the results that your motor
-                                movement settings could be updated to improve
-                                your machines accuracy.
+                                {t(
+                                    'We also noticed from the results that your motor movement settings could be updated to improve your machines accuracy.',
+                                )}
                             </p>
                             {/* <div className="grid grid-cols-2 gap-4"> */}
                             <div className="grid grid-cols-2 gap-2 mt-1">
                                 <div className="p-2 bg-gray-50 rounded-lg dark:bg-surface-raised">
                                     <div className="text-sm text-gray-600 dark:text-content-primary">
-                                        X-axis step/mm
+                                        {t('X-axis step/mm')}
                                     </div>
                                     <div className="text-xl font-bold">
-                                        Current: {currentXSteps}
+                                        {t('Current: {{value}}', {
+                                            value: currentXSteps,
+                                        })}
                                     </div>
                                     <div className="text-xl font-bold text-blue-600">
-                                        Recommended:{' '}
-                                        {eepromAdjustment.x.amount.toFixed(3)}
+                                        {t('Recommended: {{value}}', {
+                                            value: eepromAdjustment.x.amount.toFixed(
+                                                3,
+                                            ),
+                                        })}
                                     </div>
                                 </div>
                                 <div className="p-2 bg-gray-50 rounded-lg dark:bg-surface-raised">
                                     <div className="text-sm text-gray-600 dark:text-content-primary">
-                                        Y-axis step/mm
+                                        {t('Y-axis step/mm')}
                                     </div>
                                     <div className="text-xl font-bold">
-                                        Current: {currentYSteps}
+                                        {t('Current: {{value}}', {
+                                            value: currentYSteps,
+                                        })}
                                     </div>
                                     <div className="text-xl font-bold text-blue-600">
-                                        Recommended:{' '}
-                                        {eepromAdjustment.y.amount.toFixed(3)}
+                                        {t('Recommended: {{value}}', {
+                                            value: eepromAdjustment.y.amount.toFixed(
+                                                3,
+                                            ),
+                                        })}
                                     </div>
                                 </div>
                             </div>
@@ -231,25 +246,23 @@ const ResultsStep = () => {
                                         <AlertDialogTrigger asChild>
                                             <Button disabled={isUpdating}>
                                                 {isUpdating
-                                                    ? 'Updating...'
-                                                    : 'Update step/mm'}
+                                                    ? t('Updating...')
+                                                    : t('Update step/mm')}
                                             </Button>
                                         </AlertDialogTrigger>
                                         <AlertDialogContent className="bg-white">
                                             <AlertDialogHeader>
                                                 <AlertDialogTitle>
-                                                    Update Firmware
+                                                    {t('Update Firmware')}
                                                 </AlertDialogTitle>
                                                 <div className="space-y-4">
                                                     <p>
-                                                        This will update the
-                                                        X-axis ($100) and Y-axis
-                                                        ($101) step/mm values in
-                                                        your CNC firmware to the
-                                                        new ones below:
+                                                        {t(
+                                                            'This will update the X-axis ($100) and Y-axis ($101) step/mm values in your CNC firmware to the new ones below:',
+                                                        )}
                                                     </p>
                                                     <p>
-                                                        X-axis:{' '}
+                                                        {t('X-axis:')}{' '}
                                                         <strong>
                                                             {eepromAdjustment.x.amount.toFixed(
                                                                 3,
@@ -257,7 +270,7 @@ const ResultsStep = () => {
                                                         </strong>
                                                     </p>
                                                     <p>
-                                                        Y-axis:{' '}
+                                                        {t('Y-axis:')}{' '}
                                                         <strong>
                                                             {eepromAdjustment.y.amount.toFixed(
                                                                 3,
@@ -268,14 +281,14 @@ const ResultsStep = () => {
                                             </AlertDialogHeader>
                                             <AlertDialogFooter>
                                                 <AlertDialogCancel>
-                                                    Cancel
+                                                    {t('Cancel')}
                                                 </AlertDialogCancel>
                                                 <AlertDialogAction
                                                     className="border border-blue-500"
                                                     onClick={handleUpdateEEPROM}
                                                     data-testid="sq-update-step-per-mm"
                                                 >
-                                                    Update Firmware
+                                                    {t('Update Firmware')}
                                                 </AlertDialogAction>
                                             </AlertDialogFooter>
                                         </AlertDialogContent>
@@ -283,11 +296,11 @@ const ResultsStep = () => {
                                 </div>
 
                                 <div className="mt-1 xl:mt-4 text-sm text-yellow-600 dark:text-yellow-400">
-                                    <p className="font-bold">Warning</p>
+                                    <p className="font-bold">{t('Warning')}</p>
                                     <p>
-                                        Updating Firmware values can affect your
-                                        machine's accuracy. Make sure to verify
-                                        the new settings after applying them.
+                                        {t(
+                                            "Updating Firmware values can affect your machine's accuracy. Make sure to verify the new settings after applying them.",
+                                        )}
                                     </p>
                                 </div>
                             </div>

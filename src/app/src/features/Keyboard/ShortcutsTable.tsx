@@ -56,6 +56,7 @@ import { cn } from 'app/lib/utils';
 import PropTypes from 'prop-types';
 import { LuPencil, LuPlus, LuTrash } from 'react-icons/lu';
 import { formatShortcut } from './helpers';
+import { t } from 'app/i18n';
 
 interface Props {
     onEdit: (currentShortcut: CommandKey | Macro) => void;
@@ -96,9 +97,10 @@ const ShortcutsTable = ({
             ? formatShortcut(cleanedShortcut, isActive)
             : formatShortcut(shortcut, isActive);
 
+        const rowTitle = allShuttleControlEvents[row.cmd]?.title ?? row.title;
         const shortcutButton = {
             edit: (
-                <Tooltip content="Edit this shortcut">
+                <Tooltip content={t('Edit this shortcut')}>
                     <Button
                         variant="ghost"
                         size="sm"
@@ -107,12 +109,14 @@ const ShortcutsTable = ({
                         }
                         onClick={() => onEdit(row)}
                         onKeyDown={null}
-                        aria-label={`Edit shortcut for ${(allShuttleControlEvents[row.cmd] as ShuttleEvent)?.title ?? (row as ShuttleEvent).title}`}
+                        aria-label={t('Edit shortcut for {{title}}', {
+                            title: rowTitle,
+                        })}
                     />
                 </Tooltip>
             ),
             delete: (
-                <Tooltip content="Delete this shortcut">
+                <Tooltip content={t('Delete this shortcut')}>
                     <Button
                         variant="ghost"
                         size="sm"
@@ -121,12 +125,14 @@ const ShortcutsTable = ({
                         }
                         onClick={() => onDelete(row)}
                         onKeyDown={null}
-                        aria-label={`Delete shortcut for ${(allShuttleControlEvents[row.cmd] as ShuttleEvent)?.title ?? (row as ShuttleEvent).title}`}
+                        aria-label={t('Delete shortcut for {{title}}', {
+                            title: rowTitle,
+                        })}
                     />
                 </Tooltip>
             ),
             add: (
-                <Tooltip content="Assign a shortcut to this action">
+                <Tooltip content={t('Assign a shortcut to this action')}>
                     <Button
                         variant="ghost"
                         size="sm"
@@ -135,7 +141,9 @@ const ShortcutsTable = ({
                         }
                         onClick={() => onEdit(row)}
                         onKeyDown={null}
-                        aria-label={`Add shortcut for ${(allShuttleControlEvents[row.cmd] as ShuttleEvent)?.title ?? (row as ShuttleEvent).title}`}
+                        aria-label={t('Add shortcut for {{title}}', {
+                            title: rowTitle,
+                        })}
                     />
                 </Tooltip>
             ),
@@ -169,7 +177,11 @@ const ShortcutsTable = ({
                 onChange={(isActive) => {
                     onShortcutToggle({ ...row, isActive }, false);
                 }}
-                aria-label={`Toggle active status for ${(allShuttleControlEvents[row.cmd] as ShuttleEvent)?.title ?? (row as ShuttleEvent).title}`}
+                aria-label={t('Toggle active status for {{title}}', {
+                    title:
+                        (allShuttleControlEvents[row.cmd] as ShuttleEvent)
+                            ?.title ?? (row as ShuttleEvent).title,
+                })}
             />
         );
     };
@@ -199,7 +211,9 @@ const ShortcutsTable = ({
             'bg-gray-100 text-gray-800';
 
         return (
-            <div className={cn(baseClass, categoryClass)}>{rowCategory}</div>
+            <div className={cn(baseClass, categoryClass)}>
+                {t(rowCategory)}
+            </div>
         );
     };
 
@@ -212,7 +226,7 @@ const ShortcutsTable = ({
                 ?.type === GRBLHAL;
         return (
             <div>
-                {rowTitle}
+                {t(rowTitle)}
                 {isSpecial ? <strong>*</strong> : ''}
             </div>
         );
@@ -264,10 +278,10 @@ const ShortcutsTable = ({
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead className="w-[25%]">Action</TableHead>
-                        <TableHead className="w-[45%]">Shortcut</TableHead>
-                        <TableHead>Category</TableHead>
-                        <TableHead>Active</TableHead>
+                        <TableHead className="w-[25%]">{t('Action')}</TableHead>
+                        <TableHead className="w-[45%]">{t('Shortcut')}</TableHead>
+                        <TableHead>{t('Category')}</TableHead>
+                        <TableHead>{t('Active')}</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>

@@ -1,6 +1,7 @@
 import cn from 'classnames';
 import { FaCheckCircle } from 'react-icons/fa';
 import { FaCircleXmark } from 'react-icons/fa6';
+import { t } from 'app/i18n';
 import { tv } from 'tailwind-variants';
 import type { JOB_STATUS_T } from '../utils/StatContext';
 
@@ -53,7 +54,7 @@ export function JobPreview({
                         color: statusMessage,
                     })}
                 >
-                    {statusMessage}
+                    {t(statusMessage)}
                 </div>
             </span>
         </div>

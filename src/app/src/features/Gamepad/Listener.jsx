@@ -1,4 +1,5 @@
 import { Tooltip } from 'app/components/Tooltip';
+import { t } from 'app/i18n';
 import React, {
     forwardRef,
     useEffect,
@@ -34,7 +35,11 @@ const Listener = forwardRef((props, ref) => {
     };
 
     return (
-        <Tooltip content="Button press indicator, animates when a button is pressed on your gamepad">
+        <Tooltip
+            content={t(
+                'Button press indicator, animates when a button is pressed on your gamepad',
+            )}
+        >
             <div
                 className={`flex items-center justify-center p-4 rounded-full bg-gray-200 ${detectedButtonPress ? 'bg-blue-500' : ''}`}
             >

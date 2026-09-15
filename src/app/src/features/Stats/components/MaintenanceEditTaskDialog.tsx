@@ -20,6 +20,7 @@ import {
     type MaintenanceTask,
     StatContext,
 } from 'app/features/Stats/utils/StatContext.tsx';
+import { t } from 'app/i18n';
 import { useContext, useEffect, useState } from 'react';
 
 // import Button from 'app/components/Button';
@@ -102,7 +103,7 @@ export function MaintenanceEditTaskDialog({
             <Dialog open={show} onOpenChange={toggleShow}>
                 <DialogContent className="bg-white w-1/2">
                     <DialogHeader>
-                        <DialogTitle>Edit Task</DialogTitle>
+                        <DialogTitle>{t('Edit Task')}</DialogTitle>
                     </DialogHeader>
                     <form className="w-full" onSubmit={handleSubmit}>
                         <MaintenanceTaskForm task={task} />
@@ -111,7 +112,7 @@ export function MaintenanceEditTaskDialog({
                                 type="submit"
                                 className={buttonStyle({ colors: 'primary' })}
                             >
-                                Save
+                                {t('Save')}
                             </button>
                             <button
                                 className={buttonStyle({ colors: 'secondary' })}
@@ -121,14 +122,14 @@ export function MaintenanceEditTaskDialog({
                                     toggleShow(false);
                                 }}
                             >
-                                Cancel
+                                {t('Cancel')}
                             </button>
                             <button
                                 type="button"
                                 className={buttonStyle({ colors: 'danger' })}
                                 onClick={(_e) => onDelete()}
                             >
-                                Delete
+                                {t('Delete')}
                             </button>
                         </div>
                     </form>
@@ -141,17 +142,17 @@ export function MaintenanceEditTaskDialog({
                 >
                     <AlertDialogContent className="bg-white">
                         <AlertDialogHeader>
-                            <AlertDialogTitle>Delete Task</AlertDialogTitle>
+                            <AlertDialogTitle>{t('Delete Task')}</AlertDialogTitle>
                             <AlertDialogDescription>
-                                {'Are you sure you want to delete ' +
-                                    task.name +
-                                    '?'}
+                                {t('Are you sure you want to delete {{name}}?', {
+                                    name: task.name,
+                                })}
                             </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                            <AlertDialogCancel>No</AlertDialogCancel>
+                            <AlertDialogCancel>{t('No')}</AlertDialogCancel>
                             <AlertDialogAction onClick={deleteTask}>
-                                Yes
+                                {t('Yes')}
                             </AlertDialogAction>
                         </AlertDialogFooter>
                     </AlertDialogContent>

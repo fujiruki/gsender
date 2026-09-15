@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
 
 const ROOT = new URL('../src/app/src/', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1');
@@ -46,7 +46,8 @@ for (const ext of EXTERNAL_SOURCES) {
 
 for (const name of readdirSync(ROOT, { recursive: true })) {
     const file = join(ROOT, String(name));
-    if (!/\.tsx?$/.test(file) || EXCLUDE.test(file)) continue;
+    if (!/\.[jt]sx?$/.test(file) || EXCLUDE.test(file)) continue;
+    if (!statSync(file).isFile()) continue;
     const src = readFileSync(file, 'utf8');
     const rel = relative(ROOT, file).replace(/\\/g, '/');
     for (const m of src.matchAll(T_CALL)) {

@@ -21,6 +21,7 @@
  *
  */
 
+import { t } from 'app/i18n';
 import cx from 'classnames';
 import React from 'react';
 
@@ -35,7 +36,7 @@ const Step = ({ step, index = 0, active }) => {
             )}
         >
             <div className="text-[10px] text-gray-400 dark:text-content-muted mb-0.5">
-                Step {index + 1}
+                {t('Step {{number}}', { number: index + 1 })}
             </div>
             <div
                 className={cx(
@@ -45,11 +46,11 @@ const Step = ({ step, index = 0, active }) => {
                         : 'text-gray-500 dark:text-content-muted',
                 )}
             >
-                {step.title}
+                {t(step.title)}
             </div>
             {step.firstRunOnly && (
                 <span className="mt-1 inline-block text-[10px] px-1.5 py-0.5 rounded bg-amber-100 dark:bg-[#2a1e00] text-amber-800 dark:text-amber-400">
-                    First run only
+                    {t('First run only')}
                 </span>
             )}
         </div>

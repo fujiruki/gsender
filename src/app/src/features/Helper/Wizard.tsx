@@ -28,6 +28,7 @@ import MinMaxButton from 'app/features/Helper/components/MinMaxButton';
 import Stepper from 'app/features/Helper/components/Stepper';
 import { useWizardContext } from 'app/features/Helper/context';
 import controller from 'app/lib/controller.ts';
+import { t } from 'app/i18n';
 import store from 'app/store';
 import { Wrench } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -78,7 +79,7 @@ const Wizard = () => {
                     className="text-gray-500 dark:text-content-muted shrink-0"
                 />
                 <span className="font-medium text-gray-700 dark:text-[#e5e5ea] text-xs whitespace-nowrap">
-                    {title}
+                    {t(title)}
                 </span>
                 <MinMaxButton />
                 <CancelButton />
@@ -113,7 +114,7 @@ const Wizard = () => {
                                 className="text-gray-500 dark:text-content-muted"
                             />
                             <span className="font-semibold text-base text-gray-900 dark:text-[#e5e5ea]">
-                                {title}
+                                {t(title)}
                             </span>
                         </div>
                         <div className="flex gap-1">

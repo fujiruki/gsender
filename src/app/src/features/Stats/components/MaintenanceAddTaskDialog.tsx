@@ -12,6 +12,7 @@ import {
     type MaintenanceTask,
     StatContext,
 } from 'app/features/Stats/utils/StatContext.tsx';
+import { t } from 'app/i18n';
 import { useContext, useRef } from 'react';
 import { tv } from 'tailwind-variants';
 
@@ -87,7 +88,7 @@ export function MaintenanceAddTaskDialog({
         <Dialog open={show} onOpenChange={toggleShow}>
             <DialogContent className="bg-white w-1/2">
                 <DialogHeader>
-                    <DialogTitle>Add New Task</DialogTitle>
+                    <DialogTitle>{t('Add New Task')}</DialogTitle>
                 </DialogHeader>
                 <form className="w-full" onSubmit={handleSubmit}>
                     <MaintenanceTaskForm ref={formRef} />
@@ -96,7 +97,7 @@ export function MaintenanceAddTaskDialog({
                             type="submit"
                             className={buttonStyle({ colors: 'primary' })}
                         >
-                            Add
+                            {t('Add')}
                         </button>
                         <button
                             type="button"
@@ -106,7 +107,7 @@ export function MaintenanceAddTaskDialog({
                                 toggleShow(false);
                             }}
                         >
-                            Cancel
+                            {t('Cancel')}
                         </button>
                     </div>
                 </form>

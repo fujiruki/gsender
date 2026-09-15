@@ -3,6 +3,7 @@ import React from 'react';
 
 import { AVAILABILITY_TYPES } from '../utils';
 import Listener from './Listener';
+import { t } from 'app/i18n';
 
 const { DEFAULT, AVAILABLE, UNAVAILABLE, IS_THE_SAME } = AVAILABILITY_TYPES;
 
@@ -12,14 +13,14 @@ const ButtonsPressed = ({ shortcut }) => {
     }
     return (
         <div>
-            Button Combo:{' '}
+            {t('Button Combo:')}{' '}
             {shortcut.map((item, i) =>
                 i === 0 ? (
                     <strong key={item.buttonIndex}>{item.buttonIndex}</strong>
                 ) : (
                     <React.Fragment key={item.buttonIndex}>
                         {' '}
-                        and <strong>{item.buttonIndex}</strong>
+                        {t('and')} <strong>{item.buttonIndex}</strong>
                     </React.Fragment>
                 ),
             )}
@@ -33,20 +34,20 @@ const Availability = ({ type, shortcutTitle, shortcut, listenerRef }) => {
         [DEFAULT]: (
             <div className="flex flex-col items-center gap-2 text-center p-4">
                 <i className="fas fa-info-circle text-blue-500 text-xl" />
-                <p>Press any button or button combination on your gamepad</p>
+                <p>{t('Press any button or button combination on your gamepad')}</p>
             </div>
         ),
         [AVAILABLE]: (
             <div className="flex flex-col items-center gap-2 text-center p-4 text-green-600">
                 <i className="fas fa-check-circle text-xl" />
-                <p className="m-0">Shortcut is Availabile</p>
+                <p className="m-0">{t('Shortcut is Availabile')}</p>
                 <ButtonsPressed shortcut={shortcut} />
             </div>
         ),
         [UNAVAILABLE]: (
             <div className="flex flex-col items-center gap-2 text-center p-4 text-red-600">
                 <i className="fas fa-times-circle text-xl" />
-                <p className="m-0">Shortcut Already Exists on an Action</p>
+                <p className="m-0">{t('Shortcut Already Exists on an Action')}</p>
                 <ButtonsPressed shortcut={shortcut} />
             </div>
         ),
@@ -54,7 +55,7 @@ const Availability = ({ type, shortcutTitle, shortcut, listenerRef }) => {
             <div className="flex flex-col items-center gap-2 text-center p-4 text-blue-500">
                 <i className="fas fa-info-circle text-xl" />
                 <p className="m-0">
-                    This is the Current Shortcut for This Action
+                    {t('This is the Current Shortcut for This Action')}
                 </p>
             </div>
         ),

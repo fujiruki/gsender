@@ -141,6 +141,7 @@
     "Before tool change": "工具交換前",
     "Begin probing": "プローブを開始",
     "Bit Diameter": "ビット径",
+    "Bit Diameter & Tool Number (optional)": "ビット径・工具番号（任意）",
     "BitZero thickness (XYZ)": "BitZero厚み（XYZ）",
     "BitZero thickness (Z-only)": "BitZero厚み（Zのみ）",
     "Block thickness": "ブロック厚み",

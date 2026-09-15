@@ -29,6 +29,7 @@ import {
     TOOLBAR_CATEGORY,
     VISUALIZER_CATEGORY,
 } from 'app/constants';
+import { t } from 'app/i18n';
 import shuttleEvents from 'app/lib/shuttleEvents';
 import { toast } from 'app/lib/toaster';
 import { cn } from 'app/lib/utils';
@@ -89,7 +90,7 @@ const SetShortcut = () => {
 
         closeModal();
 
-        toast.info('Button Shortcut Set', { duration: 3000 });
+        toast.info(t('Button Shortcut Set'), { duration: 3000 });
     };
 
     const handleActionPress = (action) => {
@@ -217,7 +218,7 @@ const SetShortcut = () => {
 
             return (
                 <div className={cn(baseClass, categoryClass)}>
-                    {row.category}
+                    {t(row.category)}
                 </div>
             );
         },
@@ -236,7 +237,7 @@ const SetShortcut = () => {
                             onClick={() => handleActionPress(action.cmd)}
                             disabled={action.cmd === currentShortcut}
                         >
-                            {action.title}
+                            {t(action.title)}
                         </button>
                     ))}
                 </div>
@@ -245,8 +246,8 @@ const SetShortcut = () => {
     };
 
     const columns = [
-        { title: 'Category', width: '25%', render: render.category },
-        { title: 'Actions', width: '75%', render: render.actions },
+        { title: t('Category'), width: '25%', render: render.category },
+        { title: t('Actions'), width: '75%', render: render.actions },
     ];
     const data = getData();
 
@@ -260,20 +261,22 @@ const SetShortcut = () => {
     const isSecondaryActionButton =
         currentButtonValue === profile.modifier?.button;
 
-    const lockoutLabel = isLockoutButton ? 'Lockout Button' : null;
+    const lockoutLabel = isLockoutButton ? t('Lockout Button') : null;
     const secondaryActionLabel = isSecondaryActionButton
-        ? 'Activate Secondary Action Button'
+        ? t('Activate Secondary Action Button')
         : null;
 
     return (
         <Dialog open onOpenChange={handleOpenChange}>
             <DialogContent className="w-3/4 max-w-[1200px]">
                 <DialogHeader>
-                    <DialogTitle>Set Gamepad Profile Shortcut</DialogTitle>
+                    <DialogTitle>{t('Set Gamepad Profile Shortcut')}</DialogTitle>
                 </DialogHeader>
 
                 <DialogDescription>
-                    Use the gamepad to set the shortcut for the current button.
+                    {t(
+                        'Use the gamepad to set the shortcut for the current button.',
+                    )}
                 </DialogDescription>
 
                 <div className="flex flex-col justify-between items-center gap-4">
@@ -317,7 +320,7 @@ const SetShortcut = () => {
 
                         <div className="text-base">
                             <div className="my-8">
-                                <p>Use as Lockout button</p>
+                                <p>{t('Use as Lockout button')}</p>
                                 <Switch
                                     checked={isLockoutButton}
                                     onChange={(checked) =>
@@ -331,7 +334,7 @@ const SetShortcut = () => {
                             </div>
 
                             <div>
-                                <p>Use as 2nd Action button</p>
+                                <p>{t('Use as 2nd Action button')}</p>
                                 <Switch
                                     checked={isSecondaryActionButton}
                                     onChange={(checked) =>
@@ -348,12 +351,12 @@ const SetShortcut = () => {
 
                     <DialogFooter className="w-full flex gap-12 justify-between items-center">
                         <div className="flex gap-2 items-center">
-                            <div>Shortcut:</div>
+                            <div>{t('Shortcut:')}</div>
                             <kbd>{buttonLabel}</kbd>
                         </div>
 
                         <div className="flex gap-2 items-center">
-                            <div>Action:</div>
+                            <div>{t('Action:')}</div>
                             <div className="bg-blue-500 text-white px-3 py-1">
                                 {lockoutLabel ||
                                     secondaryActionLabel ||
@@ -363,7 +366,7 @@ const SetShortcut = () => {
                         </div>
 
                         <Button onClick={handleSetAction} disabled={!isChanged}>
-                            Set Shortcut
+                            {t('Set Shortcut')}
                         </Button>
                     </DialogFooter>
                 </div>

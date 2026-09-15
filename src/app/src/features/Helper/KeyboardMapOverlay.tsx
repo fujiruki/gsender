@@ -12,6 +12,7 @@ import {
     VISUALIZER_CATEGORY,
 } from 'app/constants';
 import { useTypedSelector } from 'app/hooks/useTypedSelector';
+import { t } from 'app/i18n';
 import { useActiveShortcuts } from 'app/lib/shortcutRegistry';
 import type { RootState } from 'app/store/redux';
 import { updateAccessibility } from 'app/store/redux/slices/preferences.slice';
@@ -61,10 +62,10 @@ export const KeyboardMapOverlay: React.FC = () => {
                 <div className="col-span-3 flex justify-between items-center border-b border-white/20 pb-4 mb-2">
                     <div>
                         <h2 className="text-2xl font-bold">
-                            Active Keyboard Shortcuts
+                            {t('Active Keyboard Shortcuts')}
                         </h2>
                         <p className="text-sm text-white/60">
-                            Dynamic map of currently available shortcuts
+                            {t('Dynamic map of currently available shortcuts')}
                         </p>
                     </div>
                     <button
@@ -75,7 +76,7 @@ export const KeyboardMapOverlay: React.FC = () => {
                             pubsub.publish('repopulate');
                         }}
                         className="text-white/60 hover:text-white hover:bg-white/10 rounded-lg p-1.5 transition-colors"
-                        aria-label="Close keyboard map"
+                        aria-label={t('Close keyboard map')}
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -99,7 +100,7 @@ export const KeyboardMapOverlay: React.FC = () => {
                     return (
                         <div key={category} className="space-y-2">
                             <h3 className="text-blue-400 font-bold uppercase text-[10px] tracking-[0.2em]">
-                                {category}
+                                {t(category)}
                             </h3>
                             <ul className="space-y-1.5">
                                 {items.map((item) => (
@@ -109,9 +110,9 @@ export const KeyboardMapOverlay: React.FC = () => {
                                     >
                                         <span
                                             className="text-white/70 truncate mr-2"
-                                            title={item.title}
+                                            title={t(item.title)}
                                         >
-                                            {item.title}
+                                            {t(item.title)}
                                         </span>
                                         <kbd className="flex-shrink-0 bg-white/10 px-2 py-0.5 rounded text-[11px] font-mono border border-white/20 shadow-sm text-blue-200">
                                             {Array.isArray(item.keys)

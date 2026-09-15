@@ -13,6 +13,7 @@ import {
     type Job,
     StatContext,
 } from 'app/features/Stats/utils/StatContext.tsx';
+import { t } from 'app/i18n';
 import { convertMillisecondsToTimeStamp } from 'app/lib/datetime';
 import { CheckCircle, XCircle } from 'lucide-react';
 import { useContext } from 'react';
@@ -35,7 +36,7 @@ const defaultData: Job[] = [
 const columnData: CustomColumnDef<Job, any>[] = [
     {
         accessorKey: 'file',
-        header: () => 'File Name',
+        header: () => t('File Name'),
         cell: (info: { renderValue: () => string }) => {
             return (
                 <>
@@ -47,7 +48,7 @@ const columnData: CustomColumnDef<Job, any>[] = [
     },
     {
         accessorKey: 'duration',
-        header: () => 'Duration',
+        header: () => t('Duration'),
         cell: (info: { renderValue: () => number }) => {
             const ms = Number(info.renderValue());
             return convertMillisecondsToTimeStamp(ms);
@@ -56,12 +57,12 @@ const columnData: CustomColumnDef<Job, any>[] = [
     },
     {
         accessorKey: 'totalLines',
-        header: () => '# Lines',
+        header: () => t('# Lines'),
         size: 50,
     },
     {
         accessorKey: 'startTime',
-        header: () => 'Start Time',
+        header: () => t('Start Time'),
         cell: (info: { renderValue: () => string }) => {
             const dateString = new Date(info.renderValue()).toLocaleString(
                 'en-US',
@@ -76,7 +77,7 @@ const columnData: CustomColumnDef<Job, any>[] = [
     },
     {
         accessorKey: 'jobStatus',
-        header: () => 'Status',
+        header: () => t('Status'),
         cell: (info: { renderValue: () => JOB_STATUS_T }) => {
             return (
                 <div className="flex items-center justify-center">
@@ -97,10 +98,10 @@ export function Jobs() {
 
     function onClearJobHistory() {
         Confirm({
-            title: 'Delete Job History',
-            content: 'Are you sure you want to delete all job history?',
-            confirmLabel: 'Confirm',
-            cancelLabel: 'Cancel',
+            title: t('Delete Job History'),
+            content: t('Are you sure you want to delete all job history?'),
+            confirmLabel: t('Confirm'),
+            cancelLabel: t('Cancel'),
             onConfirm: async () => {
                 await clearJobHistory?.();
             },
@@ -112,13 +113,13 @@ export function Jobs() {
             <div className="col-span-4 row-span-6 pr-8 max-xl:pr-0">
                 <StatCard>
                     <div className="flex items-center justify-between gap-2">
-                        <CardHeader>Job History</CardHeader>
+                        <CardHeader>{t('Job History')}</CardHeader>
                         <Button
                             icon={
                                 <FaTrash className="text-gray-600 w-4 h-4 dark:text-content-secondary" />
                             }
                             onClick={onClearJobHistory}
-                            text="Clear"
+                            text={t('Clear')}
                             size="sm"
                             className="text-gray-600"
                         />
@@ -128,7 +129,7 @@ export function Jobs() {
                             defaultData={defaultData}
                             data={jobs}
                             columns={columnData}
-                            searchPlaceholder="Search past jobs..."
+                            searchPlaceholder={t('Search past jobs...')}
                             height="h-[calc(100vh-260px)]"
                         />
                     </div>
@@ -136,11 +137,11 @@ export function Jobs() {
             </div>
             <div className="col-span-2 row-span-6 col-start-5 pl-8 max-xl:pl-0 flex flex-col gap-2 justify-center items-center">
                 <div className="flex flex-col bg-white border border-gray-300 rounded p-2 h-full dark:bg-surface-raised dark:border-outline w-full justify-center items-center">
-                    <CardHeader>Jobs per CNC</CardHeader>
+                    <CardHeader>{t('Jobs per CNC')}</CardHeader>
                     <JobsPerComPort />
                 </div>
                 <div className="flex flex-col bg-white border border-gray-300 rounded p-2 h-full dark:bg-surface-raised dark:border-outline w-full justify-center items-center">
-                    <CardHeader>Run Time per CNC</CardHeader>
+                    <CardHeader>{t('Run Time per CNC')}</CardHeader>
                     <RunTimePerComPort />
                 </div>
             </div>
