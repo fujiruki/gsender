@@ -27,6 +27,7 @@ import store from 'app/store';
 import pubsub from 'pubsub-js';
 import type { FileData } from '..';
 import type { RecentFile } from '../definitions';
+import { t } from 'app/i18n';
 
 export const RECENT_FILE_LIMIT = 8;
 
@@ -76,7 +77,7 @@ export const updateRecentFileDate = (
 export const addRecentFile = (fileMetaData: RecentFile) => {
     if (fileMetaData === null) {
         toast.error(
-            'Unable to load file - file may have been moved or deleted.',
+            t('Unable to load file - file may have been moved or deleted.'),
             {
                 position: 'bottom-right',
             },

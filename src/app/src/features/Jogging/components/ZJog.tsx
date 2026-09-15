@@ -10,6 +10,7 @@ import {
     zPlusJog,
 } from 'app/features/Jogging/utils/Jogging.ts';
 import { useLongPress } from 'use-long-press';
+import { t } from 'app/i18n';
 
 export function ZJog({
     feedrate,
@@ -90,15 +91,15 @@ export function ZJog({
                 bottomHandlers={zMinusJogHandlers}
                 canClick={canClick}
                 idForTest="Z"
-                topLabel="Jog Z plus"
-                bottomLabel="Jog Z minus"
+                topLabel={t('Jog Z plus')}
+                bottomLabel={t('Jog Z minus')}
                 onTopKeyDown={(e) => handleKeyDown(e, zPlusJog)}
                 onBottomKeyDown={(e) => handleKeyDown(e, zMinusJog)}
                 onPressCancel={stopContinuousJog}
             />
             <img
                 src={zLabels}
-                alt="Z Labels tab"
+                alt={t('Z Labels tab')}
                 className="absolute top-0 left-0 pointer-events-none w-full h-full"
             />
         </div>

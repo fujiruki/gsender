@@ -36,6 +36,7 @@ import ModalToggle from './components/ModalToggle';
 import SpindleControls from './components/SpindleControls';
 import SpindleSelector from './components/SpindleSelector';
 import type { SendM5Type, SPINDLE_LASER_T } from './definitions';
+import { t } from 'app/i18n';
 
 interface SpindleState {
     minimized: boolean;
@@ -131,7 +132,7 @@ const SpindleWidget = () => {
     } | null>(null);
 
     const fallbackSpindle = {
-        label: 'Default Spindle',
+        label: t('Default Spindle'),
         id: '0',
         enabled: true,
         capabilities: '',

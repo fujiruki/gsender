@@ -3,6 +3,7 @@ import { SettingRow } from 'app/features/Config/components/SettingRow.tsx';
 import { useSettings } from 'app/features/Config/utils/SettingsContext.tsx';
 import cn from 'classnames';
 import React, { type JSX, useCallback } from 'react';
+import { t } from 'app/i18n';
 
 interface SettingSectionProps {
     settings: gSenderSetting[];
@@ -83,7 +84,7 @@ export const SettingSection = React.memo(
                     {label && !showEEPROMOnly && (
                         <legend className="flex flex-row gap-8 mt-4 py-2 px-2 items-center">
                             <span className="text-blue-500  text-xl">
-                                {label}
+                                {t(label)}
                             </span>
                             {connected && Wizard && <Wizard />}
                         </legend>

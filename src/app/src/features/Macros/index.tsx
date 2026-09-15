@@ -41,6 +41,7 @@ import {
 } from './constants';
 import Macro from './Macro';
 import MacroForm from './MacroForm';
+import { t } from 'app/i18n';
 
 type MacroWidgetProps = {
     type: string;
@@ -114,13 +115,13 @@ const MacroWidget = ({
 
                 combokeys.reload();
 
-                showToast({ msg: 'Added New Macro', type: 'success' });
+                showToast({ msg: t('Added New Macro'), type: 'success' });
                 actions.closeModal();
 
                 posthog?.capture('macro:add', { name });
             } catch (err) {
                 showToast({
-                    msg: 'Failed to add macro',
+                    msg: t('Failed to add macro'),
                     type: 'error',
                 });
             }
@@ -140,7 +141,7 @@ const MacroWidget = ({
                 combokeys.reload();
                 deleteGamepadMacro(id);
 
-                showToast({ msg: 'Deleted Macro', type: 'success' });
+                showToast({ msg: t('Deleted Macro'), type: 'success' });
 
                 posthog?.capture('macro:delete');
             } catch (err) {
@@ -180,7 +181,7 @@ const MacroWidget = ({
 
                 actions.closeModal();
                 if (!skipToast) {
-                    toast.success(`Updated macro '${name}'`, {
+                    toast.success(t("Updated macro '{{name}}'", { name }), {
                         position: 'bottom-right',
                     });
                 }
@@ -276,7 +277,7 @@ const MacroWidget = ({
 
     const exportMacros = () => {
         if (macros.length === 0) {
-            showToast({ msg: 'No Macros to Export', type: 'error' });
+            showToast({ msg: t('No Macros to Export'), type: 'error' });
             return;
         }
 
@@ -354,12 +355,22 @@ const MacroWidget = ({
 
                 if (importedCount > 0) {
                     showToast({
-                        msg: `Successfully imported ${importedCount} macro(s)${updatedCount > 0 ? `, updated ${updatedCount} existing macro(s)` : ''}`,
+                        msg:
+                            t('Successfully imported {{count}} macro(s)', {
+                                count: importedCount,
+                            }) +
+                            (updatedCount > 0
+                                ? t(', updated {{count}} existing macro(s)', {
+                                      count: updatedCount,
+                                  })
+                                : ''),
                         type: 'success',
                     });
                 } else if (updatedCount > 0) {
                     showToast({
-                        msg: `Updated ${updatedCount} existing macro(s)`,
+                        msg: t('Updated {{count}} existing macro(s)', {
+                            count: updatedCount,
+                        }),
                         type: 'success',
                     });
                 }
@@ -371,7 +382,7 @@ const MacroWidget = ({
             };
             reader.onerror = () => {
                 showToast({
-                    msg: 'Error Importing Macros',
+                    msg: t('Error Importing Macros'),
                     type: 'error',
                 });
             };
@@ -440,13 +451,13 @@ const MacroWidget = ({
                     macroDescription={editMacro?.description}
                     title={
                         modal.name === MODAL_EDIT_MACRO
-                            ? 'Edit Macro'
-                            : 'Add Macro'
+                            ? t('Edit Macro')
+                            : t('Add Macro')
                     }
                     submitLabel={
                         modal.name === MODAL_EDIT_MACRO
-                            ? 'Update Macro'
-                            : 'Add New Macro'
+                            ? t('Update Macro')
+                            : t('Add New Macro')
                     }
                 />
             )}
@@ -478,8 +489,8 @@ const MacroWidget = ({
                         onClick={actions.openAddMacroModal}
                         className="flex flex-1 justify-center items-center h-8 text-sm"
                         icon={<FaPlus />}
-                        text="Add"
-                        tooltip={{ content: 'Add a new macro' }}
+                        text={t('Add')}
+                        tooltip={{ content: t('Add a new macro') }}
                     />
 
                     <Button
@@ -488,16 +499,16 @@ const MacroWidget = ({
                         }}
                         className="flex flex-1 justify-center items-center h-8 text-sm"
                         icon={<FaFileImport />}
-                        text="Import"
-                        tooltip={{ content: 'Import macros from a file' }}
+                        text={t('Import')}
+                        tooltip={{ content: t('Import macros from a file') }}
                     />
 
                     <Button
                         onClick={exportMacros}
                         className="flex flex-1 justify-center items-center h-8 text-sm"
                         icon={<FaFileExport />}
-                        text="Export"
-                        tooltip={{ content: 'Export macros to a file' }}
+                        text={t('Export')}
+                        tooltip={{ content: t('Export macros to a file') }}
                     />
                 </div>
             </div>

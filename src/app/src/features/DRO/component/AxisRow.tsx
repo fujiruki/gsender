@@ -19,6 +19,7 @@ import {
 } from 'app/features/DRO/utils/DRO.ts';
 import { useWorkspaceState } from 'app/hooks/useWorkspaceState.ts';
 import { gotoZero, zeroWCS } from '../utils/DRO.ts';
+import { t } from 'app/i18n';
 
 interface AxisRowProps {
     label: string;
@@ -64,13 +65,24 @@ export function AxisRow({
                     disabled={disabled}
                     variant={homingMode ? 'alt' : 'secondary'}
                     tooltip={{
-                        content: `${homingMode ? 'Home' : 'Zero'} your ${label}-axis`,
+                        content: t(
+                            homingMode
+                                ? 'Home your {{label}}-axis'
+                                : 'Zero your {{label}}-axis',
+                            { label },
+                        ),
                         side: 'left',
                     }}
                     aria-label={
                         homingMode
-                            ? `Home ${label} axis: Move to physical machine limit`
-                            : `Zero ${label} axis: Set current position as work zero`
+                            ? t(
+                                  'Home {{label}} axis: Move to physical machine limit',
+                                  { label },
+                              )
+                            : t(
+                                  'Zero {{label}} axis: Set current position as work zero',
+                                  { label },
+                              )
                     }
                 >
                     <span className="font-bold font-mono text-xl transition-all transition-duration-300">
@@ -84,7 +96,7 @@ export function AxisRow({
                             disabled={disabled}
                             variant="secondary"
                             size="sm"
-                            aria-label={`Zero ${label} axis`}
+                            aria-label={t('Zero {{label}} axis', { label })}
                         >
                             <span className="font-bold font-mono text-xl transition-all transition-duration-300">
                                 {`${label}0`}
@@ -94,14 +106,17 @@ export function AxisRow({
                     <AlertDialogContent className="bg-white">
                         <AlertDialogHeader>
                             <AlertDialogTitle>
-                                Zero {label} Axis
+                                {t('Zero {{label}} Axis', { label })}
                             </AlertDialogTitle>
                             <AlertDialogDescription>
-                                Are you sure you want to zero the {label} axis?
+                                {t(
+                                    'Are you sure you want to zero the {{label}} axis?',
+                                    { label },
+                                )}
                             </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogCancel>{t('Cancel')}</AlertDialogCancel>
                             <AlertDialogAction
                                 onClick={() => {
                                     zeroWCS(label, 0);
@@ -111,7 +126,7 @@ export function AxisRow({
                                     });
                                 }}
                             >
-                                Continue
+                                {t('Continue')}
                             </AlertDialogAction>
                         </AlertDialogFooter>
                     </AlertDialogContent>
@@ -141,9 +156,12 @@ export function AxisRow({
                 variant="alt"
                 size="responsive"
                 tooltip={{
-                    content: `Go to ${label}-axis zero`,
+                    content: t('Go to {{label}}-axis zero', { label }),
                 }}
-                aria-label={`Go to ${label} axis zero: Move axis to its current work zero position`}
+                aria-label={t(
+                    'Go to {{label}} axis zero: Move axis to its current work zero position',
+                    { label },
+                )}
             >
                 <span className="text-lg font-mono">{label}</span>
             </Button>

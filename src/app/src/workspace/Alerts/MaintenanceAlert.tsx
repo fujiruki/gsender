@@ -38,6 +38,7 @@ import { toast } from 'app/lib/toaster';
 import chainedFunction from 'chained-function';
 import uniqueId from 'lodash/uniqueId';
 import type React from 'react';
+import { t } from 'app/i18n';
 
 interface Props {
     tasks: MaintenanceTask[];
@@ -64,9 +65,9 @@ const MaintenanceAlert: React.FC<Props> = ({
         <AlertDialog open={showModal} onOpenChange={setShowModal}>
             <AlertDialogContent className="bg-slate-200">
                 <AlertDialogHeader className="flex justify-between items-center">
-                    <AlertDialogTitle>Maintenance Alert</AlertDialogTitle>
+                    <AlertDialogTitle>{t('Maintenance Alert')}</AlertDialogTitle>
                     <AlertDialogDescription>
-                        <p>{'The following maintenance tasks are due:'}</p>
+                        <p>{t('The following maintenance tasks are due:')}</p>
                         <span className="flex flex-col overflow-y-auto border border-slate-400 m-3">
                             {alertTasks.map((task) => {
                                 return (
@@ -77,9 +78,9 @@ const MaintenanceAlert: React.FC<Props> = ({
                             })}
                         </span>
                         <p>
-                            Click 'Reset Timers' to reset the timers on ALL
-                            listed tasks. Click 'Close' to close the popup and
-                            do nothing.
+                            {t(
+                                "Click 'Reset Timers' to reset the timers on ALL listed tasks. Click 'Close' to close the popup and do nothing.",
+                            )}
                         </p>
                     </AlertDialogDescription>
                 </AlertDialogHeader>
@@ -101,24 +102,25 @@ const MaintenanceAlert: React.FC<Props> = ({
                                     .update(updatedTasks)
                                     .then((res) => {
                                         if (res.status === 200) {
-                                            toast('Reset Timers successfully', {
+                                            toast(t('Reset Timers successfully'), {
                                                 position: 'bottom-right',
                                             });
                                         } else {
-                                            toast('Failed to Reset Timers.', {
-                                                description:
+                                            toast(t('Failed to Reset Timers.'), {
+                                                description: t(
                                                     'Please go to the Stats Page to reset them manually.',
+                                                ),
                                                 position: 'bottom-right',
                                             });
                                         }
                                     });
                             }, onClose)}
                         >
-                            {'Reset Timers'}
+                            {t('Reset Timers')}
                         </Button>
                     </AlertDialogAction>
                     <AlertDialogCancel>
-                        <Button onClick={onClose}>{'Close'}</Button>
+                        <Button onClick={onClose}>{t('Close')}</Button>
                     </AlertDialogCancel>
                 </AlertDialogFooter>
             </AlertDialogContent>

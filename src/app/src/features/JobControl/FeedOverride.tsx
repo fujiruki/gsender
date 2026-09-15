@@ -11,6 +11,7 @@ import {
     OVERRIDE_VALUE_RANGES,
     SPINDLE_MODE,
 } from '../../constants';
+import { t } from 'app/i18n';
 
 interface OverridesProps {
     ovF: number;
@@ -62,8 +63,8 @@ const Overrides: React.FC<OverridesProps> = ({
     );
     const [spindleOverrideLabel, setSpindleOverrideLabel] = useState(
         store.get('widgets.spindle.mode') === SPINDLE_MODE
-            ? 'Spindle'
-            : 'Laser',
+            ? t('Spindle')
+            : t('Laser'),
     );
     const [localOvF, setLocalOvF] = useState(ovF);
     const [localOvS, setLocalOvS] = useState(ovS);
@@ -78,8 +79,8 @@ const Overrides: React.FC<OverridesProps> = ({
         setShowSpindleOverride(store.get('workspace.spindleFunctions'));
         setSpindleOverrideLabel(
             store.get('widgets.spindle.mode', SPINDLE_MODE) === SPINDLE_MODE
-                ? 'Spindle'
-                : 'Laser',
+                ? t('Spindle')
+                : t('Laser'),
         );
     };
 
@@ -115,7 +116,7 @@ const Overrides: React.FC<OverridesProps> = ({
                 percentage={[localOvF]}
                 defaultPercentage={[100]}
                 showText={true}
-                title="Feed"
+                title={t('Feed')}
                 unitString={unitString}
                 colour={isConnected ? 'bg-blue-400' : 'bg-gray-500'}
                 disabled={!isConnected}
@@ -145,11 +146,11 @@ const Overrides: React.FC<OverridesProps> = ({
                     showText={true}
                     title={spindleOverrideLabel}
                     unitString={
-                        spindleOverrideLabel === 'Laser' ? 'Power' : 'RPM'
+                        spindleOverrideLabel === t('Laser') ? t('Power') : 'RPM'
                     }
                     colour={
                         isConnected
-                            ? spindleOverrideLabel === 'Laser'
+                            ? spindleOverrideLabel === t('Laser')
                                 ? 'bg-purple-400'
                                 : 'bg-red-400'
                             : 'bg-gray-500'

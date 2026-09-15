@@ -50,6 +50,7 @@ import { useSelector } from 'react-redux';
 import Divider from './components/Divider';
 import type { RecentFile } from './definitions';
 import { getRecentFiles } from './utils/recentfiles';
+import { t } from 'app/i18n';
 
 const ButtonControlGroup = () => {
     const posthog = usePostHog();
@@ -106,7 +107,7 @@ const ButtonControlGroup = () => {
 
     const shuttleControlEvents = {
         LOAD_FILE: {
-            title: 'Load file',
+            title: t('Load file'),
             keys: ['shift', 'l'].join('+'),
             gamepadKeys: '0',
             keysName: 'A',
@@ -126,7 +127,7 @@ const ButtonControlGroup = () => {
             ),
         },
         UNLOAD_FILE: {
-            title: 'Unload file',
+            title: t('Unload file'),
             keys: ['shift', 'k'].join('+'),
             gamepadKeys: '1',
             keysName: 'B',
@@ -217,7 +218,7 @@ const ButtonControlGroup = () => {
         controller.command('gcode:unload');
         reduxStore.dispatch(unloadFileInfo());
         pubsub.publish('unload:file');
-        toast('G-code File Closed', { position: 'bottom-right' });
+        toast(t('G-code File Closed'), { position: 'bottom-right' });
 
         fileInputRef.current.value = '';
     }, 100);
@@ -227,7 +228,7 @@ const ButtonControlGroup = () => {
             <Button
                 onClick={handleClickLoadFile}
                 icon={<FaFolderOpen className="w-5 h-5" />}
-                text="Load File"
+                text={t('Load File')}
                 variant="ghost"
                 disabled={!canClick}
                 className="h-full px-4 rounded-none portrait:text-xl portrait:px-6"
@@ -235,7 +236,7 @@ const ButtonControlGroup = () => {
             <Divider />
             <div className="grid grid-cols-[60px_2px_60px_2px_60px] h-full portrait:grid-cols-[80px_2px_80px_2px_80px]">
                 <DropdownMenu>
-                    <Tooltip content="View Recent Files">
+                    <Tooltip content={t('View Recent Files')}>
                         <DropdownMenuTrigger asChild>
                             <Button
                                 icon={
@@ -244,12 +245,12 @@ const ButtonControlGroup = () => {
                                 variant="ghost"
                                 disabled={!canClick || isCheck}
                                 className="h-full rounded-none"
-                                aria-label="View Recent Files"
+                                aria-label={t('View Recent Files')}
                             />
                         </DropdownMenuTrigger>
                     </Tooltip>
                     <DropdownMenuContent className="w-56 bg-white">
-                        <DropdownMenuLabel>Recent Files</DropdownMenuLabel>
+                        <DropdownMenuLabel>{t('Recent Files')}</DropdownMenuLabel>
                         {recentFiles.map((file) => (
                             <DropdownMenuItem
                                 key={file.filePath}
@@ -281,29 +282,30 @@ const ButtonControlGroup = () => {
                 <Divider />
 
                 <AlertDialog>
-                    <Tooltip content="Close File">
+                    <Tooltip content={t('Close File')}>
                         <AlertDialogTrigger asChild>
                             <Button
                                 icon={<MdClose className="w-6 h-6" />}
                                 variant="ghost"
                                 className="h-full rounded-none"
                                 disabled={isRunning || !fileLoaded}
-                                aria-label="Close File"
+                                aria-label={t('Close File')}
                             />
                         </AlertDialogTrigger>
                     </Tooltip>
                     <AlertDialogContent className="bg-white">
                         <AlertDialogHeader>
-                            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                            <AlertDialogTitle>{t('Are you sure?')}</AlertDialogTitle>
                             <AlertDialogDescription>
-                                This will close the current file. Any unsaved
-                                changes will be lost.
+                                {t(
+                                    'This will close the current file. Any unsaved changes will be lost.',
+                                )}
                             </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogCancel>{t('Cancel')}</AlertDialogCancel>
                             <AlertDialogAction onClick={handleCloseFile}>
-                                Close File
+                                {t('Close File')}
                             </AlertDialogAction>
                         </AlertDialogFooter>
                     </AlertDialogContent>

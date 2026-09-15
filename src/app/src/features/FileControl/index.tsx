@@ -17,6 +17,7 @@ import {
     deleteRecentFile,
     loadRecentFile,
 } from './utils/recentfiles';
+import { t } from 'app/i18n';
 
 export type FileData = {
     data: string;
@@ -52,7 +53,9 @@ const FileControl = () => {
                 ) => {
                     if (!fileMetaData) {
                         toast.error(
-                            'Error loading recent file, it may have been deleted or moved to a different folder.',
+                            t(
+                                'Error loading recent file, it may have been deleted or moved to a different folder.',
+                            ),
                             { position: 'bottom-right' },
                         );
 

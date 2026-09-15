@@ -14,6 +14,7 @@ import { useRef, useState } from 'react';
 import { FaEllipsisH } from 'react-icons/fa';
 import { LuCopy, LuPaintbrush } from 'react-icons/lu';
 import { useDispatch } from 'react-redux';
+import { t } from 'app/i18n';
 
 const COPY_HISTORY_LIMIT = 50;
 
@@ -80,7 +81,9 @@ const TerminalInput = ({ onClear }: Props) => {
             await navigator.clipboard.writeText(lastCommands.join('\n'));
 
             toast.success(
-                `Copied last ${lastCommands.length} commands to clipboard`,
+                t('Copied last {{count}} commands to clipboard', {
+                    count: lastCommands.length,
+                }),
                 {
                     duration: 3000,
                     position: 'bottom-right',
@@ -91,7 +94,7 @@ const TerminalInput = ({ onClear }: Props) => {
                 commands: lastCommands,
             });
         } catch (error) {
-            toast.error('Failed to copy commands to clipboard', {
+            toast.error(t('Failed to copy commands to clipboard'), {
                 duration: 3000,
                 position: 'bottom-right',
             });
@@ -103,7 +106,7 @@ const TerminalInput = ({ onClear }: Props) => {
         <div className="flex gap-2 w-full flex-grow">
             <Input
                 className="h-8 text-sm"
-                placeholder="Enter G-code here..."
+                placeholder={t('Enter G-code here...')}
                 ref={inputRef}
                 type="text"
                 onKeyDown={(e) => {
@@ -140,7 +143,7 @@ const TerminalInput = ({ onClear }: Props) => {
                 className="h-8 w-24 text-sm"
                 onClick={handleCommandExecute}
             >
-                Run
+                {t('Run')}
             </Button>
 
             <Popover>
@@ -148,7 +151,7 @@ const TerminalInput = ({ onClear }: Props) => {
                     <Button
                         variant="secondary"
                         className="h-8 text-sm"
-                        aria-label="Console options"
+                        aria-label={t('Console options')}
                     >
                         <FaEllipsisH />
                     </Button>
@@ -160,14 +163,14 @@ const TerminalInput = ({ onClear }: Props) => {
                             className="w-full flex gap-2 h-8 text-sm"
                             onClick={handleCopyHistory}
                             icon={<LuCopy />}
-                            text="Copy last 50 lines"
+                            text={t('Copy last 50 lines')}
                         />
                         <Button
                             variant="outline"
                             className="w-full flex gap-2 h-8 text-sm"
                             onClick={onClear}
                             icon={<LuPaintbrush />}
-                            text="Clear Console"
+                            text={t('Clear Console')}
                         />
                     </div>
                 </PopoverContent>

@@ -19,6 +19,7 @@ import { useCallback } from 'react';
 import { FaWater } from 'react-icons/fa';
 import { FaBan, FaShower } from 'react-icons/fa6';
 import { connect } from 'react-redux';
+import { t } from 'app/i18n';
 
 export interface CoolantProps {
     mistActive: boolean;
@@ -54,7 +55,7 @@ export function Coolant({ mistActive, floodActive }: CoolantProps) {
         <div className="flex flex-col justify-around items-center h-full">
             <div className="flex flex-row justify-center w-full gap-2">
                 <ActiveStateButton
-                    text="Mist"
+                    text={t('Mist')}
                     icon={<FaShower />}
                     onClick={() => {
                         startMist();
@@ -64,10 +65,10 @@ export function Coolant({ mistActive, floodActive }: CoolantProps) {
                     size="md"
                     active={isConnected && mistActive}
                     disabled={!canClick()}
-                    tooltip={{ content: 'Turn on mist coolant' }}
+                    tooltip={{ content: t('Turn on mist coolant') }}
                 />
                 <ActiveStateButton
-                    text="Flood"
+                    text={t('Flood')}
                     icon={<FaWater />}
                     onClick={() => {
                         startFlood();
@@ -77,10 +78,10 @@ export function Coolant({ mistActive, floodActive }: CoolantProps) {
                     size="md"
                     active={isConnected && floodActive}
                     disabled={!canClick()}
-                    tooltip={{ content: 'Turn on flood coolant' }}
+                    tooltip={{ content: t('Turn on flood coolant') }}
                 />
                 <ActiveStateButton
-                    text="Off"
+                    text={t('Off')}
                     icon={<FaBan />}
                     onClick={() => {
                         stopCoolant();
@@ -89,7 +90,7 @@ export function Coolant({ mistActive, floodActive }: CoolantProps) {
                     className="h-16"
                     size="md"
                     disabled={!canClick()}
-                    tooltip={{ content: 'Turn off coolant' }}
+                    tooltip={{ content: t('Turn off coolant') }}
                 />
             </div>
         </div>

@@ -29,6 +29,7 @@ import { useTypedSelector } from 'app/hooks/useTypedSelector';
 import type React from 'react';
 import { FaLightbulb, FaRegLightbulb, FaSatelliteDish } from 'react-icons/fa';
 import type { SendM5Type } from '../definitions';
+import { t } from 'app/i18n';
 
 type Props = {
     actions: LaserActions;
@@ -66,34 +67,34 @@ const LaserControls = ({ actions, state, canClick, isConnected }: Props) => {
                 <ActiveStateButton
                     onClick={actions.sendLaserM3}
                     icon={<FaLightbulb />}
-                    text="Laser On"
+                    text={t('Laser On')}
                     active={isConnected && laserIsOn}
                     size={'sm'}
                     disabled={!canClick}
-                    tooltip={{ content: 'Turn on laser' }}
+                    tooltip={{ content: t('Turn on laser') }}
                 />
                 <ActiveStateButton
                     onClick={actions.runLaserTest}
                     icon={<FaSatelliteDish />}
-                    text="Laser Test"
+                    text={t('Laser Test')}
                     size={'sm'}
                     disabled={!canClick}
                     tooltip={{
-                        content: 'Turn on laser for Test Duration',
+                        content: t('Turn on laser for Test Duration'),
                     }}
                 />
                 <ActiveStateButton
                     onClick={() => actions.sendM5({ type: 'laser' })}
                     icon={<FaRegLightbulb />}
-                    text="Off"
+                    text={t('Off')}
                     size={'sm'}
                     disabled={!canClick}
-                    tooltip={{ content: 'Turn off laser' }}
+                    tooltip={{ content: t('Turn off laser') }}
                 />
             </div>
             <div className="grid grid-cols-[1fr_3fr_1fr] gap-2 justify-center mt-2 items-center dark:text-content-primary">
-                <span className="text-right">Power</span>
-                <Tooltip content="Adjust laser power">
+                <span className="text-right">{t('Power')}</span>
+                <Tooltip content={t('Adjust laser power')}>
                     <Slider
                         value={[laser.power]}
                         max={100}
@@ -102,15 +103,17 @@ const LaserControls = ({ actions, state, canClick, isConnected }: Props) => {
                             actions.handleLaserPowerChange(value[0])
                         }
                         disabled={!canClick}
-                        aria-label="Adjust laser power"
+                        aria-label={t('Adjust laser power')}
                     />
                 </Tooltip>
                 <span>{laser.power}%</span>
             </div>
             <div className="flex gap-2 justify-center items-center mt-1 dark:text-content-primary">
-                <label htmlFor="laser-test-duration">Test Duration:</label>
+                <label htmlFor="laser-test-duration">
+                    {t('Test Duration:')}
+                </label>
                 <div className="flex gap-2">
-                    <Tooltip content="Laser test duration">
+                    <Tooltip content={t('Laser test duration')}>
                         <ControlledInput
                             id="laser-test-duration"
                             value={laser.duration}
@@ -119,7 +122,7 @@ const LaserControls = ({ actions, state, canClick, isConnected }: Props) => {
                             suffix="sec"
                             type="number"
                             sizing="xs"
-                            aria-label="Laser test duration"
+                            aria-label={t('Laser test duration')}
                         />
                     </Tooltip>
                 </div>

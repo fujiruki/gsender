@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { t } from 'app/i18n';
 
 import SpinningDrill from './assets/loading-spinning-bit.gif';
 import SpinningDrillPaused from './assets/loading-spinning-bit-paused.gif';
@@ -41,7 +42,7 @@ const WoodcuttingProgress = ({
 
             <img
                 src={currentDrillSrc}
-                alt="Spinning Drill"
+                alt={t('Spinning Drill')}
                 className="absolute top-1/2 w-8 h-auto transition-all duration-100 -translate-y-1/2 z-10 brightness-[0.8]"
                 style={{
                     left: `calc(${percentage}% - ${drillImageRef.current?.offsetWidth}px + 6px)`,

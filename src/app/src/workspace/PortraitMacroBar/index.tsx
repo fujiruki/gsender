@@ -25,6 +25,7 @@ import cx from 'classnames';
 import { useCallback, useEffect, useState } from 'react';
 import { FaGripVertical } from 'react-icons/fa';
 import { useMediaQuery } from 'react-responsive';
+import { t } from 'app/i18n';
 
 type MacroItem = {
     id: string;
@@ -99,7 +100,7 @@ function SortableMacroButton({
                     'text-gray-300 dark:text-gray-600 hover:text-gray-500 dark:hover:text-gray-400',
                     'touch-none',
                 )}
-                title="Drag to reorder"
+                title={t('Drag to reorder')}
             >
                 <FaGripVertical className="w-4 h-4" />
             </div>
@@ -154,14 +155,24 @@ export const PortraitMacroBar = () => {
                 controller.context,
                 (err: Error | null) => {
                     if (err) {
-                        toast.error(`Failed to run macro "${macro.name}"`, {
-                            position: 'bottom-right',
-                        });
+                        toast.error(
+                            t('Failed to run macro "{{name}}"', {
+                                name: macro.name,
+                            }),
+                            {
+                                position: 'bottom-right',
+                            },
+                        );
                         return;
                     }
-                    toast.info(`Started running macro "${macro.name}"!`, {
-                        position: 'bottom-right',
-                    });
+                    toast.info(
+                        t('Started running macro "{{name}}"!', {
+                            name: macro.name,
+                        }),
+                        {
+                            position: 'bottom-right',
+                        },
+                    );
                 },
             );
         },

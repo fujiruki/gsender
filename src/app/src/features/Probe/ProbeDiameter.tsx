@@ -62,6 +62,7 @@ import type {
     ProbeCommand,
     State,
 } from './definitions';
+import { t } from 'app/i18n';
 
 type Props = {
     actions: Actions;
@@ -303,7 +304,7 @@ const ProbeDiameter = ({ actions, state, probeCommand }: Props) => {
 
     const shuttleControlEvents = useRef({
         PROBE_DIAMETER_SCROLL_UP: {
-            title: 'Tool Diameter scroll up',
+            title: t('Tool Diameter scroll up'),
             keys: '',
             cmd: 'PROBE_DIAMETER_SCROLL_UP',
             preventDefault: false,
@@ -312,7 +313,7 @@ const ProbeDiameter = ({ actions, state, probeCommand }: Props) => {
             callback: () => scrollHandlerRef.current('up'),
         },
         PROBE_DIAMETER_SCROLL_DOWN: {
-            title: 'Tool Diameter scroll down',
+            title: t('Tool Diameter scroll down'),
             keys: '',
             cmd: 'PROBE_DIAMETER_SCROLL_DOWN',
             preventDefault: false,
@@ -340,7 +341,7 @@ const ProbeDiameter = ({ actions, state, probeCommand }: Props) => {
             return (
                 <div className="flex items-center justify-center h-full min-h-10">
                     <p className="text-gray-500">
-                        No tools available, add one below.
+                        {t('No tools available, add one below.')}
                     </p>
                 </div>
             );
@@ -373,7 +374,9 @@ const ProbeDiameter = ({ actions, state, probeCommand }: Props) => {
                                 handleDeleteOption(option.value);
                             }}
                             size="sm"
-                            aria-label={`Delete tool diameter ${option.label}`}
+                            aria-label={t('Delete tool diameter {{label}}', {
+                                label: option.label,
+                            })}
                         >
                             {option.value !== PROBE_TYPE_AUTO &&
                                 option.value !== PROBE_TYPE_TIP && (
@@ -397,7 +400,7 @@ const ProbeDiameter = ({ actions, state, probeCommand }: Props) => {
                             className="w-full justify-between bg-white dark:bg-surface-raised"
                             disabled={!probeCommand.tool}
                             tooltip={{
-                                content: 'Select tool diameter',
+                                content: t('Select tool diameter'),
                                 side: 'left',
                             }}
                         >
@@ -407,7 +410,7 @@ const ProbeDiameter = ({ actions, state, probeCommand }: Props) => {
                                     {getUnitString(value as PROBE_TYPES_T)}
                                 </span>
                             ) : (
-                                'Select diameter'
+                                t('Select diameter')
                             )}
                             <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
@@ -419,11 +422,15 @@ const ProbeDiameter = ({ actions, state, probeCommand }: Props) => {
                         <div className="border-t">
                             <div className="flex items-center space-x-2 p-2">
                                 <Tooltip
-                                    content="Create and use a custom probe diameter"
+                                    content={t(
+                                        'Create and use a custom probe diameter',
+                                    )}
                                     side="bottom"
                                 >
                                     <Input
-                                        placeholder={`Custom diameter (${units})`}
+                                        placeholder={t('Custom diameter ({{units}})', {
+                                            units,
+                                        })}
                                         onKeyDown={(
                                             e: KeyboardEvent<HTMLInputElement>,
                                         ) => {
@@ -446,7 +453,7 @@ const ProbeDiameter = ({ actions, state, probeCommand }: Props) => {
                                         }
                                     }}
                                     size="sm"
-                                    text="Add"
+                                    text={t('Add')}
                                     icon={<Plus className="h-4 w-4" />}
                                 />
                             </div>

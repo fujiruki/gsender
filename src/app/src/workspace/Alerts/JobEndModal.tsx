@@ -11,6 +11,7 @@ import { Button } from 'app/components/shadcn/Button';
 import { JOB_STATUS } from 'app/constants';
 import type { Job } from 'app/features/Stats/utils/StatContext';
 import { convertMillisecondsToTimeStamp } from 'app/lib/datetime';
+import { t } from 'app/i18n';
 import cx from 'classnames';
 import uniqueId from 'lodash/uniqueId';
 
@@ -33,12 +34,12 @@ const JobEndModal: React.FC<Props> = ({
         <AlertDialog open={showModal} onOpenChange={setShowModal}>
             <AlertDialogContent className="bg-slate-200">
                 <AlertDialogHeader className="flex items-center">
-                    <AlertDialogTitle>Job End</AlertDialogTitle>
+                    <AlertDialogTitle>{t('Job End')}</AlertDialogTitle>
                     <AlertDialogDescription>
                         <div className="min-h-[100px] max-h-[500px] flex flex-col">
                             <div className="flex flex-col m-2 mt-0 overflow-y-auto float-left">
                                 <div>
-                                    <strong>Status:</strong>
+                                    <strong>{t('Status:')}</strong>
                                     <span
                                         className={cx({
                                             'text-green-500':
@@ -51,14 +52,14 @@ const JobEndModal: React.FC<Props> = ({
                                     >{` ${job.jobStatus}\n`}</span>
                                 </div>
                                 <div>
-                                    <strong>Time:</strong>
+                                    <strong>{t('Time:')}</strong>
                                     <span>{` ${convertMillisecondsToTimeStamp(job.duration)}\n`}</span>
                                 </div>
-                                <strong>{'Errors:\n'}</strong>
+                                <strong>{`${t('Errors:')}\n`}</strong>
 
                                 {errors.length === 0 ? (
                                     <span className="flex flex-col m-2 mt-0">
-                                        None
+                                        {t('None')}
                                     </span>
                                 ) : (
                                     <span className="flex flex-col m-2 mt-0 text-red-500">
@@ -77,7 +78,7 @@ const JobEndModal: React.FC<Props> = ({
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel onClick={onClose}>
-                        Close
+                        {t('Close')}
                     </AlertDialogCancel>
                 </AlertDialogFooter>
             </AlertDialogContent>

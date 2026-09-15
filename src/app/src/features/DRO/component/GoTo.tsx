@@ -16,6 +16,7 @@ import type { RootState } from 'app/store/redux';
 import { get } from 'lodash';
 import { useEffect, useState } from 'react';
 import { FaPaperPlane } from 'react-icons/fa6';
+import { t } from 'app/i18n';
 
 type MovementMode = 'abs' | 'inc' | 'mcs';
 
@@ -200,20 +201,20 @@ export function GoTo({ units, wpos, disabled }: GotoProps) {
 
     return (
         <Popover onOpenChange={onPopoverOpen}>
-            <Tooltip content="Go To Location">
+            <Tooltip content={t('Go To Location')}>
                 <PopoverTrigger asChild>
                     <Button
                         disabled={disabled}
                         icon={<FaPaperPlane />}
                         variant="secondary"
                         size="sm"
-                        aria-label="Open Go To Location dialog"
+                        aria-label={t('Open Go To Location dialog')}
                     />
                 </PopoverTrigger>
             </Tooltip>
             <PopoverContent className="bg-white">
                 <div className="w-full gap-2 flex flex-col">
-                    <h1>Go To Location</h1>
+                    <h1>{t('Go To Location')}</h1>
                     <div className="flex flex-row text-sm border rounded overflow-hidden">
                         {modeLabels.map(({ key, label }) => {
                             const isActive = movementMode === key;
@@ -230,7 +231,9 @@ export function GoTo({ units, wpos, disabled }: GotoProps) {
                                     disabled={isDisabled}
                                     title={
                                         isDisabled
-                                            ? 'Requires homing enabled ($22>0) and machine homed'
+                                            ? t(
+                                                  'Requires homing enabled ($22>0) and machine homed',
+                                              )
                                             : label
                                     }
                                     aria-pressed={isActive}
@@ -270,9 +273,9 @@ export function GoTo({ units, wpos, disabled }: GotoProps) {
                     <Button
                         variant="alt"
                         onClick={goToLocation}
-                        aria-label="Execute move to location"
+                        aria-label={t('Execute move to location')}
                     >
-                        Go!
+                        {t('Go!')}
                     </Button>
                 </div>
             </PopoverContent>

@@ -10,6 +10,7 @@ import {
     stopContinuousJog,
 } from 'app/features/Jogging/utils/Jogging.ts';
 import { useLongPress } from 'use-long-press';
+import { t } from 'app/i18n';
 
 export function AJog({
     feedrate,
@@ -97,15 +98,15 @@ export function AJog({
                 bottomHandlers={aMinusJogHandlers}
                 canClick={canClick}
                 idForTest="A"
-                topLabel={`Jog ${axis} plus`}
-                bottomLabel={`Jog ${axis} minus`}
+                topLabel={t('Jog {{axis}} plus', { axis })}
+                bottomLabel={t('Jog {{axis}} minus', { axis })}
                 onTopKeyDown={(e) => handleKeyDown(e, aPlusJog)}
                 onBottomKeyDown={(e) => handleKeyDown(e, aMinusJog)}
                 onPressCancel={stopContinuousJog}
             />
             <img
                 src={aLabels}
-                alt="a Labels tab"
+                alt={t('a Labels tab')}
                 className="absolute top-0 right-0 pointer-events-none w-full h-full object-contain"
             />
         </div>

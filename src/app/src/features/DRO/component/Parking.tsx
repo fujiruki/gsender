@@ -16,6 +16,7 @@ import { get, includes } from 'lodash';
 import { useEffect, useRef } from 'react';
 import { RiParkingFill } from 'react-icons/ri';
 import { useSelector } from 'react-redux';
+import { t } from 'app/i18n';
 
 export function goToParkLocation() {
     const park = store.get('workspace.park', {});
@@ -72,7 +73,7 @@ export function Parking({
 
     const shuttleControlEvents = {
         HOMING_PARK: {
-            title: 'Park ',
+            title: t('Park '),
             keys: '',
             cmd: 'HOMING_PARK',
             preventDefault: false,
@@ -95,7 +96,7 @@ export function Parking({
     }
 
     return (
-        <Tooltip content="Go to Park Location">
+        <Tooltip content={t('Go to Park Location')}>
             <Button
                 disabled={isDisabled}
                 icon={<RiParkingFill className="w-4 h-4" />}
@@ -109,7 +110,7 @@ export function Parking({
                         is_disabled: isDisabled,
                     });
                 }}
-                aria-label="Go to Park Location"
+                aria-label={t('Go to Park Location')}
             />
         </Tooltip>
     );

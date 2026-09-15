@@ -8,6 +8,7 @@ import { useSettings } from 'app/features/Config/utils/SettingsContext.tsx';
 import cn from 'classnames';
 import React, { useMemo } from 'react';
 import { InView } from 'react-intersection-observer';
+import { t } from 'app/i18n';
 
 interface SectionProps {
     title: string;
@@ -88,7 +89,7 @@ export const Section = React.forwardRef(
                         id={`h-${id}`}
                         ref={ref}
                     >
-                        {title}
+                        {t(title)}
                     </h1>
                     {connected && Wizard && <Wizard />}
                 </div>

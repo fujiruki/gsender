@@ -4,6 +4,7 @@ import type React from 'react';
 import type { MouseEventHandler } from 'react';
 import type { IconType } from 'react-icons';
 import type { SettingsMenuSection } from '../assets/SettingsMenu';
+import { t } from 'app/i18n';
 
 interface MenuProps {
     menu: SettingsMenuSection[];
@@ -73,7 +74,7 @@ function MenuItem({
                         : 'text-gray-600 group-hover:text-blue-500 hover:text-blue-500 dark:text-content-primary',
                 })}
             </span>
-            <span>{label}</span>
+            <span>{t(label)}</span>
         </button>
     );
 }

@@ -9,6 +9,7 @@ import cx from 'classnames';
 import get from 'lodash/get';
 import pubsub from 'pubsub-js';
 import { TbVector } from 'react-icons/tb';
+import { t } from 'app/i18n';
 
 interface OutlineButtonProps {
     disabled: boolean;
@@ -43,7 +44,7 @@ const OutlineButton: React.FC<OutlineButtonProps> = ({ disabled }) => {
                 const maxRuntime = setTimeout(() => {
                     outlineWorker.terminate();
                     toast.error(
-                        'Outline generation timed out. Please try again.',
+                        t('Outline generation timed out. Please try again.'),
                     );
                     outlineRunning = false;
                 }, 15000);
@@ -89,7 +90,7 @@ const OutlineButton: React.FC<OutlineButtonProps> = ({ disabled }) => {
             )}
             onClick={runOutline}
         >
-            <TbVector className="text-2xl mr-1" /> Outline
+            <TbVector className="text-2xl mr-1" /> {t('Outline')}
         </Button>
     );
 };

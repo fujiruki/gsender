@@ -3,6 +3,7 @@ import { ControlledInput } from 'app/components/ControlledInput';
 import { Label } from 'app/components/Label';
 import { toFixedIfNecessary } from 'app/lib/rounding';
 import { FaMinus, FaPlus } from 'react-icons/fa';
+import { t } from 'app/i18n';
 
 interface JogInputProps {
     label: string;
@@ -100,7 +101,7 @@ export const JogInput = ({
                     }}
                     size="mini"
                     icon={<FaMinus />}
-                    aria-label={`Decrease ${effectiveLabel}`}
+                    aria-label={t('Decrease {{label}}', { label: effectiveLabel })}
                 />
                 <ControlledInput
                     sizing="xs"
@@ -121,7 +122,7 @@ export const JogInput = ({
                     }}
                     size="mini"
                     icon={<FaPlus />}
-                    aria-label={`Increase ${effectiveLabel}`}
+                    aria-label={t('Increase {{label}}', { label: effectiveLabel })}
                 />
             </div>
         </div>
