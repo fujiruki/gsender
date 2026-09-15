@@ -91,16 +91,29 @@
 
 ---
 
-<!-- M3(余力)は時間に応じて以下をコピーして追加:
+## Agent-周辺機能(M3-a)
 
-## Agent-設定説明文・周辺機能(M3)
+> 対応spec: `docs/spec/02_機能仕様.md` F-04。git worktree `gSender-m3a`(`feature/i18n-m3a`)でM3-bと並列にCodex実行中
 
 ### タスク
-- [ ] SettingsDescriptions.ts(EEPROMSection.tsxで対応)
-- [ ] AccessoryInstaller/ATC, Rotary, SDCard, RemoteMode, サーバー起点メッセージ
-- [ ] M2からの引き継ぎ: Config/Macros/navbar/RemoteMode/Rotary/SDCard/Visualizer/workspace/wizards配下のConfirmationDialog/toast呼び出し元(約15ファイル)
+- [ ] AccessoryInstaller, ATC, Rotary, RemoteMode, SDCardを`t()`ラップ
 - [ ] ATCタブ名の翻訳（`features/Tools/index.tsx`のDATA_SOURCES化で新規検出済み、未翻訳のまま残存）
+- [ ] `i18n:sync` / `i18n:review` / テスト・ビルド確認
 
 ### 完了タスク
 
--->
+---
+
+## Agent-設定説明文・引き継ぎ分(M3-b)
+
+> 対応spec: `docs/spec/02_機能仕様.md` F-04。git worktree `gSender-m3b`(`feature/i18n-m3b`)でM3-aと並列にCodex実行中
+
+### タスク
+- [ ] `SettingsDescriptions.ts`（$設定の説明、1679行）を`EEPROMSection.tsx`描画側でt()ラップ（データ定義ファイル自体は編集しない）
+- [ ] M2からの引き継ぎ: Config/Macros/navbar/RemoteMode/Rotary/SDCard/Visualizer/workspace/wizards配下のConfirmationDialog/toast呼び出し元(約15ファイル)
+- [ ] サーバー起点メッセージ(`src/server/`からsocket経由で届く文字列)がフロント側で表示される箇所を調査し、必要ならフロント受信側でt()する
+- [ ] `i18n:sync` / `i18n:review` / テスト・ビルド確認
+
+### 完了タスク
+
+---
