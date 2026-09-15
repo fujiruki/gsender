@@ -17,6 +17,7 @@ import {
 } from 'app/components/shadcn/Select.tsx';
 import { FlashingProgress } from 'app/features/Config/components/FlashingProgress.tsx';
 import { useTypedSelector } from 'app/hooks/useTypedSelector';
+import { t } from 'app/i18n';
 import controller from 'app/lib/controller.ts';
 import { toast } from 'app/lib/toaster';
 import store from 'app/store';
@@ -63,7 +64,9 @@ function startFlash({
 }: startFlashOptions) {
     if (!port) {
         toast.error(
-            'No port specified - please connect to the device to determine what is being flashed.',
+            t(
+                'No port specified - please connect to the device to determine what is being flashed.',
+            ),
             { position: 'bottom-right' },
         );
     }

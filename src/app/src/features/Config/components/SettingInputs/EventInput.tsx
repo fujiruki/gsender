@@ -1,4 +1,5 @@
 import api from 'app/api';
+import { t } from 'app/i18n';
 import { Switch } from 'app/components/shadcn/Switch';
 import MacroForm from 'app/features/Macros/MacroForm';
 import { toast } from 'app/lib/toaster';
@@ -71,9 +72,12 @@ export function EventInput({ eventType }: EventInputProps): React.ReactElement {
         };
 
         fetchCall().catch(() => {
-            toast.error(`Unable to fetch event data ${eventType}`, {
-                position: 'bottom-right',
-            });
+            toast.error(
+                t('Unable to fetch event data {{eventType}}', { eventType }),
+                {
+                    position: 'bottom-right',
+                },
+            );
         });
     }, []);
 
@@ -90,9 +94,12 @@ export function EventInput({ eventType }: EventInputProps): React.ReactElement {
                     submitLabel="Save"
                     onSubmit={({ content }) => {
                         saveCommands(content).catch(() => {
-                            toast.error('Unable to save event commands', {
-                                position: 'bottom-right',
-                            });
+                            toast.error(
+                                t('Unable to save event commands'),
+                                {
+                                    position: 'bottom-right',
+                                },
+                            );
                         });
                         setIsEditing(false);
                     }}

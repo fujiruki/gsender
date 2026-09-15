@@ -7,6 +7,7 @@ import { EEPROMNotConnectedWarning } from 'app/features/Config/components/EEPROM
 import { EEPROMSettingRow } from 'app/features/Config/components/EEPROMSettingRow.tsx';
 import { getDatatypeInput } from 'app/features/Config/utils/EEPROM.ts';
 import { useSettings } from 'app/features/Config/utils/SettingsContext.tsx';
+import { t } from 'app/i18n';
 import controller from 'app/lib/controller.ts';
 import { toast } from 'app/lib/toaster';
 import type { RootState } from 'app/store/redux';
@@ -56,9 +57,15 @@ export function EEPROMSection({
             return updated;
         });
         controller.command('gcode', [`${setting}=${value}`, '$$']);
-        toast.success(`Restored ${setting} to default value of ${value}`, {
-            position: 'bottom-right',
-        });
+        toast.success(
+            t('Restored {{setting}} to default value of {{value}}', {
+                setting,
+                value,
+            }),
+            {
+                position: 'bottom-right',
+            },
+        );
     }
 
     return (

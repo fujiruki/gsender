@@ -106,13 +106,15 @@ export function ProfileBar() {
                     code.push('$$');
 
                     controller.command('gcode', code);
-                    toast.success('EEPROM Settings imported', {
+                    toast.success(t('EEPROM Settings imported'), {
                         position: 'bottom-right',
                     });
                 } catch (error) {
                     console.error('Import error:', error);
                     toast.error(
-                        'Failed to import settings. Please check the file format.',
+                        t(
+                            'Failed to import settings. Please check the file format.',
+                        ),
                         {
                             position: 'bottom-right',
                         },
@@ -120,7 +122,7 @@ export function ProfileBar() {
                 }
             });
         } catch (e) {
-            toast.error('Unable to import settings', {
+            toast.error(t('Unable to import settings'), {
                 position: 'bottom-right',
             });
         }

@@ -34,6 +34,7 @@ import { getVisualizerTheme } from 'app/lib/getVisualizerTheme';
 import log from 'app/lib/log';
 import * as WebGL from 'app/lib/three/WebGL';
 import { toast } from 'app/lib/toaster';
+import { t } from 'app/i18n';
 import store from 'app/store';
 import { store as reduxStore } from 'app/store/redux';
 import {
@@ -860,7 +861,10 @@ class Visualizer extends Component {
             }));
             if (this.state.invalidGcode.shouldShow) {
                 toast.info(
-                    `Found ${invalidGcode.size} line(s) of non-GRBL-supported G-Code in this file.  Your job may not run properly.`,
+                    t(
+                        'Found {{count}} line(s) of non-GRBL-supported G-Code in this file.  Your job may not run properly.',
+                        { count: invalidGcode.size },
+                    ),
                     { position: 'bottom-right' },
                 );
             }
@@ -1146,7 +1150,7 @@ class Visualizer extends Component {
 
     showToast = _.throttle(
         () => {
-            toast.info('Unable to activate GrblHAL ONLY shortcut', {
+            toast.info(t('Unable to activate GrblHAL ONLY shortcut'), {
                 position: 'bottom-right',
             });
         },

@@ -15,6 +15,7 @@ import {
     VISUALIZER_PRIMARY,
     WORKSPACE_MODE,
 } from 'app/constants';
+import { t } from 'app/i18n';
 import useShuttleEvents from 'app/hooks/useShuttleEvents';
 import controller from 'app/lib/controller';
 import { uploadGcodeFileToServer } from 'app/lib/fileupload';
@@ -181,7 +182,7 @@ const MountingSetup = ({ isDisabled = false }: { isDisabled?: boolean }) => {
             VISUALIZER_PRIMARY,
         );
 
-        toast.info('Loaded rotary mounting setup macro', {
+        toast.info(t('Loaded rotary mounting setup macro'), {
             position: 'bottom-right',
         });
 
