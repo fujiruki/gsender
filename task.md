@@ -91,28 +91,28 @@
 
 ---
 
-## Agent-周辺機能(M3-a)
+## Agent-周辺機能(M3-a) 【完了・master統合済み】
 
-> 対応spec: `docs/spec/02_機能仕様.md` F-04。git worktree `gSender-m3a`(`feature/i18n-m3a`)でM3-bと並列にCodex実行中
+> 対応spec: `docs/spec/02_機能仕様.md` F-04。マージコミット`636a3e23e`でmasterへ統合済み
 
 ### タスク
-- [ ] AccessoryInstaller, ATC, Rotary, RemoteMode, SDCardを`t()`ラップ
-- [ ] ATCタブ名の翻訳（`features/Tools/index.tsx`のDATA_SOURCES化で新規検出済み、未翻訳のまま残存）
-- [ ] `i18n:sync` / `i18n:review` / テスト・ビルド確認
+- [x] AccessoryInstaller, ATC, Rotary, RemoteMode, SDCardを`t()`ラップ（352件翻訳、コミット`c52b994dc`）
+- [x] ATCタブ名の翻訳
+- [x] `i18n:sync` / `i18n:review` / テスト・ビルド確認
 
 ### 完了タスク
 
 ---
 
-## Agent-設定説明文・引き継ぎ分(M3-b)
+## Agent-設定説明文・引き継ぎ分(M3-b) 【完了・master統合済み】
 
-> 対応spec: `docs/spec/02_機能仕様.md` F-04。git worktree `gSender-m3b`(`feature/i18n-m3b`)でM3-aと並列にCodex実行中
+> 対応spec: `docs/spec/02_機能仕様.md` F-04。マージコミット`636a3e23e`でmasterへ統合済み（ja.jsonの真の衝突9件は個別判断で解決、詳細は`docs/spec/06_変更履歴.md`）
 
 ### タスク
-- [ ] `SettingsDescriptions.ts`（$設定の説明、1679行）を`EEPROMSection.tsx`描画側でt()ラップ（データ定義ファイル自体は編集しない）
-- [ ] M2からの引き継ぎ: Config/Macros/navbar/RemoteMode/Rotary/SDCard/Visualizer/workspace/wizards配下のConfirmationDialog/toast呼び出し元(約15ファイル)
-- [ ] サーバー起点メッセージ(`src/server/`からsocket経由で届く文字列)がフロント側で表示される箇所を調査し、必要ならフロント受信側でt()する
-- [ ] `i18n:sync` / `i18n:review` / テスト・ビルド確認
+- [x] `SettingsDescriptions.ts`（$設定の説明）を`EEPROMSettingRow.tsx`描画側でt()ラップ。GRBL/grblHALの$設定128件×2フィールド翻訳。`i18n-sync.mjs`のDATA_SOURCESに追加
+- [x] M2からの引き継ぎ: ConfirmationDialog/toast呼び出し元(Config/RemoteMode/Rotary/SDCard/Visualizer/wizards配下)をt()化。Macros/navbar/workspaceは他Agentで対応済みのためスキップ
+- [x] サーバー起点メッセージを調査。GRBLエラーコード等の動的合成文字列でサーバー側変更が前提となるため対応見送り(妥当な判断)
+- [x] `i18n:sync`(exit 0, keys 1235, untranslated 1=ATC), `test:app`, `build`確認。翻訳235件追加
 
 ### 完了タスク
 

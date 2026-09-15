@@ -2,3 +2,6 @@
 * text=auto eol=lf
 
 cypress/dashboard/report/index.html merge=ours
+
+# Windows batch files require CRLF or they fail to execute on double-click.
+*.bat text eol=crlf
