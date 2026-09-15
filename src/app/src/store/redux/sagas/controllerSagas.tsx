@@ -28,6 +28,7 @@ import isElectron from 'is-electron';
 import store from 'app/store';
 import { store as reduxStore } from 'app/store/redux';
 import controller from 'app/lib/controller';
+import { t } from 'app/i18n';
 import manualToolChange from 'app/wizards/manualToolchange';
 import semiautoToolChange from 'app/wizards/semiautoToolchange';
 import { determineFixedSensorInstructions } from 'app/lib/toolChangeUtils';
@@ -916,7 +917,7 @@ export function* initialize(): Generator<any, void, any> {
             if (ALARM_ERROR_TYPES.includes(error.type)) {
                 updateAlarmsErrors(error);
                 toast.error(
-                    `${error.type === ALARM ? "Alarm" : "Error"} ${error.code}: ${error.description}`,
+                    `${error.type === ALARM ? t("Alarm") : t("Error")} ${error.code}: ${t(error.description)}`,
                     { position: "bottom-right" },
                 );
             }
