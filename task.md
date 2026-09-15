@@ -111,9 +111,23 @@
 ### タスク
 - [x] `SettingsDescriptions.ts`（$設定の説明）を`EEPROMSettingRow.tsx`描画側でt()ラップ。GRBL/grblHALの$設定128件×2フィールド翻訳。`i18n-sync.mjs`のDATA_SOURCESに追加
 - [x] M2からの引き継ぎ: ConfirmationDialog/toast呼び出し元(Config/RemoteMode/Rotary/SDCard/Visualizer/wizards配下)をt()化。Macros/navbar/workspaceは他Agentで対応済みのためスキップ
-- [x] サーバー起点メッセージを調査。GRBLエラーコード等の動的合成文字列でサーバー側変更が前提となるため対応見送り(妥当な判断)
+- [x] サーバー起点メッセージを調査。`Visualizer.jsx`の`gcode_error`ハンドラは動的合成文字列でサーバー側変更が前提となるため対応見送り(妥当な判断。ただし別経路のGRBL_ERRORSは後日固定文言と判明、下記参照)
 - [x] `i18n:sync`(exit 0, keys 1235, untranslated 1=ATC), `test:app`, `build`確認。翻訳235件追加
 
 ### 完了タスク
+
+---
+
+## Agent-アラーム/エラー説明文 【完了・master統合済み】
+
+> ユーザーがアラームダイアログの本文が未翻訳なのを発見したことがきっかけ。コミット`0b3a23417`
+
+### タスク
+- [x] `AlarmDescriptionIcon.tsx`が直接importする`GRBL_ALARMS`/`GRBL_HAL_ALARMS`(サーバー側`constants.js`)の`description`を`t()`化(19件、重複排除後)
+- [x] `constants/firmware/grbl.ts`/`grblHAL.ts`の`GRBL_SETTINGS`を調査 → **フロントのどこからも参照されていない未使用コード(デッドコード)と判明、対応不要**。`SettingsDescriptions.ts`は同名だが別の独自データ(M3-bで対応済み)
+- [x] `GRBL_ERRORS`/`GRBL_HAL_ERRORS`を調査 → M3-bが見送った`Visualizer.jsx`とは別経路（`GrblController.js`→socket.io→`controllerSagas.tsx`のtoast）で**固定文言としてフロントに届いており翻訳可能**と判明。60件翻訳、`error.description`と`Alarm/Error`ラベルもt()化
+- [x] `i18n-sync.mjs`を拡張: サーバー側`constants.js`のGRBL_ALARMS/GRBL_ERRORS配列を配列名で範囲指定してdescription抽出する仕組みを追加(サーバー側ファイルは読み取りのみ)
+- [x] `unescape()`関数のバグ発見・修正: `\$`等の非標準エスケープを処理できておらず生成キーが実行時文字列と不一致になる不具合。全キー再実行でリグレッションなしを確認
+- [x] `i18n:sync`(exit 0, keys 1639), `test:app`, `build`確認。esbuild全670ファイルパース + Vite devサーバーでの実地確認済み
 
 ---
