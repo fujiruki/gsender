@@ -22,6 +22,7 @@
  */
 
 import { GRBLHAL } from 'app/constants';
+import { t } from 'app/i18n';
 import get from 'lodash/get';
 import pubsub from 'pubsub-js';
 import { FaQuestion } from 'react-icons/fa6';
@@ -48,13 +49,13 @@ const getCodeDescription = (code: number | 'Homing' = 1): string => {
     if (alarm) {
         return alarm.description;
     }
-    return 'No matching description found';
+    return t('No matching description found');
 };
 
 const AlarmDescriptionIcon = ({ code = 1 }: { code: ALARM_CODE }) => {
     const sendAlarmDescription = () => {
         pubsub.publish('helper:info', {
-            title: `Alarm Code ${code}`,
+            title: t('Alarm Code {{code}}', { code }),
             description: getCodeDescription(code),
             qrCode: 'https://resources.sienci.com/view/gs-gsender-grbl-alarm-error-codes/#alarms',
         });

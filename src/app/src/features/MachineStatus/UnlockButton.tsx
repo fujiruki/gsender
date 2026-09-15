@@ -23,6 +23,7 @@
 
 import { GRBL_ACTIVE_STATE_ALARM } from 'app/constants';
 import type { GRBL_ACTIVE_STATES_T } from 'app/definitions/general';
+import { t } from 'app/i18n';
 import cx from 'classnames';
 import type React from 'react';
 import type { MouseEventHandler } from 'react';
@@ -45,9 +46,9 @@ const UnlockButton: React.FC<UnlockProps> = ({
             activeState === GRBL_ACTIVE_STATE_ALARM &&
             (alarmCode === 11 || alarmCode === 'Homing')
         ) {
-            return 'Click to Run Homing';
+            return t('Click to Run Homing');
         }
-        return 'Click to Unlock Machine';
+        return t('Click to Unlock Machine');
     };
 
     const SymbolComponent =

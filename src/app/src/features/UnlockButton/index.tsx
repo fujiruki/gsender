@@ -3,6 +3,7 @@ import { GRBL_ACTIVE_STATE_ALARM, GRBL_ACTIVE_STATE_HOLD } from 'app/constants';
 import type { GRBL_ACTIVE_STATES_T } from 'app/definitions/general';
 import { useTypedSelector } from 'app/hooks/useTypedSelector';
 import controller from 'app/lib/controller';
+import { t } from 'app/i18n';
 import type { RootState } from 'app/store/redux';
 import cx from 'classnames';
 import get from 'lodash/get';
@@ -39,12 +40,14 @@ export function UnlockButton() {
     const activateUnlockButton = isHold || isAlarm;
 
     const ariaLabel = activateUnlockButton
-        ? `Machine is ${isAlarm ? 'locked in alarm' : 'held'}. Click to unlock machine.`
-        : 'Machine is unlocked.';
+        ? t('Machine is {{state}}. Click to unlock machine.', {
+              state: isAlarm ? t('locked in alarm') : t('held'),
+          })
+        : t('Machine is unlocked.');
 
     return (
         <div className="text-4xl absolute top-3 max-xl:top-2 left-72 max-sm:left-56">
-            <Tooltip content="Unlock Machine">
+            <Tooltip content={t('Unlock Machine')}>
                 <button
                     className={cx('group text-gray-400', {
                         'text-yellow-600 bg-orange-200 bg-opacity-10 rounded':
