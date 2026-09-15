@@ -47,7 +47,7 @@ const getCodeDescription = (code: number | 'Homing' = 1): string => {
         alarm = GRBL_ALARMS.find((alarm) => alarm.code === code);
     }
     if (alarm) {
-        return alarm.description;
+        return t(alarm.description);
     }
     return t('No matching description found');
 };

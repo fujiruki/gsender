@@ -12,7 +12,21 @@ const DATA_SOURCES = [
 ];
 const EXCLUDE = /(\.test\.|__mocks__|[\\/]mocks[\\/]|[\\/]tests[\\/]|[\\/]i18n[\\/])/;
 
-const unescape = (s) => s.replace(/\\n/g, '\n').replace(/\\(['"`\\])/g, '$1');
+// Server-side data reused as-is by the frontend (static alarm/error descriptions
+// delivered over the socket, see AlarmDescriptionIcon.tsx and controllerSagas.tsx).
+// Scoped to a single named array per file so GRBL_SETTINGS (unused by the
+// frontend, see constants/firmware/*.ts) never gets pulled in.
+const EXTERNAL_SOURCES = [
+    { file: new URL('../src/server/controllers/Grbl/constants.js', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1'), label: 'server/controllers/Grbl/constants.js', arrayName: 'GRBL_ALARMS', re: /\bdescription:\s*(['"])((?:\\.|(?!\1)[^\\])*)\1/g },
+    { file: new URL('../src/server/controllers/Grbl/constants.js', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1'), label: 'server/controllers/Grbl/constants.js', arrayName: 'GRBL_ERRORS', re: /\bdescription:\s*(['"])((?:\\.|(?!\1)[^\\])*)\1/g },
+    { file: new URL('../src/server/controllers/Grblhal/constants.js', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1'), label: 'server/controllers/Grblhal/constants.js', arrayName: 'GRBL_HAL_ALARMS', re: /\bdescription:\s*(['"])((?:\\.|(?!\1)[^\\])*)\1/g },
+    { file: new URL('../src/server/controllers/Grblhal/constants.js', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1'), label: 'server/controllers/Grblhal/constants.js', arrayName: 'GRBL_HAL_ERRORS', re: /\bdescription:\s*(['"])((?:\\.|(?!\1)[^\\])*)\1/g },
+];
+
+// Matches JS string-literal semantics: \n becomes a real newline, and a
+// backslash before any other character is simply dropped (e.g. \$ -> $),
+// same as what the JS engine itself produces for the runtime string value.
+const unescape = (s) => s.replace(/\\n/g, '\n').replace(/\\(.)/g, '$1');
 
 const found = new Map();
 const add = (key, file) => {
@@ -20,6 +34,14 @@ const add = (key, file) => {
     if (!found.has(key)) found.set(key, new Set());
     found.get(key).add(file);
 };
+
+for (const ext of EXTERNAL_SOURCES) {
+    const src = readFileSync(ext.file, 'utf8');
+    const start = src.indexOf(`export const ${ext.arrayName}`);
+    const end = src.indexOf('\n];', start) + 3;
+    const slice = src.slice(start, end);
+    for (const m of slice.matchAll(ext.re)) add(unescape(m[2]), ext.label);
+}
 
 for (const name of readdirSync(ROOT, { recursive: true })) {
     const file = join(ROOT, String(name));

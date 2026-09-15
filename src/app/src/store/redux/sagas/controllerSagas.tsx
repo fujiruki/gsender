@@ -67,6 +67,7 @@ import type {
     Job,
     MaintenanceTask,
 } from 'app/features/Stats/utils/StatContext';
+import { t } from 'app/i18n';
 import { connectToLastDevice } from 'app/lib/connection';
 import controller from 'app/lib/controller';
 import type { TOOL } from 'app/lib/definitions/gcode_virtualization';
@@ -961,7 +962,7 @@ export function* initialize(): Generator<null, void, unknown> {
         ) {
             updateAlarmsErrors(error);
             toast.error(
-                `${error.type === ALARM ? 'Alarm' : 'Error'} ${error.code}: ${error.description}`,
+                `${error.type === ALARM ? t('Alarm') : t('Error')} ${error.code}: ${t(error.description)}`,
                 { position: 'bottom-right' },
             );
         }
