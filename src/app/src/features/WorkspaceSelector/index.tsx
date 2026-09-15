@@ -13,6 +13,7 @@ import { RootState } from 'app/store/redux';
 import Tooltip from 'app/components/Tooltip';
 import { GRBL_ACTIVE_STATE_RUN, WORKFLOW_STATE_RUNNING } from 'app/constants';
 import { usePostHog } from '@posthog/react';
+import { t } from 'app/i18n';
 
 const availableWorkspaces = {
     G54: 'P1',
@@ -62,8 +63,8 @@ export function WorkspaceSelector() {
 
     return (
         <div className="absolute top-4 right-4 w-56 flex flex-row items-center justify-end gap-2">
-            <span className="text-gray-400 text-normal">Workspace:</span>
-            <Tooltip content="Select a workspace" side="left">
+            <span className="text-gray-400 text-normal">{t('Workspace:')}</span>
+            <Tooltip content={t('Select a workspace')} side="left">
                 <div>
                     <Select
                         onValueChange={onWorkspaceSelect}
@@ -72,7 +73,7 @@ export function WorkspaceSelector() {
                     >
                         <SelectTrigger
                             className="max-w-24 h-7 bg-white rounded-md border-solid border border-gray-300"
-                            aria-label="Select workspace"
+                            aria-label={t('Select workspace')}
                         >
                             <SelectValue placeholder="G54" />
                         </SelectTrigger>

@@ -12,6 +12,7 @@ import RemoteIndicator from 'app/features/RemoteMode/components/RemoteIndicator.
 import Tooltip from 'app/components/Tooltip';
 
 import NotificationsArea from 'app/features/NotificationsArea';
+import { t } from 'app/i18n';
 
 const StatusIcons = () => {
     const [gamepadConnected, setGamePadConnected] = useState(false);
@@ -58,7 +59,7 @@ const StatusIcons = () => {
 
     return (
         <div className="flex flex-row gap-4 absolute top-4 max-xl:top-2.5 right-4 max-sm:hidden">
-            <Tooltip content="Wireless Control">
+            <Tooltip content={t('Wireless Control')}>
                 <button
                     className="flex flex-col gap-0.5  self-center content-center items-center justify-center text-sm text-gray-500"
                     onClick={toggleRemoteModeDialog}
@@ -71,7 +72,7 @@ const StatusIcons = () => {
                     />
                 </button>
             </Tooltip>
-            <Tooltip content="Keyboard Shortcuts">
+            <Tooltip content={t('Keyboard Shortcuts')}>
                 <Link
                     className="flex flex-col gap-0.5  self-center content-center items-center justify-center text-sm text-gray-500"
                     to={'/tools/keyboard-shortcuts'}
@@ -79,7 +80,7 @@ const StatusIcons = () => {
                     <FaRegKeyboard className="text-green-500 w-7 h-7" />
                 </Link>
             </Tooltip>
-            <Tooltip content="Gamepad Shortcuts">
+            <Tooltip content={t('Gamepad Shortcuts')}>
                 <Link
                     className="flex flex-col gap-0.5  self-center content-center items-center justify-center text-sm text-gray-500"
                     to={'/tools/gamepad'}

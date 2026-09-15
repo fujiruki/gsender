@@ -10,6 +10,7 @@ import { useSettings } from '../Config/utils/SettingsContext.tsx';
 import Blocker from './components/Blocker.tsx';
 import { Confirm } from 'app/components/ConfirmationDialog/ConfirmationDialogLib.ts';
 import pubsub from 'pubsub-js';
+import { t } from 'app/i18n';
 
 export const NavBar = () => {
     const { settingsAreDirty, setSettingsAreDirty } = useSettings();
@@ -38,12 +39,12 @@ export const NavBar = () => {
                 navigate(href);
             });
             Confirm({
-                title: 'Unsaved Changes',
-                content: 'Are you sure you want to leave without saving?',
+                title: t('Unsaved Changes'),
+                content: t('Are you sure you want to leave without saving?'),
                 onClose: reset,
                 onConfirm: proceed,
-                confirmLabel: 'Yes',
-                cancelLabel: 'No',
+                confirmLabel: t('Yes'),
+                cancelLabel: t('No'),
             });
         } else {
             navigate(href);
@@ -60,26 +61,26 @@ export const NavBar = () => {
                 <NavbarLink
                     href="/"
                     svg={Carve}
-                    label="Carve"
+                    label={t('Carve')}
                     onClick={(e) => checkIfNeedsBlock(e, '/')}
                 />
                 <NavbarLink
                     href="stats"
                     icon={IoSpeedometerOutline}
-                    label="Stats"
+                    label={t('Stats')}
                     onClick={(e) => checkIfNeedsBlock(e, 'stats')}
                 />
                 <NavbarLink
                     href="tools"
                     icon={RiToolsFill}
-                    label="Tools"
+                    label={t('Tools')}
                     onClick={(e) => checkIfNeedsBlock(e, 'tools')}
                 />
 
                 <NavbarLink
                     href="configuration"
                     icon={FaTasks}
-                    label="Config"
+                    label={t('Config')}
                 />
             </div>
         </>

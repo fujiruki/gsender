@@ -28,6 +28,7 @@ import { FaHome, FaUnlock } from 'react-icons/fa';
 import { GRBL_ACTIVE_STATE_ALARM } from 'app/constants';
 import { GRBL_ACTIVE_STATES_T } from 'app/definitions/general';
 import { ALARM_CODE } from './definitions';
+import { t } from 'app/i18n';
 
 export interface UnlockProps {
     activeState: GRBL_ACTIVE_STATES_T;
@@ -45,9 +46,9 @@ const UnlockButton: React.FC<UnlockProps> = ({
             activeState === GRBL_ACTIVE_STATE_ALARM &&
             (alarmCode === 11 || alarmCode === 'Homing')
         ) {
-            return 'Click to Run Homing';
+            return t('Click to Run Homing');
         }
-        return 'Click to Unlock Machine';
+        return t('Click to Unlock Machine');
     };
 
     const SymbolComponent =

@@ -46,6 +46,7 @@ import {
     isATCAvailable,
     sendATCHomingDialog,
 } from 'app/features/ATC/utils/ATCFunctions.ts';
+import { t } from 'app/i18n';
 
 interface MachineStatusProps {
     alarmCode: ALARM_CODE;
@@ -134,17 +135,17 @@ const MachineStatus: React.FC<MachineStatusProps> = ({
      */
     const machineStateRender = (): React.ReactElement => {
         const message: Message = {
-            Idle: 'Idle',
-            Run: 'Running',
-            Hold: 'Hold',
-            Jog: 'Jogging',
-            Check: 'Check',
-            Home: 'Homing',
-            Sleep: 'Sleep',
-            Alarm: 'Alarm',
-            Disconnected: 'Disconnected',
-            Tool: 'Tool Change',
-            Door: 'Door',
+            Idle: t('Idle'),
+            Run: t('Running'),
+            Hold: t('Hold'),
+            Jog: t('Jogging'),
+            Check: t('Check'),
+            Home: t('Homing'),
+            Sleep: t('Sleep'),
+            Alarm: t('Alarm'),
+            Disconnected: t('Disconnected'),
+            Tool: t('Tool Change'),
+            Door: t('Door'),
         };
 
         return (
@@ -203,7 +204,7 @@ const MachineStatus: React.FC<MachineStatusProps> = ({
                         </>
                     ) : (
                         <h1 className="flex w-full font-light text-3xl max-sm:text-base mb-1 justify-center">
-                            Disconnected
+                            {t('Disconnected')}
                         </h1>
                     )}
                 </div>

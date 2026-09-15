@@ -29,6 +29,7 @@ import { GRBL_ALARMS } from '../../../../server/controllers/Grbl/constants';
 import { GRBL_HAL_ALARMS } from '../../../../server/controllers/Grblhal/constants';
 import { ALARM_CODE } from './definitions';
 import pubsub from 'pubsub-js';
+import { t } from 'app/i18n';
 
 const getCodeDescription = (code: number | 'Homing' = 1): string => {
     const controllerType: string = get(
@@ -48,13 +49,13 @@ const getCodeDescription = (code: number | 'Homing' = 1): string => {
     if (alarm) {
         return alarm.description;
     }
-    return 'No matching description found';
+    return t('No matching description found');
 };
 
 const AlarmDescriptionIcon = ({ code = 1 }: { code: ALARM_CODE }) => {
     const sendAlarmDescription = () => {
         pubsub.publish('helper:info', {
-            title: 'Alarm Code ' + code,
+            title: t('Alarm Code {{code}}', { code }),
             description: getCodeDescription(code),
         });
     };
