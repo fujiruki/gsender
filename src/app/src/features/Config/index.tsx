@@ -25,6 +25,7 @@ import { convertEIDToNumber } from 'app/lib/numeral';
 import controller from 'app/lib/controller.ts';
 import {GRBLHAL, WORKFLOW_STATE_IDLE} from 'app/constants';
 import { resolveGrblCoreDefaults } from 'app/features/Config/utils/grblCoreMigration.ts';
+import { t } from 'app/i18n';
 
 export function Config() {
     const dispatch = useDispatch();
@@ -136,14 +137,14 @@ export function Config() {
                             className="w-full dark:text-white"
                             onClick={() => setActiveTab('config')}
                         >
-                            All Config
+                            {t('All Config')}
                         </TabsTrigger>
                         <TabsTrigger
                             value="eeprom"
                             className="w-full dark:text-white"
                             onClick={() => setActiveTab('eeprom')}
                         >
-                            EEPROM
+                            {t('EEPROM')}
                         </TabsTrigger>
                     </TabsList>
                     <TabsContent

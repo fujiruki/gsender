@@ -18,6 +18,7 @@ import { RestoreDefaultDialog } from 'app/features/Config/components/RestoreDefa
 import controller from 'app/lib/controller.ts';
 import { EEPROM, EEPROMSettings } from 'app/definitions/firmware';
 import cx from 'classnames';
+import { t } from 'app/i18n';
 
 export function ProfileBar() {
     const {
@@ -134,12 +135,12 @@ export function ProfileBar() {
                     <RestoreDefaultDialog canRestoreDefaults={canRestoreDefaults} />
                     <ActionButton
                         icon={<PiLightning />}
-                        label="Flash"
+                        label={t('Flash')}
                         onClick={toggleFlash}
                     />
                     <ActionButton
                         icon={<PiDownloadSimpleBold />}
-                        label="Import"
+                        label={t('Import')}
                         onClick={() => {
                             inputRef.current.click();
                             inputRef.current.value = null;
@@ -149,7 +150,7 @@ export function ProfileBar() {
                     />
                     <ActionButton
                         icon={<PiUploadSimpleBold />}
-                        label="Export"
+                        label={t('Export')}
                         onClick={() => exportFirmwareSettings(rawEEPROM)}
                         disabled={!connected}
                         testId="firmware-settings-export-button"
@@ -174,7 +175,7 @@ export function ProfileBar() {
                     disabled={!settingsAreDirty}
                     onClick={updateSettingsHandler}
                 >
-                    Apply Settings
+                    {t('Apply Settings')}
                 </button>
                 {settingsAreDirty && (
                     <span className="w-4 h-4 animate-ping absolute -top-2 -left-2 bg-blue-400 rounded-xl"></span>

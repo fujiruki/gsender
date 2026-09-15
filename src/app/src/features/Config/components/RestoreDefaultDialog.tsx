@@ -21,6 +21,7 @@ import { resolveGrblCoreDefaults } from 'app/features/Config/utils/grblCoreMigra
 import { useSettings } from 'app/features/Config/utils/SettingsContext.tsx';
 import { cn } from 'app/lib/utils.ts';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from 'app/components/shadcn/Tooltip.tsx';
+import { t } from 'app/i18n';
 
 function getMachineProfile(id: number) {
     const profile = machineProfiles.find((profile) => profile.id === id);
@@ -119,7 +120,7 @@ export function RestoreDefaultDialog({ canRestoreDefaults = false }: { canRestor
                             <AlertDialogTrigger asChild>
                                 <ActionButton
                                     icon={<GrRevert />}
-                                    label="Defaults"
+                                    label={t('Defaults')}
                                     disabled={!isConnected || !canRestoreDefaults}
                                 />
                             </AlertDialogTrigger>

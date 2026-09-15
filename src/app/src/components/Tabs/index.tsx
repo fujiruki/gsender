@@ -3,6 +3,7 @@ import classNames from 'classnames';
 
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 import { useLocation } from 'react-router';
+import { t } from 'app/i18n';
 
 interface TabItem {
     label: string;
@@ -132,7 +133,7 @@ export const Tabs = ({ items = [] }: TabbedProps) => {
                                         handleTabClick(item.label, index)
                                     }
                                 >
-                                    {item.label}
+                                    {t(item.label)}
                                 </button>
                             ))}
                     </div>
