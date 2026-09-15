@@ -17,6 +17,7 @@ import MarkingStep from './MarkingStep';
 import MeasurementStep from './MeasurementStep';
 import ResultsStep from './ResultsStep';
 import xySquaringImage from '../assets/XY_squaring_example.jpg';
+import { t } from 'app/i18n';
 
 const Steps = () => {
     const [started, setStarted] = useState(false);
@@ -58,32 +59,32 @@ const Steps = () => {
                 <div className="max-w-7xl w-full grid gap-4 grid-cols-1 lg:grid-cols-[3fr_2fr]">
                     <div className="space-y-1 text-sm xl:text-base font-normal">
                         <p className="text-gray-500 dark:text-gray-300">
-                            If your CNC is making skewed cuts (pictured),
-                            it&apos;s because the X and Y axes aren&apos;t
-                            squared to each other. This can be fixed.
+                            {t(
+                                "If your CNC is making skewed cuts (pictured), it's because the X and Y axes aren't squared to each other. This can be fixed.",
+                            )}
                         </p>
 
                         <div className="text-gray-500 dark:text-gray-300">
-                            To know how much adjustment is needed, follow the
-                            steps below. Prepare:
+                            {t(
+                                'To know how much adjustment is needed, follow the steps below. Prepare:',
+                            )}
                             <ul className="list-disc list-inside">
                                 <li>
-                                    3 squares of tape marked with an
-                                    &apos;X&apos;
+                                    {t("3 squares of tape marked with an 'X'")}
                                 </li>
-                                <li>A long ruler or measuring tape</li>
+                                <li>{t('A long ruler or measuring tape')}</li>
                                 <li>
-                                    Put something pointed in the spindle like an
-                                    old v-bit, tapered bit, pencil, or a pointed
-                                    dowel
+                                    {t(
+                                        'Put something pointed in the spindle like an old v-bit, tapered bit, pencil, or a pointed dowel',
+                                    )}
                                 </li>
                             </ul>
                         </div>
 
                         <p className="text-gray-500 dark:text-gray-300">
-                            Use the jog buttons to position your CNC near its
-                            front, left corner with the pointed tip almost
-                            touching the wasteboard, then continue below.
+                            {t(
+                                'Use the jog buttons to position your CNC near its front, left corner with the pointed tip almost touching the wasteboard, then continue below.',
+                            )}
                         </p>
 
                         <div className="flex justify-center items-center">
@@ -94,8 +95,9 @@ const Steps = () => {
                         {!isConnected && (
                             <div className="text-yellow-800 bg-yellow-100 p-4 xl:p-2 rounded-lg border flex flex-col gap-4 justify-center items-center text-center">
                                 <p>
-                                    Please connect to a device before starting
-                                    the squaring wizard.
+                                    {t(
+                                        'Please connect to a device before starting the squaring wizard.',
+                                    )}
                                 </p>
                             </div>
                         )}
@@ -103,14 +105,14 @@ const Steps = () => {
                     <div className="flex flex-col gap-4 items-center">
                         <img
                             src={xySquaringImage}
-                            alt="XY Squaring Example"
+                            alt={t('XY Squaring Example')}
                             className="w-[450px] h-auto border border-gray-200 rounded-lg"
                         />
 
                         <p className="text-gray-600 font-bold dark:text-white">
-                            If the X and Y axes aren't squared to each other on
-                            your CNC then it will cause your cuts to end up
-                            skewed.
+                            {t(
+                                "If the X and Y axes aren't squared to each other on your CNC then it will cause your cuts to end up skewed.",
+                            )}
                         </p>
                     </div>
                 </div>
@@ -120,7 +122,7 @@ const Steps = () => {
                         onClick={() => setStarted(true)}
                         disabled={isDisabled}
                     >
-                        Start XY Squaring
+                        {t('Start XY Squaring')}
                     </Button>
                 </div>
             </div>
@@ -139,7 +141,7 @@ const Steps = () => {
                             setStarted(false);
                         }}
                         icon={<LuRefreshCw className="w-4 h-4" />}
-                        text="Restart Wizard"
+                        text={t('Restart Wizard')}
                     />
 
                     <Popover>
@@ -147,7 +149,7 @@ const Steps = () => {
                             <Button
                                 variant="outline"
                                 icon={<LuMove className="w-4 h-4" />}
-                                text="Jog Controls"
+                                text={t('Jog Controls')}
                             />
                         </PopoverTrigger>
 
@@ -165,7 +167,7 @@ const Steps = () => {
                         onClick={goToNextMainStep}
                         disabled={!isCurrentStepComplete()}
                     >
-                        Next Step
+                        {t('Next Step')}
                     </Button>
                 </div>
             </div>

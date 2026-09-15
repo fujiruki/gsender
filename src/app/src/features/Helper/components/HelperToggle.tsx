@@ -12,6 +12,7 @@ import useKeybinding from 'app/lib/useKeybinding';
 import { TOOLBAR_CATEGORY } from 'app/constants';
 import get from 'lodash/get';
 import { useEffect } from 'react';
+import { t } from 'app/i18n';
 
 interface HelperToggleProps {
     minimized: boolean;
@@ -53,7 +54,7 @@ export function HelperToggle({ minimized }: HelperToggleProps) {
 
     const shuttleControlEvents = {
         TOGGLE_INFO_HELPER: {
-            title: 'Display Helper',
+            title: t('Display Helper'),
             keys: '',
             cmd: 'TOGGLE_INFO_HELPER',
             preventDefault: false,
@@ -75,7 +76,7 @@ export function HelperToggle({ minimized }: HelperToggleProps) {
             type="button"
             disabled={!helperEnabled}
             onClick={handleToggle}
-            aria-label={helperTitle || "Help Assistant"}
+            aria-label={helperTitle ? t(helperTitle) : t('Help Assistant')}
             className={cn(
                 'flex w-full flex-col gap-0.5 content-center items-center text-sm text-gray-500 group rounded-xl transition-all duration-1000 opacity-100 border border-transparent dark:text-gray-400',
                 {
@@ -90,7 +91,7 @@ export function HelperToggle({ minimized }: HelperToggleProps) {
                 className={`w-3/5 h-3/5 text-2xl ${helperEnabled ? 'text-orange-600' : 'text-gray-400'}`}
             />
             <span className={cn('text-xs', { 'opacity-0': minimized })}>
-                {helperTitle}
+                {t(helperTitle)}
             </span>
         </button>
     );

@@ -31,6 +31,7 @@ import cx from 'classnames';
 import { useWizardAPI, useWizardContext } from 'app/features/Helper/context';
 import { Terminal, CheckCircle } from 'lucide-react';
 import { useSelector } from 'react-redux';
+import { t } from 'app/i18n';
 
 interface WizardAction {
     label: string;
@@ -156,7 +157,7 @@ const Actions = ({ actions = [], stepIndex, substepIndex }: ActionsProps) => {
         <>
             {actions.length > 0 && (
                 <div className="text-xs font-semibold uppercase tracking-widest text-gray-500 dark:text-amber-400 mb-1">
-                    Run G-Code
+                    {t('Run G-Code')}
                 </div>
             )}
             <div className="flex flex-col gap-2">
@@ -184,13 +185,13 @@ const Actions = ({ actions = [], stepIndex, substepIndex }: ActionsProps) => {
                             {!isLoading && index > 0 && (
                                 <div className="flex items-center gap-2 my-0.5 px-6">
                                     <div className="flex-1 h-px bg-gray-200 dark:bg-[#2a2a35]" />
-                                    <span className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500">or</span>
+                                    <span className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500">{t('or')}</span>
                                     <div className="flex-1 h-px bg-gray-200 dark:bg-[#2a2a35]" />
                                 </div>
                             )}
                             {isLoading && index === 0 ? (
                                 <span className="text-sm text-gray-400 dark:text-gray-500 animate-pulse">
-                                    Running…
+                                    {t('Running…')}
                                 </span>
                             ) : !isLoading && (
                                 <>
@@ -225,7 +226,7 @@ const Actions = ({ actions = [], stepIndex, substepIndex }: ActionsProps) => {
                                                 <Terminal size={13} className="shrink-0 text-gray-400 dark:text-cyan-400" />
                                             )}
                                             <code className="text-sm font-mono text-sky-700 dark:text-cyan-400 truncate">
-                                                {action.label}
+                                                {t(action.label)}
                                             </code>
                                         </div>
                                         <button
@@ -234,7 +235,7 @@ const Actions = ({ actions = [], stepIndex, substepIndex }: ActionsProps) => {
                                             onClick={cbWithCompletion}
                                             className="ml-3 shrink-0 text-sm font-medium px-3 py-1 rounded bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-600 text-white disabled:opacity-35 disabled:pointer-events-none transition-colors"
                                         >
-                                            Run
+                                            {t('Run')}
                                         </button>
                                     </div>
                                     {tooltip?.index === index && (

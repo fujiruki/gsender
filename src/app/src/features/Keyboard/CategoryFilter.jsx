@@ -17,6 +17,7 @@ import {
 } from 'app/constants';
 import { Tabs, TabsList, TabsTrigger } from 'app/components/shadcn/Tabs';
 import { cn } from 'app/lib/utils';
+import { t } from 'app/i18n';
 
 const CategoryFilter = ({ onChange, filterCategory }) => {
     return (
@@ -33,7 +34,7 @@ const CategoryFilter = ({ onChange, filterCategory }) => {
                             value={category}
                             className={cn('px-3 py-1 rounded-md capitalize')}
                         >
-                            {category}
+                            {t(category)}
                         </TabsTrigger>
                     ))}
                 </TabsList>

@@ -34,6 +34,7 @@ import { Button } from 'app/components/Button';
 import shuttleEvents from 'app/lib/shuttleEvents';
 
 import { formatShortcut, shouldHideShiftForKey } from '../helpers';
+import { t } from 'app/i18n';
 
 const triggerKeys = ['Meta', 'Alt', 'Shift', 'Control'];
 const allShuttleControlEvents = shuttleEvents.allShuttleControlEvents;
@@ -134,7 +135,10 @@ const EditArea = ({ shortcut, shortcuts, edit, onClose }) => {
                     status: {
                         available: false,
                         error: true,
-                        message: `This shortcut is already in use by action "${title}"`,
+                        message: t(
+                            'This shortcut is already in use by action "{{title}}"',
+                            { title },
+                        ),
                     },
                 }));
             } else {
@@ -153,7 +157,7 @@ const EditArea = ({ shortcut, shortcuts, edit, onClose }) => {
             status: {
                 available: true,
                 error: false,
-                message: 'Shortcut is Available',
+                message: t('Shortcut is Available'),
             },
         }));
     };
@@ -172,7 +176,7 @@ const EditArea = ({ shortcut, shortcuts, edit, onClose }) => {
         let cleanedShortcut = null;
 
         if (shortcut.keys === '') {
-            return <span className="text-gray-500">None</span>;
+            return <span className="text-gray-500">{t('None')}</span>;
         }
 
         if (shortcutArray[shortcutArray.length - 1] === '') {
@@ -196,7 +200,7 @@ const EditArea = ({ shortcut, shortcuts, edit, onClose }) => {
             return (
                 <div className="h-12 flex items-center justify-center">
                     <span className="text-blue-500 animate-pulse">
-                        Press Some Keys...
+                        {t('Press Some Keys...')}
                     </span>
                 </div>
             );
@@ -239,15 +243,15 @@ const EditArea = ({ shortcut, shortcuts, edit, onClose }) => {
                 <div className="grid grid-cols-2 gap-4 p-4 bg-gray-50 rounded-lg">
                     <div>
                         <h4 className="text-sm font-medium text-gray-500 mb-1">
-                            Action
+                            {t('Action')}
                         </h4>
                         <h4 className="text-lg font-semibold text-gray-900">
-                            {title}
+                            {t(title)}
                         </h4>
                     </div>
                     <div>
                         <h4 className="text-sm font-medium text-gray-500 mb-1">
-                            Current Shortcut
+                            {t('Current Shortcut')}
                         </h4>
                         <h4 className="text-lg font-semibold text-gray-900">
                             {displayShortcut()}
@@ -258,7 +262,7 @@ const EditArea = ({ shortcut, shortcuts, edit, onClose }) => {
                 {/* New Shortcut Section */}
                 <div className="text-center p-6 bg-blue-50 rounded-lg">
                     <h4 className="text-sm font-medium text-gray-700 mb-4">
-                        New Shortcut:
+                        {t('New Shortcut:')}
                     </h4>
                     <div className="min-h-[4rem] flex items-center justify-center">
                         {renderNewShortcut()}
@@ -302,13 +306,13 @@ const EditArea = ({ shortcut, shortcuts, edit, onClose }) => {
                                 : 'bg-gray-300 text-gray-500 cursor-not-allowed',
                         )}
                     >
-                        Update Shortcut
+                        {t('Update Shortcut')}
                     </Button>
                     <Button
                         onClick={onClose}
                         className="px-6 py-2 rounded-md font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors duration-200"
                     >
-                        Cancel
+                        {t('Cancel')}
                     </Button>
                 </div>
             </div>

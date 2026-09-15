@@ -8,15 +8,18 @@ import api from 'app/api';
 import { useContext } from 'react';
 import { StatContext } from 'app/features/Stats/utils/StatContext.tsx';
 import { Button } from 'app/components/Button';
+import { t } from 'app/i18n';
 
 export function Alarms() {
     const { setAlarms } = useContext(StatContext);
     function deleteAlarms() {
         Confirm({
-            title: 'Delete History',
-            content: 'Are you sure you want to delete all alarm/error history?',
-            confirmLabel: 'Confirm',
-            cancelLabel: 'Cancel',
+            title: t('Delete History'),
+            content: t(
+                'Are you sure you want to delete all alarm/error history?',
+            ),
+            confirmLabel: t('Confirm'),
+            cancelLabel: t('Cancel'),
             onConfirm: async () => {
                 await api.alarmList.clearAll();
                 setAlarms([]);
@@ -29,7 +32,7 @@ export function Alarms() {
             <div className="col-span-4 max-xl:col-span-6 row-span-6 min-h-0">
                 <StatCard>
                     <div className="h-full flex flex-col min-h-0">
-                        <CardHeader>Alarms & Errors</CardHeader>
+                        <CardHeader>{t('Alarms & Errors')}</CardHeader>
                         <div className="flex-1 min-h-0 overflow-y-auto">
                             <AlarmListing />
                         </div>
@@ -41,7 +44,7 @@ export function Alarms() {
                     <StatCard>
                         <div className="h-full flex flex-col gap-4 max-xl:justify-center">
                             <div className="max-xl:hidden">
-                                <CardHeader>Diagnostic File</CardHeader>
+                                <CardHeader>{t('Diagnostic File')}</CardHeader>
                             </div>
                             <Diagnostic compactOnSmall />
                         </div>
@@ -51,16 +54,17 @@ export function Alarms() {
                     <StatCard>
                         <div className="h-full flex flex-col gap-4 justify-center">
                             <div className="max-xl:hidden">
-                                <CardHeader>Clear Alarms & Errors</CardHeader>
+                                <CardHeader>{t('Clear Alarms & Errors')}</CardHeader>
                             </div>
                             <p className="text-gray-600 text-sm dark:text-white max-xl:hidden">
-                            Clear all prior alarms and errors. This action
-                            cannot be undone.
+                            {t(
+                                'Clear all prior alarms and errors. This action cannot be undone.',
+                            )}
                             </p>
                             <Button
                                 icon={<FaTrash className="text-gray-600 w-4 h-4 dark:text-gray-200" />}
                                 onClick={deleteAlarms}
-                                text="Clear Alarms & Errors"
+                                text={t('Clear Alarms & Errors')}
                                 size="lg"
                                 className="text-gray-600"
                             />

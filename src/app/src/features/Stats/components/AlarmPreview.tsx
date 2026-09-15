@@ -4,6 +4,7 @@ import { StatContext } from 'app/features/Stats/utils/StatContext.tsx';
 import { tv } from 'tailwind-variants';
 import { CardHeader } from './CardHeader.tsx';
 import { EmptyAlarmList } from 'app/features/Stats/components/EmptyAlarmList.tsx';
+import { t } from 'app/i18n';
 
 const eventRow = tv({
     base: 'flex flex-row items-center justify-between p-2 rounded border-l-4',
@@ -21,8 +22,8 @@ export function AlarmPreview() {
 
     return (
         <StatCard>
-            <CardHeader link={'/stats/alarms'} linkLabel={'View all'}>
-                Alarms & Errors
+            <CardHeader link={'/stats/alarms'} linkLabel={t('View all')}>
+                {t('Alarms & Errors')}
             </CardHeader>
             <div className="flex flex-col gap-2 justify-around">
                 {shortlist.length == 0 && <EmptyAlarmList />}
@@ -34,7 +35,7 @@ export function AlarmPreview() {
                         <span className="font-2xl">
                             {event.type} {event.CODE}
                         </span>
-                        <span>on {event.time}</span>
+                        <span>{t('on {{time}}', { time: event.time })}</span>
                     </div>
                 ))}
             </div>

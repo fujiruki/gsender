@@ -26,6 +26,7 @@ import cx from 'classnames';
 import { CSSTransition } from 'react-transition-group';
 import { FaInfoCircle, FaTimes } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
+import { t } from 'app/i18n';
 
 const HelperInfo = ({ payload, infoVisible, onClose }) => {
     const { title, description } = payload;
@@ -46,7 +47,7 @@ const HelperInfo = ({ payload, infoVisible, onClose }) => {
         >
             <div className="border-b border-b-orange-600 p-2 flex flex-row justify-between items-center bg-amber-100/70">
                 <h1 className="flex flex-row gap-2 items-center justify-center p-0 mr-4 text-orange-600 font-bold text-xl">
-                    <FaInfoCircle className="text-2xl" /> {title}
+                    <FaInfoCircle className="text-2xl" /> {t(title)}
                 </h1>
                 <div className="flex cursor-pointer bg-amber-200/20 p-1 border-orange-500 border">
                     <FaTimes onClick={() => onClose()} className="w-5 h-5" />
@@ -66,7 +67,7 @@ const HelperInfo = ({ payload, infoVisible, onClose }) => {
                     id="wizContent"
                     className="flex p-4 justify-stretch items-stretch flex-grow flex-col"
                 >
-                    <span>{description}</span>
+                    <span>{t(description)}</span>
                     {payload.content && (
                         <div className="mt-2 p-2">{payload.content}</div>
                     )}

@@ -15,6 +15,7 @@ import {
     MaintenanceTask,
     StatContext,
 } from 'app/features/Stats/utils/StatContext.tsx';
+import { t } from 'app/i18n';
 
 export const buttonStyle = tv({
     base: 'inline-flex items-center px-6 py-3 border text-base font-medium rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out',
@@ -88,7 +89,7 @@ export function MaintenanceAddTaskDialog({
         <Dialog open={show} onOpenChange={toggleShow}>
             <DialogContent className="bg-white w-1/2">
                 <DialogHeader>
-                    <DialogTitle>Add New Task</DialogTitle>
+                    <DialogTitle>{t('Add New Task')}</DialogTitle>
                 </DialogHeader>
                 <form className="w-full" onSubmit={handleSubmit}>
                     <MaintenanceTaskForm ref={formRef} />
@@ -97,7 +98,7 @@ export function MaintenanceAddTaskDialog({
                             type="submit"
                             className={buttonStyle({ colors: 'primary' })}
                         >
-                            Add
+                            {t('Add')}
                         </button>
                         <button
                             type="button"
@@ -107,7 +108,7 @@ export function MaintenanceAddTaskDialog({
                                 toggleShow(false);
                             }}
                         >
-                            Cancel
+                            {t('Cancel')}
                         </button>
                     </div>
                 </form>

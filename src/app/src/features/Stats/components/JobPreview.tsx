@@ -3,6 +3,7 @@ import { FaCircleXmark } from 'react-icons/fa6';
 import cn from 'classnames';
 import { tv } from 'tailwind-variants';
 import { JOB_STATUS_T } from '../utils/StatContext';
+import { t } from 'app/i18n';
 
 const statusBadge = tv({
     base: 'rounded-xl border bg-opacity-20 p-1 text-center',
@@ -53,7 +54,7 @@ export function JobPreview({
                         color: statusMessage,
                     })}
                 >
-                    {statusMessage}
+                    {t(statusMessage)}
                 </div>
             </span>
         </div>

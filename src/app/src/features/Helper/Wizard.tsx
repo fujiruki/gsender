@@ -32,6 +32,7 @@ import CancelButton from 'app/features/Helper/components/CancelButton';
 import { Wrench } from 'lucide-react';
 import store from 'app/store';
 import controller from 'app/lib/controller.ts';
+import { t } from 'app/i18n';
 
 // Fetch toolchange settings and send it to backend
 export function updateToolchangeContext(mappings = null) {
@@ -74,7 +75,7 @@ const Wizard = () => {
         const pill = (
             <div className="absolute top-2 left-1/2 -translate-x-1/2 z-50 pointer-events-auto flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/90 dark:bg-[#18181f]/90 backdrop-blur-sm border border-gray-200 dark:border-[#2a2a35] shadow-md">
                 <Wrench size={12} className="text-gray-500 dark:text-gray-400 shrink-0" />
-                <span className="font-medium text-gray-700 dark:text-[#e5e5ea] text-xs whitespace-nowrap">{title}</span>
+                <span className="font-medium text-gray-700 dark:text-[#e5e5ea] text-xs whitespace-nowrap">{t(title)}</span>
                 <MinMaxButton />
                 <CancelButton />
             </div>
@@ -106,7 +107,7 @@ const Wizard = () => {
                         <div className="flex items-center gap-2">
                             <Wrench size={14} className="text-gray-500 dark:text-gray-400" />
                             <span className="font-semibold text-base text-gray-900 dark:text-[#e5e5ea]">
-                                {title}
+                                {t(title)}
                             </span>
                         </div>
                         <div className="flex gap-1">

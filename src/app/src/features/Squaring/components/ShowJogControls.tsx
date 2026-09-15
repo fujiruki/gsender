@@ -5,12 +5,13 @@ import {
     PopoverTrigger,
 } from 'app/components/shadcn/Popover';
 import Button from 'app/components/Button';
+import { t } from 'app/i18n';
 
 const ShowJogControls = () => {
     return (
         <Popover>
             <PopoverTrigger asChild>
-                <Button variant="outline">Show Jog Controls</Button>
+                <Button variant="outline">{t('Show Jog Controls')}</Button>
             </PopoverTrigger>
             <PopoverContent className="w-96 bg-white">
                 <div className="w-full">

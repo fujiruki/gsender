@@ -8,6 +8,7 @@ import { GRBL_ACTIVE_STATE_RUN, GRBL_HAL_ACTIVE_STATE_RUN } from 'app/constants'
 
 import { useSquaring } from '../context/SquaringContext';
 import TriangleDiagram from '../components/TriangleDiagram';
+import { t } from 'app/i18n';
 
 
 const MarkingStep = () => {
@@ -40,10 +41,10 @@ const MarkingStep = () => {
             <div className="flex flex-col gap-4">
                 <div className="space-y-1">
                     <h3 className="text-lg font-semibold dark:text-white">
-                        Instructions
+                        {t('Instructions')}
                     </h3>
                     <p className="text-gray-600 dark:text-white h-20">
-                        {currentSubStepData.description}
+                        {t(currentSubStepData.description)}
                     </p>
                 </div>
 
@@ -108,7 +109,7 @@ const MarkingStep = () => {
                                             }}
                                             variant={step.buttonVariant}
                                         >
-                                            {step.buttonLabel}
+                                            {t(step.buttonLabel)}
                                         </Button>
 
                                         <div className="flex items-center gap-2">
@@ -146,7 +147,7 @@ const MarkingStep = () => {
 
             <div className="flex flex-col items-center gap-4">
                 <h3 className="text-lg font-semibold dark:text-white">
-                    Diagram
+                    {t('Diagram')}
                 </h3>
                 <TriangleDiagram />
             </div>
