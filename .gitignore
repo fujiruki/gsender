@@ -4,7 +4,13 @@ package-lock.json
 /.nyc_output
 /coverage
 /dist
-/docs
+/docs/*
+!/docs/SPEC.md
+!/docs/spec/
+!/docs/kaigi/
+!/docs/requests.md
+!/docs/request_log.md
+!/docs/handover/
 /output
 /releases
 /perf-log.csv
