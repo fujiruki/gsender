@@ -29,6 +29,7 @@ export type FirstToolBehavior =
 // Interfaces
 
 export interface Workspace {
+    language: string;
     units: UNITS_EN;
     reverseWidgets: boolean;
     spindleFunctions: boolean;
