@@ -3,12 +3,24 @@
 | 項目 | 内容 |
 |:--|:--|
 | プロジェクト | gSender日本語化フォーク (`C:\Fujiruki\Projects\gSender`) |
-| 作成日 | 2026-09-16 |
+| 作成日 | 2026-09-16（同日中に追記あり） |
 | 引き継ぎ理由 | セッション区切り（作業自体は継続中） |
 
 ---
 
-## 完了した作業
+## 完了した作業（追記: 本家PR相談〜GitHub公開push）
+
+- ユーザーから「日本語化ができたなら本家にPRを送ったら喜ばれるか」と質問があり、issue #877でのメンテナー発言（i18n機構は1.5で撤去済み・再整備は低優先度）と、今回の実装が自前`t()`+`ja.json`方式で本家の想定する将来のi18n機構と噛み合わない可能性を説明した
+- ユーザーは「本家貢献も期待していたので、方向性が違ったことに驚いている」との反応。**PRを送るかどうかはまだユーザー検討中で結論待ち**（提示した選択肢: (1)今のフォークのままissue #877にコメントして反応を見る (2)本家が正式にi18n機構を再整備するのを待って翻訳を移植する）
+- `fujiruki/gsender`はGitHub上に既に公開(Public)リポジトリとして存在することを確認済み。ローカルの未pushコミット23件（master、`c17440db3`まで）を`origin/master`へpush済み
+
+## 完了した作業（追記: AiFujiiuki保管庫の確認）
+
+- ユーザー指示で`fujiruki/AiFujiiuki`（「保管庫」）の`保管庫の使い方.md`更新を確認。`git pull`で17コミット分fast-forward（`0bfc8e0`→`3389404`）
+- 保管庫は「ChatGPTの長期記憶」から「ChatGPT・番頭AI・別Claude Codeセッション等のAI間共有地点」という役割整理に更新されていた（3層構造の正本定義、`date/source/status/related`メタデータ規則、ファイル命名規則を新設）
+- **重要**: 同じpullで`C:\Fujiruki\Projects\AiFujiiuki\docs\handover\gsender\`が新規追加されていることを発見。`chatgpt_to_claude.md`（ChatGPT→gSender担当Claude Code宛）と`claude_to_chatgpt.md`が存在し、コミットメッセージは「gSender担当Claude Codeへの初回連絡」。**中身は未読**（ユーザーへ「読みましょうか」と提案した段階で本セッションが引き継ぎに移った）
+
+## 進行中・待ち状態
 
 - SdDD導入（`CLAUDE.md`, `docs/`, `task.md`, `.claude/commands/`）
 - fableへi18n設計相談 → kaigi(Sonnet)でレビュー → 設計確定（`docs/kaigi/2026-09-15-i18n設計レビュー.md`）
@@ -29,16 +41,19 @@
 
 ## 進行中・待ち状態
 
-- なし。アラーム/エラー説明文の追加翻訳（下記）まで完了し、検証・記録済み
+- **本家(Sienci-Labs/gsender)へのPR送付可否**: ユーザー検討中、結論待ち（上記参照）
+- **AiFujiiuki保管庫内の`docs/handover/gsender/chatgpt_to_claude.md`が未読**: ChatGPT/番頭AI側からgSender担当Claude Code宛の初回連絡と思われる。次セッションで最優先に読むこと
 
 ## 次にやるべきこと（優先順）
 
-1. ユーザーがCNCjsマクロ（`.cncrc`のマクロ）を手動でgSenderにコピーして動作確認する予定 → 結果待ち。うまくいかなければインポートツールの仕様を詰める（`docs/requests.md`にはまだ未記載、必要になったら記録する）
-2. `docs/requests.md`に記録済みの2件、まだ仕様化・実装していない:
+1. `C:\Fujiruki\Projects\AiFujiiuki\docs\handover\gsender\chatgpt_to_claude.md`（および`claude_to_chatgpt.md`）を読み、内容を確認・対応する
+2. ユーザーの本家PR方針の結論を確認し、決まった方向で動く（issue #877へのコメント、または本家の再整備待ち）
+3. ユーザーがCNCjsマクロ（`.cncrc`のマクロ）を手動でgSenderにコピーして動作確認する予定 → 結果待ち。うまくいかなければインポートツールの仕様を詰める（`docs/requests.md`にはまだ未記載、必要になったら記録する）
+4. `docs/requests.md`に記録済みの2件、まだ仕様化・実装していない:
    - Electron本体(`electron:hot`)がWindowsで起動しない問題（`bash -lc`のシェル互換性）
    - キーボードジョグの高速化機能（`Ctrl+Shift+矢印`等）。`Jogging/index.tsx`に`JOG_SPEED_I`/`JOG_SPEED_D`のコメントアウトされた実装痕跡あり、参考にできる
-3. 日本語化が完全に一段落したら、以降の新機能は「アドオン優先」方針（`CLAUDE.md`参照）で進める
-4. i18n化はM0〜M3+アラーム/エラー説明文まで完了(keys in code: 1639, untranslated 0)。残っているとすればM3で意図的に対象外とした領域（About/ライセンス表記、開発者向けツール等）のみ
+5. 日本語化が完全に一段落したら、以降の新機能は「アドオン優先」方針（`CLAUDE.md`参照）で進める
+6. i18n化はM0〜M3+アラーム/エラー説明文まで完了(keys in code: 1639, untranslated 0)。残っているとすればM3で意図的に対象外とした領域（About/ライセンス表記、開発者向けツール等）のみ
 
 ## 完了した作業（追記: アラーム/エラー説明文）
 
@@ -56,6 +71,7 @@
 - 開発サーバーは`C:\Fujiruki\Projects\gSender\start-gsender.bat`をダブルクリックで起動（ポート8000）。**ユーザーが実機CNC接続の確認に使っている可能性があるため、むやみに再起動・停止しないこと**。ポート8000がLISTENING中かは`netstat -ano | grep :8000`で確認できる
 - `npm run electron:hot`（本来のElectronアプリ起動）はWindowsでは動かない。ブラウザ表示(`start-dev`)で代替している
 - ユーザーの運用方針: 「自社開発なので指揮AIの判断でどんどん進めてよい。ただし後戻りコストが高い設計判断はfableに相談すること」
+- 「保管庫」に関する指示を受けたら`fujiruki/AiFujiiuki/保管庫の使い方.md`を最初に読み、その最新ルールに従う（通常時は保管庫を読まなくてよい）。この保管庫はChatGPT・番頭AI・別Claude Codeセッション間の情報共有地点であり、gSender用の`docs/handover/`とは別の仕組み
 
 ## 現在のi18n:sync状態（直近確認時点、重複import修正後）
 
@@ -67,11 +83,13 @@ keys in code: 1561  new: 0  untranslated: 0  orphans: 0
 ## コミット履歴（直近、master）
 
 ```
+c17440db3 docs: update handover notes after alarm/error translation completion
+00ded70d4 docs: record alarm/error description translation completion
+0b3a23417 i18n: translate alarm and error descriptions surfaced from server constants
+a5872ef3f docs: add session handover (hikitsugi) notes
 335e80356 docs: record add-on-first policy for post-i18n feature development
 31a6b0cd7 docs: record duplicate-import crash found and fixed after M3 merge
 1ccfb1ee0 fix: remove duplicate imports introduced by parallel i18n merges
-ae7c1aaed docs: record M3 completion; add dev launch script
-636a3e23e Merge branch 'feature/i18n-m3b'
-c52b994dc i18n: translate peripheral feature strings (M3-a)
-5bf868b06 i18n: translate settings descriptions and remaining Confirm/toast callers
 ```
+
+`origin/master`（`https://github.com/fujiruki/gsender`、Public）は`c17440db3`まで反映済み（2026-09-16 push済み）。
