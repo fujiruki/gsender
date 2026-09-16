@@ -145,3 +145,71 @@
 - [x] `10e2166`のcheck-types修正を最新本家dev上で再現・検証し、本家PR候補として妥当か確認
 
 ### 完了タスク
+
+---
+
+## Agent-integration/dev-ja構築(Phase1: ブランチ作成+軽中度コミット再適用)
+
+> カンガルー07番（Claude調査結果）を踏まえた次段階。決定文書(カンガルー05番)の3線ブランチ運用のうち`integration/dev-ja`を実際に作成する。**`master`には一切触れない。origin(自社フォーク)へのpushはOK、upstream(本家)への発信は一切行わない**
+
+### タスク
+- [x] `git fetch upstream` → `git checkout -b integration/dev-ja upstream/dev` → `git push -u origin integration/dev-ja`
+- [x] 軽中度コミットの再適用（コンフリクトが機械的に解消できる範囲。判断に迷ったら無理せずスキップしリストアップ）:
+  - [x] e94aea7b7 (i18n基盤新設) → `a99c26a97`として再適用済み
+  - [x] dcab1f421 (MachineStatus/navbar等) → `f7264c52e`として再適用済み
+  - [x] fd45ddcbb (Config画面残翻訳) → `457e2ab20`として再適用済み
+  - [x] 1ccfb1ee0 (重複import自己修復) → **スキップ**。対象の重複はc52b994dc(M3-a)未適用のため今回は発生せず不要と判明
+  - [x] 0b3a23417 (アラーム/エラー説明文) → `a3ffbbdf3`として再適用済み。upstream/dev側でsagaが大幅リファクタ済みのため旧ロジックは破棄し現行ロジックにt()適用
+  - [x] 5bf868b06 (設定説明文・Confirm/toast) → `dc50d19bd`として再適用済み。`AutoSpinSetup.tsx`/`Visualizer.jsx`はupstream側で構造が丸ごと変わっており削除確定(スキップ)、`Rotary/Actions.tsx`もoursを全採用(構造差異のためConfirm二重化を回避)
+- [x] 各コミット再適用ごとに`npm run i18n:sync` / `~/.claude/scripts/test-quiet.sh npm run test:app` / `npm run build`で確認（全段階で一致: Tests 7 failed/221 passed、失敗3件はいずれも今回変更していないファイルでupstream/dev既存の不具合と判断。buildは全段階成功）
+- [x] 9c8b6e92c(M1本体,コンフリクト47件)・53e1e399a(M2,56件)・c52b994dc(M3-a周辺機能,68件・ATC/AccessoryInstaller構造変更あり)は**今回のスコープ外**。未着手。c52b994dcはAutoSpinSetup.tsx等と同根の「新Wizard構造への手動再wrap必須」問題と判明
+- [x] 完了したら`integration/dev-ja`にコミット・push → `git push -u origin integration/dev-ja`成功、HEAD=`dc50d19bd`
+- [x] `C:\Fujiruki\Projects\gSender\task.md`の本セクションのチェックボックスを`[x]`に更新（指揮AI側で実施）
+
+### 完了タスク
+
+---
+
+## Codex-Plugin SDK配下UI調査（読み取り専用、Phase1と並行）
+
+> `upstream/dev`にマージ済みのPlugin SDK(`packages/plugin-sdk/`)配下に、今後日本語化対象となるフロントエンドUIがどれだけあるか事前調査する。カンガルー07番5項目の宿題。
+
+### タスク
+- [x] `packages/plugin-sdk/`配下のフロントエンドPlugin管理UI・サンプルPluginのUIコンポーネントを洗い出す（SDK自体にUIはなし。実UIは`src/app/src/features/Plugins/`・`components/PluginToolCard/`・リポジトリ直下`plugins/*/`）
+- [x] 既存のUI文字列パターン(JSX内テキスト、ボタンラベル等)を確認し、件数感を見積もる（本体約105〜120件+サンプル約195〜235件、合計約300〜355件）
+- [x] `scripts/i18n-sync.mjs`のDATA_SOURCESに追加すべき対象パス候補をリストアップ（現行は完全一致方式でglob非対応、拡張が前提と判明）
+- [x] 変更コミットは作らない（読み取り専用調査、報告のみ・遵守）
+
+### 完了タスク
+
+---
+
+## Codex-i18n-sync.mjs折り返し正規化ロジック調査（読み取り専用、Phase1と並行）
+
+> カンガルー07番調査で判明した「JSX複数行折り返しによるNEWキー検出の偽陰性」問題。`scripts/i18n-sync.mjs`の現状実装を確認し、改善案を提示する。
+
+### タスク
+- [ ] `scripts/i18n-sync.mjs`のテキスト抽出・正規化ロジックを読み、JSX内の改行・連続空白をどう扱っているか特定する
+- [ ] `${var}`テンプレートリテラルから`{{var}}`補間記法への機械変換が可能な範囲を洗い出す
+- [ ] 改善案（正規化強化・近似候補検出の要否）を具体的に提示する。**実装はしない、提案のみ**
+
+### 完了タスク
+
+---
+
+## Agent-F-05 Homing安全性修正(hasHomed判定バグ)
+
+> 対応spec: `docs/spec/02_機能仕様.md` F-05。実機の安全インシデント(2026-09-16)を受けた根本修正。`integration/dev-ja`上で実装・検証し、本家PRを見据える。その後`master`へも個別反映する
+
+### タスク
+- [x] `git fetch origin` → `integration/dev-ja`ブランチをcheckoutして作業する（`master`には触れない）
+- [x] `GrblController.js`の`hasHomed`判定ロジック・`Jogging/index.tsx`の`canClick`/`canClickShortcut`判定を確認し、同じ欠陥が存在することを確認（`hasHomedSet`判定・`canClick`/`canClickShortcut`とも本家由来のまま。`Jogging/index.tsx`自体は今回未変更、別タスクとする判断）
+- [x] 修正実装（Codex推奨順）:
+  1. `hasHomed`の成功判定修正 → `GrblController.js`の`runner.on("status")`に`&& res.activeState !== GRBL_ACTIVE_STATE_ALARM`条件追加
+  2. `ALARM:6`〜`9`受信時に`hasHomed`をfalseへリセット → `runner.on("alarm")`に追加
+  3. `ALARM:8`(Homing fail)解除前に確認モーダルを追加 → 実際はALARM:6-9全て対象に拡大（GRBL_ALARMS定数で同一カテゴリと判明したため）。`UnlockButton/index.tsx`に`confirmUnlockAfterHomingFailure()`新設、`MachineStatus.tsx`のローカルunlockからも呼び出し
+- [x] `npm run i18n:sync` / `~/.claude/scripts/test-quiet.sh npm run test:app` / `npm run build`で確認（両ブランチとも該当ファイルの失敗なし、既存3件の無関係な失敗のみ残存）
+- [x] `integration/dev-ja`にコミット・push（コミット`39254de2f`）
+- [x] 同じ修正内容を`master`ブランチにも個別コミットとして反映・push（コミット`d30998f2e`）
+- [x] `C:\Fujiruki\Projects\gSender\task.md`の本セクションのチェックボックスを更新（指揮AI側で実施、マージコンフリクト解消込み）
+- [x] `docs/spec/02_機能仕様.md`のF-05の状態を「未実装」→「実装済み」に更新（指揮AI側でAgent版とのマージコンフリクトを解消し反映）
