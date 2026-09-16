@@ -249,20 +249,20 @@
 > 対応spec: `docs/spec/02_機能仕様.md` F-06。**`master`ブランチにのみ実装する。`integration/dev-ja`・`contrib/<topic>`には絶対に含めない**（藤田建具店フォーク限定のオリジナル機能、本家PR対象外）
 
 ### タスク
-- [ ] `master`をcheckoutして作業する（`integration/dev-ja`には触れない）
-- [ ] サーバー側: `src/server/api/`の既存パターン（`api.jobstats.js`等）に倣い`api.feedback.js`を新設。POST(新規要望作成)・GET(一覧取得)・PATCH(resolvedフラグ更新)のエンドポイントを実装
-- [ ] 永続化: 新規DBライブラリを追加せず、既存依存(`electron-store`または`jsonfile`)を使う。画像はファイルとして保存し、レコードには参照(パス/ファイル名)のみ持たせる。保存先はリポジトリ外（gitignore対象に追加すること）
-- [ ] フロントエンド: 全画面共通レイアウトに常設のフローティングボタンを追加。押下でモーダル表示（既存の`ConfirmationDialogLib`等と統一感のあるスタイル）
+- [x] `master`をcheckoutして作業する（`integration/dev-ja`には触れない）※worktree上の作業ブランチはmaster HEADと同一コミットで分岐し、完了後にmasterへfast-forward pushする方式で実施
+- [x] サーバー側: `src/server/api/`の既存パターン（`api.jobstats.js`等）に倣い`api.feedback.js`を新設。POST(新規要望作成)・GET(一覧取得)・PATCH(resolvedフラグ更新)のエンドポイントを実装
+- [x] 永続化: 新規DBライブラリを追加せず、既存の`src/server/services/configstore`（`api.jobstats.js`等が使う自前JSONストア）を再利用。画像はファイルとして`.gsender-feedback-images/`（configファイルと同じディレクトリ＝リポジトリ外）に保存し、レコードにはファイル名のみ持たせる
+- [x] フロントエンド: 全画面共通レイアウト（`src/app/src/workspace/index.tsx`）に常設のフローティングボタンを追加。押下でモーダル表示（`app/components/shadcn/Dialog`使用、`ConfirmationDialog`と統一感のあるスタイル）
   - テキストエリア（本文、必須）
   - 画像添付: ファイル選択ボタン + テキストエリアへの`onPaste`でクリップボード画像を検出しファイル化。複数枚可
   - 添付画像はサムネイル表示、各サムネイル右上に削除(×)ボタン
   - 優先度セレクト（高/中/低、デフォルト中）
   - 送信時に現在の画面(ルート)を判別しレコードに含める
   - 送信ボタン押下でAPIへPOST、成功したらモーダルを閉じてトースト通知
-- [ ] 新規UI文字列は`t()`でラップし`ja.json`に追加する
-- [ ] テスト: 主要ロジック（API層のCRUD、優先度バリデーション等）にJestテストを先に書いてから実装する（TDD）
-- [ ] `npm run i18n:sync` / `~/.claude/scripts/test-quiet.sh npm run test:app` / `npm run build`で確認
-- [ ] `.gitignore`にDB/画像保存先ディレクトリを追加
-- [ ] `master`にコミット・push（この機能はintegration/dev-jaにcherry-pickしない）
-- [ ] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
-- [ ] `docs/spec/02_機能仕様.md`のF-06の状態を「未実装」→「実装済み」に更新
+- [x] 新規UI文字列は`t()`でラップし`ja.json`に追加する（12件追加・翻訳済み）
+- [x] テスト: 主要ロジック（API層のCRUD、優先度バリデーション等）にJestテストを先に書いてから実装する（TDD）。サーバー側7件・フロント4件、全て合格
+- [x] `npm run i18n:sync`(new:0/untranslated:0/orphans:0) / `~/.claude/scripts/test-quiet.sh npm run test:app`(合格) / `npm run build`(合格)で確認
+- [x] `.gitignore`にDB/画像保存先ディレクトリを追加（`.gsender-feedback-images/`）
+- [x] `master`にコミット・push（この機能はintegration/dev-jaにcherry-pickしない）
+- [x] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
+- [x] `docs/spec/02_機能仕様.md`のF-06の状態を「未実装」→「実装済み」に更新

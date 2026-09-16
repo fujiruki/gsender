@@ -441,6 +441,15 @@ const releaseNotes = {
 };
 
 //
+// Feedback (fork-only improvement request widget)
+//
+const feedback = {
+    create: (formData: FormData): Promise<AxiosResponse> => {
+        return authrequest.post('/api/feedback', formData);
+    },
+};
+
+//
 // gSender Preferences
 //
 const preferences = {
@@ -478,4 +487,5 @@ export default {
     alarmList,
     releaseNotes,
     preferences,
+    feedback,
 };

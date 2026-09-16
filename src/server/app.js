@@ -397,6 +397,11 @@ const appMain = () => {
         });
         app.post(urljoin(settings.route, 'api/file'), upload.single('gcode'), api.files.uploadFile);
 
+        // Feedback (fork-only: improvement request widget, see docs/spec/02_機能仕様.md F-06)
+        app.post(urljoin(settings.route, 'api/feedback'), upload.array('images', 10), api.feedback.create);
+        app.get(urljoin(settings.route, 'api/feedback'), api.feedback.fetch);
+        app.patch(urljoin(settings.route, 'api/feedback/:id/resolve'), api.feedback.resolve);
+
         // Log
         app.post(urljoin(settings.route, 'api/log'), api.logs.printLog);
 

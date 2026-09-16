@@ -41,6 +41,7 @@ import * as maintenance from './api.maintenance';
 import * as alarmList from './api.alarmList';
 import * as releaseNotes from './api.releasenotes';
 import * as preferences from './api.preferences';
+import * as feedback from './api.feedback';
 
 export {
     version,
@@ -63,4 +64,5 @@ export {
     alarmList,
     releaseNotes,
     preferences,
+    feedback,
 };

@@ -46,6 +46,7 @@ import pubsub from 'pubsub-js';
 import ConfirmationDialog from 'app/components/ConfirmationDialog/ConfirmationDialog';
 import { SettingsProvider } from 'app/features/Config/utils/SettingsContext';
 import { Helper } from 'app/features/Helper';
+import { FeedbackWidget } from 'app/features/Feedback';
 import { t } from 'app/i18n';
 
 const Workspace = () => {
@@ -406,6 +407,7 @@ const Workspace = () => {
                     <TopBar />
                 </header>
                 <ConfirmationDialog />
+                <FeedbackWidget />
                 <div className="sr-only" role="status" aria-live="polite"></div>
                 <DataCollection />
                 <div className="flex h-full no-scrollbar">
