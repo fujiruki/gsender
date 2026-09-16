@@ -813,7 +813,12 @@ class GrblController {
 				this.homingFlagSet = determineMachineZeroFlagSet(res, this.settings);
 				this.emit("homing:flag", this.homingFlagSet);
 				this.homingStarted = false;
-				if (!this.hasHomedSet) {
+				// The first status report after $H can be Alarm when homing
+				// failed (see ALARM:6-9). Only treat homing as successful
+				// when the machine actually came out of the cycle without
+				// alarming, otherwise hasHomedSet is left for the "alarm"
+				// handler below to explicitly clear.
+				if (!this.hasHomedSet && res.activeState !== GRBL_ACTIVE_STATE_ALARM) {
 					this.hasHomedSet = true;
 					this.emit("homing:has-homed", true);
 				}
@@ -1036,6 +1041,15 @@ class GrblController {
 		this.runner.on("alarm", (res) => {
 			const code = Number(res.message) || undefined;
 			const alarm = _.find(GRBL_ALARMS, { code: code });
+
+			// ALARM:6-9 are all "Homing fail" (see GRBL_ALARMS in constants.js):
+			// the homing cycle itself did not complete. The machine position is
+			// unknown at this point, so any earlier successful homing no longer
+			// applies and must not be reported as still valid.
+			if (code >= 6 && code <= 9 && this.hasHomedSet) {
+				this.hasHomedSet = false;
+				this.emit("homing:has-homed", false);
+			}
 
 			const { lines, received, name } = this.sender.state;
 			const { outstanding } = this.feeder.state;
