@@ -213,3 +213,31 @@
 - [x] 同じ修正内容を`master`ブランチにも個別コミットとして反映・push（コミット`d30998f2e`）
 - [x] `C:\Fujiruki\Projects\gSender\task.md`の本セクションのチェックボックスを更新（指揮AI側で実施、マージコンフリクト解消込み）
 - [x] `docs/spec/02_機能仕様.md`のF-05の状態を「未実装」→「実装済み」に更新（指揮AI側でAgent版とのマージコンフリクトを解消し反映）
+
+---
+
+## Codex-F-05 本家contrib/<topic>準備(PR未送信)
+
+> F-05の修正は`integration/dev-ja`上ではt()ラップ済み。本家(upstream)にはi18n機構が無いため、英語文字列のみでロジックを移植し直す必要がある。**ブランチ作成・コミットまでで、PR送信はしない**
+
+### タスク
+- [ ] `git fetch upstream` → `upstream/dev`から`contrib/homing-safety-fix`ブランチを作成する
+- [ ] `GrblController.js`の修正1,2(hasHomedの成功判定修正・ALARM:6-9でのリセット)をロジックのみ移植する(UI文字列を伴わないため機械的に移植可能なはず)
+- [ ] 修正3(確認モーダル)は`t()`を使わず英語文字列のみで実装し直す。本家の既存UIコンポーネント・確認ダイアログ機構(`ConfirmationDialogLib`等、upstream/dev側に存在するもの)を使う
+- [ ] コミットメッセージは英語、本家のコーディングスタイルに合わせる(無関係な整形は混ぜない)
+- [ ] `origin`へ`contrib/homing-safety-fix`をpushする（upstreamへのpush・PR送信は一切しない）
+- [ ] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
+
+---
+
+## Agent-integration/dev-ja Phase2(M1本体 9c8b6e92c移植)
+
+> Phase1で保留した重量コミットのうち、コンフリクト47件・機械的に対応可能と判定済みの9c8b6e92c(M1: 日常操作画面一式)から着手する
+
+### タスク
+- [x] `origin/integration/dev-ja`をcheckoutして作業する（`master`には触れない）
+- [x] `9c8b6e92c`(feat: wrap M1 daily-operation UI strings with t() and add ja translations)をcherry-pickし、コンフリクトを「該当箇所を探してt()を当て直す」方針で解消 → コミット`70576eec5`
+- [x] `npm run i18n:sync`(new:0) / `~/.claude/scripts/test-quiet.sh npm run test:app`(184件中174成功・7失敗はいずれも既存の`@sienci/gviewer`未インストール起因で今回変更と無関係) / `npm run build`(t()化コード自体は4051モジュール変換成功、失敗は同じgviewer未解決import起因)で確認
+- [x] `integration/dev-ja`にコミット・push（`39254de2f..70576eec5`、fast-forward成功）
+- [x] `53e1e399a`(M2)・`c52b994dc`(M3-a、ATC/AccessoryInstaller構造変更あり)には未着手。dev-ja側がupstream/dev由来の構造更新(import type化・dark:content-*トークン化・GcodeStepper連携UI等)を多数含んでおり、M2/M3でも同様の「機械的だが構造差分あり」パターン再発の可能性ありと申し送りあり
+- [x] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新（指揮AI側で実施）
