@@ -28,7 +28,10 @@ import get from 'lodash/get';
 import controller from '../../lib/controller';
 import AlarmDescriptionIcon from './AlarmDescriptionIcon';
 import UnlockButton from './UnlockButton';
-import { UnlockButton as SmallUnlockButton } from 'app/features/UnlockButton';
+import {
+    confirmUnlockAfterHomingFailure,
+    UnlockButton as SmallUnlockButton,
+} from 'app/features/UnlockButton';
 import {
     GRBL_ACTIVE_STATE_ALARM,
     GRBL_ACTIVE_STATE_CHECK,
@@ -127,7 +130,9 @@ const MachineStatus: React.FC<MachineStatusProps> = ({
         } else if (displayActiveState === GRBL_ACTIVE_STATE_HOLD) {
             return controller.command('cyclestart');
         }
-        controller.command('unlock');
+        confirmUnlockAfterHomingFailure(alarmCode, () =>
+            controller.command('unlock'),
+        );
     };
 
     /**
