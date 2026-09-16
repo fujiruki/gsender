@@ -1,15 +1,15 @@
 # gSender (日本語化フォーク) CLAUDE.md
 
-OSSのCNCコントローラ「gsender」(Sienci-Labs/gsender) をフォークし、独自に日本語UIを追加するプロジェクト。本家への正式マージは狙わず、フォーク(fujiruki/gsender)での利用を目的とする。
+OSSのCNCコントローラ「gsender」(Sienci-Labs/gsender) をフォークし、独自に日本語UIを追加するプロジェクト。日本語化自体は本家への正式マージを狙わずフォーク(fujiruki/gsender)実用品として維持しつつ、Operator Plugin開発で見つけた汎用的な改善は本家へPRとして還元する（詳細は`docs/spec/05_技術設計.md`のブランチ運用節）。
 
-## 日本語化完了後の新機能追加方針(2026-09-16確定)
+## 日本語化完了後の新機能追加方針(2026-09-16確定、2026-09-16訂正)
 
 日本語化(M0〜M3)が一段落した後、新機能は以下の順で検討する:
 
 1. まず「アドオン的なアプローチ」（gSender本体のコードを直接改造せず、独立した機能として実現できないか）を検討する
 2. アドオンとして実現できない場合のみ、gSender本体の改造を慎重に検討する（rebase時の衝突・保守コストが増えるため）
 
-補足: 2026-09-16時点でgSenderに公式のプラグインSDKは実装されていない（本家に`feature/MI-2516-Plugin-SDK-Controller-Events`という開発中ブランチが存在するのみ）。「アドオン」は公式プラグイン機構を指すのではなく、本体コードへの変更を最小限に留める開発姿勢を指す。
+補足(2026-09-16訂正): 当初「公式のプラグインSDKは実装されていない」と記載していたが誤りだった。実際には**本家`upstream/dev`ブランチに`packages/plugin-sdk/`一式(SDK本体・複数サンプルPlugin・フロントエンドPlugin管理UI・`pluginregistry`)が完成形で存在する**（現`fujiruki/gsender master`はupstream/devから539コミット遅れており未取り込みなだけ）。「Operator Plugin」はこの本家Plugin SDK上に構築する具体アプリと位置づけ、SDK機構自体を独自に先回り実装しない。詳細は`docs/spec/05_技術設計.md`のブランチ運用節を参照。
 
 ---
 
