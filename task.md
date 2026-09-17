@@ -290,12 +290,12 @@
 
 ### タスク
 - [x] `master`をcheckoutして作業する
-- [x] `package.json`の`electron:hot`スクリプトの`bash -lc '...'`（Vite dev server起動待ちのポーリング）を、クロスプラットフォームで動く方式に置き換える（`wait-on`パッケージ等の軽量な既存手段を優先、自前実装は最小限に）
-- [ ] このbackPC(Windows)で実際に`npm run electron:hot`を実行し、Electronウィンドウが起動することを確認する
+- [x] `package.json`の`electron:hot`スクリプトの`bash -lc '...'`（Vite dev server起動待ちのポーリング）を、クロスプラットフォームで動く方式に置き換え。追加依存なしの`scripts/wait-for-url.mjs`（Node標準http/httpsでポーリング）を新設、`wait-on`はネットワーク制限で依存取得失敗のため断念
+- [x] Codexの隔離実行環境ではElectronのGPU子プロセスがWindows DLLエラーで終了し確認不可だったため、指揮AI自身がこのbackPC上で`npm run electron:hot`を起動 → `nodemon`が`node ./bin/gsender -p 8000`を起動する構成と判明。**ポート8000は実機CNC接続用の既存サーバー(PID 9080, 朝から稼働中)と共有**されており、衝突を避けるため起動確認前にTaskStopで即座に停止（実機用プロセスは無事、影響なしを確認済み）。**Electronウィンドウの実起動確認は安全上の理由で見送り**（このポートを使う限りこのマシンでは安全にテストできない。実機サーバー停止中の時間帯に発注者側で確認するか、別ポートでのテスト用スクリプトが必要）
 - [x] `npm run test:app` / `npm run build`で確認
-- [x] 本家`upstream/dev`の`package.json`に同じ`bash -lc`依存が存在するか確認し、結果を報告に記載する（存在すれば本家PR候補として記録するのみ、今回はPR送信しない）
-- [ ] `master`にコミット・push
-- [x] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
+- [x] 本家`upstream/dev`の`package.json`を確認 → `electron:hot`ではなく`pendant:electron:dev`に同じ`bash -lc`+`curl`待機処理が残存（本家への提案は未実施）
+- [x] `master`にコミット・push（rebase後コミット`4a499ecc7`、origin/masterへpush）
+- [x] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新（指揮AI側で実施、Codexジョブのstatusが更新されず`running`のまま停滞していたため、ログファイルを直接確認して回収）
 - [x] `docs/spec/02_機能仕様.md`のF-07の状態を「未実装」→「実装済み」に更新
 
 ---
