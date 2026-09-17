@@ -94,13 +94,11 @@ const HelperInfo = ({ payload, infoVisible, onClose }: Props) => {
                     </div>
                     {qrCode && (
                         <div className="text-xs flex flex-col justify-center items-center text-center">
-                            <p>{t('Need Help?')}</p>
+                            <p>Need Help?</p>
 
                             <Popover>
                                 <PopoverTrigger className="w-20">
-                                    <p className="text-blue-500">
-                                        {t('Click Me!')}
-                                    </p>
+                                    <p className="text-blue-500">Click Me!</p>
                                 </PopoverTrigger>
                                 <PopoverContent
                                     className="w-80 text-sm ml-4"
@@ -108,21 +106,21 @@ const HelperInfo = ({ payload, infoVisible, onClose }: Props) => {
                                 >
                                     <div className="flex flex-col items-center text-sm text-gray-600 gap-4 px-4 justify-center dark:text-white">
                                         <h1 className="text-blue-500 text-2xl">
-                                            {t('Sienci Resources')}
+                                            Sienci Resources
                                         </h1>
                                         <div className="justify-center items-center">
-                                            {t('Click ')}
+                                            {'Click '}
                                             <a
                                                 href={qrCode}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="font-bold text-blue-600 hover:text-blue-700 hover:underline"
                                             >
-                                                {t('here')}
+                                                here
                                             </a>
-                                            {t(
-                                                ' to go to our online resources, or scan the QR code with your phone camera:',
-                                            )}
+                                            {
+                                                ' to go to our online resources, or scan the QR code with your phone camera:'
+                                            }
                                         </div>
                                         <div className="border-8 border-gray-900 dark:border-white rounded-md bg-white p-2">
                                             <QRCode value={qrCode} />
@@ -134,15 +132,15 @@ const HelperInfo = ({ payload, infoVisible, onClose }: Props) => {
                     )}
                     {resourceLink && (
                         <div className="text-xs flex flex-col justify-center items-center text-center">
-                            <p>{t('Need Help?')}</p>
-                            <p>{t('Follow along in our')}</p>
+                            <p>Need Help?</p>
+                            <p>Follow along in our</p>
                             <a
                                 href={resourceLink}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-blue-600 hover:text-blue-700 hover:underline"
                             >
-                                {t('online resources')}
+                                online resources
                             </a>
                         </div>
                     )}
