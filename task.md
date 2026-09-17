@@ -335,11 +335,11 @@
 > **注意**: Codexへ2回委託したが、両方ともネットワーク制限でpush/PR作成に失敗（サンドボックス内のクローンでcherry-pick自体は無競合で成功、コミット`10e014b2a`相当。`npm run check-types`は正常実行、既存の`PluginProxy.tsx`型エラーのみ残存で新規エラーなしを確認済み）。2回目は**メインチェックアウト(`C:\Fujiruki\Projects\gSender`)を誤って`contrib/check-types-path-fix`ブランチへ切り替える副作用**が発生(データ損失はなし、指揮AI側で`master`へ復帰・空ブランチ削除済み)。以後Claude Agentへ切替
 
 ### タスク
-- [ ] `git fetch upstream` → `upstream/dev`から`contrib/check-types-path-fix`ブランチを作成
-- [ ] `10e2166b4`(fix: correct check-types script path and tsc resolution)を`git cherry-pick`する（無競合の想定、差分1行）
-- [ ] 実際に`npm run check-types`が完走することを確認する（既存の`PluginProxy.tsx`型エラー等は残ってよい、新規エラーが無ければOK）
-- [ ] `origin`へpush、`gh pr create --repo Sienci-Labs/gsender --base dev`でPR作成（タイトル・本文は淡々としたバグ修正トーン、英語）
-- [ ] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
+- [x] `git fetch upstream` → `upstream/dev`から`contrib/check-types-path-fix`ブランチを作成
+- [x] `10e2166b4`(fix: correct check-types script path and tsc resolution)を`git cherry-pick`（無競合、コミット`7ed99771f`）
+- [x] `npm run check-types`が実際にtscを走らせることを確認（既存の`PluginProxy.tsx`型エラー1件のみ残存、新規エラーなし）
+- [x] `origin`へpush、PR作成完了: https://github.com/Sienci-Labs/gsender/pull/955
+- [x] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新（指揮AI側で実施）
 
 ---
 
