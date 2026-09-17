@@ -405,3 +405,78 @@
 - [ ] `~/.claude/scripts/test-quiet.sh npm run test:app` / `npm run build`で確認
 - [ ] `integration/dev-ja`にコミット・push
 - [ ] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
+
+---
+
+## 残課題メモ(未着手、優先度低)
+
+- **jest設定の`.claude/worktrees`除外漏れ**: `jest.config.js`の`testPathIgnorePatterns`が`.claude/worktrees`配下を除外しておらず、並行worktree作業中に他Agentの作業ファイルをjestが誤って巻き込み`npm run test:app`が不安定になることがある(F-07 Agent報告、2026-09-17)。次にworktreeを使うAgentタスクの際にでも合わせて修正する
+
+---
+
+## Agent-F-05追加: Homing失敗ダイアログのRehome化+ALARM8/9案内文言
+
+> 本家PR #953へのkglovern氏指摘を受け、kaigi(`docs/kaigi/2026-09-18-Homing失敗時UX再検討.md`)で再検討した結論(段階1)をfableが詳細設計。実装のみ担当(設計は完了済み、以下は設計の要約と実装指示)
+
+### 背景・設計要約
+- 対象は`src/app/src/features/UnlockButton/index.tsx`の`confirmUnlockAfterHomingFailure()`のみ(呼び出し元2箇所は無変更)
+- ダイアログの2択を`Unlock/Cancel`→`Rehome(既定・強調、homeMachine()呼び出し)/Unlock Anyway`に変更
+- ALARM:8/9(リミットスイッチ検出/解除異常。6/7とは性質が異なる)のときだけ、ダイアログ本文に追加段落を表示: 「スイッチ故障の可能性」+「Config>原点復帰／リミット>$22をオフ→設定を適用、という具体的な脱出手順」
+- 3ブランチへの適用が必要。詳細は`docs/kaigi/2026-09-18-Homing失敗時UX再検討.md`とfableの報告(このセッションの会話ログ)を参照:
+  1. `master`: 新規実装(下記コード例参照)
+  2. `integration/dev-ja`: masterとほぼ同一hunk、cherry-pickベースで移植(import順で軽微な衝突の可能性あり)
+  3. `contrib/homing-safety-fix`(PR #953用ブランチ): シグネチャが`(code, onUnlock)`ではなく`(onConfirm)`で`t()`無し・英語直書きのため手移植が必要。呼び出し元(`MachineStatus.tsx`)でcodeを渡す形に変更してからALARM判定を追加する
+
+### masterでの実装コード例(fable提示、そのまま採用可)
+```tsx
+import { homeMachine } from 'app/features/DRO/utils/DRO';
+
+const HOMING_FAILURE_ALARM_CODES = [6, 7, 8, 9]; // 既存
+const LIMIT_SWITCH_FAULT_ALARM_CODES = [8, 9]; // 新規
+
+export function isLimitSwitchFaultAlarm(code: string | number): boolean {
+    return LIMIT_SWITCH_FAULT_ALARM_CODES.includes(code as number);
+}
+
+export function confirmUnlockAfterHomingFailure(code, onUnlock) {
+    if (!isHomingFailureAlarm(code)) { onUnlock(); return; }
+    Confirm({
+        title: t('Homing Not Complete'),
+        content: (
+            <>
+                <p>{t(BASE_TEXT)}</p>
+                {isLimitSwitchFaultAlarm(code) && <p className="mt-2">{t(FAULT_TEXT)}</p>}
+            </>
+        ),
+        confirmLabel: t('Rehome'),
+        cancelLabel: t('Unlock Anyway'),
+        onConfirm: homeMachine,
+        onClose: onUnlock,
+    });
+}
+```
+
+### 文言(ja.jsonキー=英文そのもの、fable確定案)
+- 基本文(既存キーを差し替え):
+  - EN: `The last homing cycle failed, so the machine position is unknown. Re-home the machine before continuing. Unlocking without re-homing may let jogging or a job run past the limit switches.`
+  - JA: `直前の原点復帰サイクルが失敗したため、マシンの位置が不明な状態です。続行する前に再度原点復帰してください。原点復帰せずにロック解除すると、ジョグやジョブの実行がリミットスイッチを超えてしまう可能性があります。`
+- 追加文(ALARM:8/9限定、新規キー):
+  - EN: `ALARM:8 and ALARM:9 mean a limit switch was not found or would not release, so re-homing will keep failing until the switch or its wiring is fixed. To use the machine without homing until then: choose Unlock Anyway, open Config > Homing/Limits, turn off "Homing cycle enable" ($22) and click Apply Settings.`
+  - JA: `ALARM:8/9はリミットスイッチが検出できない、または解除されない状態を示します。スイッチ本体や配線を修理するまで、再原点復帰は失敗し続ける可能性があります。修理までの間、原点復帰なしでマシンを使うには「それでもロック解除」を選び、設定 > 原点復帰／リミット を開いて「原点復帰サイクル有効化」($22)をオフにし、「設定を適用」を押してください。`
+- `Rehome`/`Unlock Anyway`/`Homing Not Complete`は既存キー流用、旧確認文キーはORPHAN化するので削除する
+
+### タスク
+- [x] `master`ブランチで実装(上記コード例・文言を適用)。`npm run i18n:sync`(旧キー削除・新キー追加を反映)、テスト新規作成(下記)、`~/.claude/scripts/test-quiet.sh npm run test:app` / `npm run build`確認
+- [x] テスト新規作成: `src/app/src/features/UnlockButton/tests/confirmUnlockAfterHomingFailure.test.tsx`。`Confirm`(`ConfirmationDialogLib`)・`homeMachine`(`app/features/DRO/utils/DRO`)・`controller`(`app/lib/controller`)をモックし、以下を検証:
+  1. code=3(非Homing系)→`onUnlock`即時呼び出し、`Confirm`未呼び出し
+  2. code=6→confirmLabel==='Rehome'、cancelLabel==='Unlock Anyway'、onConfirmでhomeMachine呼び出し、onCloseでonUnlock呼び出し
+  3. code=8,9(`test.each`)→追加案内文言が表示される
+  4. code=6,7(`test.each`)→追加案内文言が表示されない
+  5. code='Homing'→onUnlock素通り
+- [x] `docs/spec/02_機能仕様.md`F-05の該当箇所(ダイアログ仕様・受け入れ条件)を更新
+- [x] `master`にコミット・push
+- [ ] `git worktree`で`origin/integration/dev-ja`を作業し、同じ修正を移植。`npm run i18n:sync` / テスト / ビルド確認後、コミット・push(メインチェックアウトは触らない)
+- [ ] `git worktree`で`upstream/dev`ベースの`contrib/homing-safety-fix`(PR #953のブランチ、既存の`origin/contrib/homing-safety-fix`を継続)を作業し、シグネチャの違いを踏まえて手移植(英語のみ、`t()`無し)。テスト・ビルド確認後、`origin`へpush
+- [ ] PR #953にpushしたコミットを反映させた上で、kglovern氏への返信コメントを英語で下書きする(投稿は指揮AI確認後に行う。「dialog now offers Rehome as primary action, and ALARM 8/9 additionally explain how to disable homing via $22 to keep using the machine while the switch is repaired」等の趣旨)
+- [ ] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
+- [ ] 段階2(本家Issue提起)・段階3(hasHomedの3値化等)は今回のスコープに含めない

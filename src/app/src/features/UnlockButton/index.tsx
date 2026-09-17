@@ -10,6 +10,7 @@ import controller from 'app/lib/controller';
 import { GRBL_ACTIVE_STATES_T } from 'app/definitions/general';
 import Tooltip from 'app/components/Tooltip';
 import { Confirm } from 'app/components/ConfirmationDialog/ConfirmationDialogLib';
+import { homeMachine } from 'app/features/DRO/utils/DRO';
 import { t } from 'app/i18n';
 
 // ALARM:6-9 all mean the homing cycle itself failed (GRBL_ALARMS in
@@ -17,9 +18,17 @@ import { t } from 'app/i18n';
 // re-homing lets jogging continue with an unknown machine position, which
 // caused a real limit-switch crash. See docs/spec/02_機能仕様.md F-05.
 const HOMING_FAILURE_ALARM_CODES = [6, 7, 8, 9];
+// ALARM:8-9 specifically mean a limit switch was not found or would not
+// release, so unlike 6/7 they won't be fixed by re-homing alone until the
+// switch/wiring itself is repaired.
+const LIMIT_SWITCH_FAULT_ALARM_CODES = [8, 9];
 
 export function isHomingFailureAlarm(code: string | number): boolean {
     return HOMING_FAILURE_ALARM_CODES.includes(code as number);
+}
+
+export function isLimitSwitchFaultAlarm(code: string | number): boolean {
+    return LIMIT_SWITCH_FAULT_ALARM_CODES.includes(code as number);
 }
 
 export function confirmUnlockAfterHomingFailure(
@@ -32,12 +41,26 @@ export function confirmUnlockAfterHomingFailure(
     }
     Confirm({
         title: t('Homing Not Complete'),
-        content: t(
-            'The last homing cycle failed, so the machine position is unknown. Continuing without re-homing may let jogging or a job run past the limit switches. Unlock anyway?',
+        content: (
+            <>
+                <p>
+                    {t(
+                        'The last homing cycle failed, so the machine position is unknown. Re-home the machine before continuing. Unlocking without re-homing may let jogging or a job run past the limit switches.',
+                    )}
+                </p>
+                {isLimitSwitchFaultAlarm(code) && (
+                    <p className="mt-2">
+                        {t(
+                            'ALARM:8 and ALARM:9 mean a limit switch was not found or would not release, so re-homing will keep failing until the switch or its wiring is fixed. To use the machine without homing until then: choose Unlock Anyway, open Config > Homing/Limits, turn off "Homing cycle enable" ($22) and click Apply Settings.',
+                        )}
+                    </p>
+                )}
+            </>
         ),
-        confirmLabel: t('Unlock Anyway'),
-        cancelLabel: t('Cancel'),
-        onConfirm: onUnlock,
+        confirmLabel: t('Rehome'),
+        cancelLabel: t('Unlock Anyway'),
+        onConfirm: homeMachine,
+        onClose: onUnlock,
     });
 }
 
