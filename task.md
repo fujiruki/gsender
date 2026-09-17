@@ -475,8 +475,12 @@ export function confirmUnlockAfterHomingFailure(code, onUnlock) {
   5. code='Homing'→onUnlock素通り
 - [x] `docs/spec/02_機能仕様.md`F-05の該当箇所(ダイアログ仕様・受け入れ条件)を更新
 - [x] `master`にコミット・push
-- [ ] `git worktree`で`origin/integration/dev-ja`を作業し、同じ修正を移植。`npm run i18n:sync` / テスト / ビルド確認後、コミット・push(メインチェックアウトは触らない)
-- [ ] `git worktree`で`upstream/dev`ベースの`contrib/homing-safety-fix`(PR #953のブランチ、既存の`origin/contrib/homing-safety-fix`を継続)を作業し、シグネチャの違いを踏まえて手移植(英語のみ、`t()`無し)。テスト・ビルド確認後、`origin`へpush
-- [ ] PR #953にpushしたコミットを反映させた上で、kglovern氏への返信コメントを英語で下書きする(投稿は指揮AI確認後に行う。「dialog now offers Rehome as primary action, and ALARM 8/9 additionally explain how to disable homing via $22 to keep using the machine while the switch is repaired」等の趣旨)
-- [ ] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
+- [x] `git worktree`で`origin/integration/dev-ja`を作業し、同じ修正を移植。`npm run i18n:sync` / テスト / ビルド確認後、コミット・push(メインチェックアウトは触らない)
+  - 既存worktree(`.claude/worktrees/agent-af3adeb91b76d108d`)を再利用。node_modulesが古く`npm run build`が失敗したため`yarn install`で更新(lockfileへの差分なし)。コミット`8bd49b953`
+- [x] `git worktree`で`upstream/dev`ベースの`contrib/homing-safety-fix`(PR #953のブランチ、既存の`origin/contrib/homing-safety-fix`を継続)を作業し、シグネチャの違いを踏まえて手移植(英語のみ、`t()`無し)。テスト・ビルド確認後、`origin`へpush
+  - 既存worktree(`.claude/worktrees/agent-aa3c45ae337d7315f`)は別Agent(pid 20768、稼働中)がロック中のため、衝突回避のため一時ブランチ`contrib-homing-safety-fix-f05addendum`で別worktreeを作成し作業。`origin/contrib/homing-safety-fix`へfast-forward push後、一時worktree・ブランチは削除済み。コミット`ea1128c50`
+  - **注意**: ロック中worktree(`agent-aa3c45ae337d7315f`)はローカルで`49395374d`のまま(originは`ea1128c50`に進んだ)。そのAgentが次にpushする際は事前に`git pull --ff-only`が必要
+- [x] PR #953にpushしたコミットを反映させた上で、kglovern氏への返信コメントを英語で下書きする(投稿は指揮AI確認後に行う。「dialog now offers Rehome as primary action, and ALARM 8/9 additionally explain how to disable homing via $22 to keep using the machine while the switch is repaired」等の趣旨)
+  - 下書きは指揮AIへの完了報告に記載。投稿(`gh pr comment`)は未実施
+- [x] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
 - [ ] 段階2(本家Issue提起)・段階3(hasHomedの3値化等)は今回のスコープに含めない
