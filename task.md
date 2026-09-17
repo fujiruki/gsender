@@ -281,3 +281,33 @@
 - [x] `master`にコミット・push（この機能はintegration/dev-jaにcherry-pickしない）
 - [x] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
 - [x] `docs/spec/02_機能仕様.md`のF-06の状態を「未実装」→「実装済み」に更新
+
+---
+
+## Codex-F-07 Electron本体のWindows起動修正
+
+> 対応spec: `docs/spec/02_機能仕様.md` F-07。`master`に実装する
+
+### タスク
+- [ ] `master`をcheckoutして作業する
+- [ ] `package.json`の`electron:hot`スクリプトの`bash -lc '...'`（Vite dev server起動待ちのポーリング）を、クロスプラットフォームで動く方式に置き換える（`wait-on`パッケージ等の軽量な既存手段を優先、自前実装は最小限に）
+- [ ] このbackPC(Windows)で実際に`npm run electron:hot`を実行し、Electronウィンドウが起動することを確認する
+- [ ] `npm run test:app` / `npm run build`で確認
+- [ ] 本家`upstream/dev`の`package.json`に同じ`bash -lc`依存が存在するか確認し、結果を報告に記載する（存在すれば本家PR候補として記録するのみ、今回はPR送信しない）
+- [ ] `master`にコミット・push
+- [ ] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
+- [ ] `docs/spec/02_機能仕様.md`のF-07の状態を「未実装」→「実装済み」に更新
+
+---
+
+## Agent-integration/dev-ja Phase3(M2 53e1e399a・M3-a c52b994dc移植)
+
+> Phase1/2で保留した残り2件。`c52b994dc`はATC/AccessoryInstaller周辺でupstream/dev側の構造(Wizardディレクトリ)が丸ごと変わっており、cherry-pickでは救えず新規に近い再wrapが必要と判明済み
+
+### タスク
+- [ ] `origin/integration/dev-ja`をcheckoutして作業する（`master`には触れない）
+- [ ] `53e1e399a`(M2: Surfacing/Squaring/MovementTuning/Keyboard/Gamepad/Stats)をcherry-pickし、コンフリクトを解消する。Keyboard系は`.jsx→.tsx`化が進んでいる可能性があるため要注意
+- [ ] `c52b994dc`(M3-a: AccessoryInstaller/ATC/Rotary/RemoteMode/SDCard)に着手する。cherry-pickは機能しない前提で、upstream/dev側の新しいWizard構造（`src/app/src/components/Wizard/`等）を実際に読み、該当箇所に`t()`を当て直す形で新規実装する。無理に一度で終わらせず、対応できた範囲と残課題を明確に分けて報告する
+- [ ] 各段階で`npm run i18n:sync` / `~/.claude/scripts/test-quiet.sh npm run test:app` / `npm run build`を確認
+- [ ] `integration/dev-ja`にコミット・push
+- [ ] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
