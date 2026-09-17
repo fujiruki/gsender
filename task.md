@@ -328,14 +328,16 @@
 
 ---
 
-## Codex-本家PR: 10e2166b4(check-types修正)のcontrib化
+## Codex-本家PR: 10e2166b4(check-types修正)のcontrib化 → Claude Agentへ切替
 
 > カンガルー07番調査で無競合適用可能と判定済み。`contrib/<topic>`ブランチ作成からPR送信まで（本家PRのため晴樹さんの事前承認済み、2026-09-17指示）
+>
+> **注意**: Codexへ2回委託したが、両方ともネットワーク制限でpush/PR作成に失敗（サンドボックス内のクローンでcherry-pick自体は無競合で成功、コミット`10e014b2a`相当。`npm run check-types`は正常実行、既存の`PluginProxy.tsx`型エラーのみ残存で新規エラーなしを確認済み）。2回目は**メインチェックアウト(`C:\Fujiruki\Projects\gSender`)を誤って`contrib/check-types-path-fix`ブランチへ切り替える副作用**が発生(データ損失はなし、指揮AI側で`master`へ復帰・空ブランチ削除済み)。以後Claude Agentへ切替
 
 ### タスク
 - [ ] `git fetch upstream` → `upstream/dev`から`contrib/check-types-path-fix`ブランチを作成
 - [ ] `10e2166b4`(fix: correct check-types script path and tsc resolution)を`git cherry-pick`する（無競合の想定、差分1行）
-- [ ] 実際に`npm run check-types`が完走することを確認する
+- [ ] 実際に`npm run check-types`が完走することを確認する（既存の`PluginProxy.tsx`型エラー等は残ってよい、新規エラーが無ければOK）
 - [ ] `origin`へpush、`gh pr create --repo Sienci-Labs/gsender --base dev`でPR作成（タイトル・本文は淡々としたバグ修正トーン、英語）
 - [ ] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
 
