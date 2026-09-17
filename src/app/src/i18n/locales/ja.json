@@ -549,6 +549,7 @@
     "Homing locate feed rate": "原点復帰ロケート送り速度",
     "Homing movements have been updated and require the machine to be rehomed.": "原点復帰の動作が更新されたため、マシンの再度の原点復帰が必要です。",
     "Homing must be run if limit switches and homing cycle is enabled in EEPROM": "EEPROMでリミットスイッチと原点復帰サイクルが有効になっている場合、原点復帰を実行する必要があります",
+    "Homing required before jogging": "ジョグする前に原点復帰が必要です",
     "Homing required. Execute homing command ($H) to continue.": "原点復帰が必要です。続行するには原点復帰コマンド（$H）を実行してください。",
     "Homing search seek rate": "原点復帰探索送り速度",
     "Homing searches for a switch in the positive direction. Set axis bit (00000ZYX) to search in negative direction.": "原点復帰は正方向にスイッチを探索します。負方向に探索させるには軸ビット（00000ZYX）を設定してください。",
