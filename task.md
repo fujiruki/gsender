@@ -311,4 +311,59 @@
 - [x] 各段階で`npm run i18n:sync`(M2: new 0/untranslated 22/orphans 332、M3-a: new 0/untranslated 20/orphans 20) / `~/.claude/scripts/test-quiet.sh npm run test:app`(既存3件の無関係な失敗のみ、新規失敗なし) / `npm run build`(exit 0)を確認
 - [x] `integration/dev-ja`にコミット・push（`0998f641c..94dfe7da8`、fast-forward成功）
 - [x] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新（指揮AI側で実施）
+
+---
+
+## ロードマップ(2026-09-17、発注者指定の優先順)
+
+1. `10e2166b4`(check-types修正)の本家PR化
+2. `pendant:electron:dev`の`bash -lc`問題を本家へ提案
+3. F-05: `Jogging/index.tsx`の`canClick`/`canClickShortcut`にhasHomedを組み込む
+4. F-07: Electronウィンドウの実起動確認（ポート競合を回避する方法込み）
+5. 既存の未翻訳25件の翻訳
+6. Plugin SDK配下のUI日本語化（`i18n-sync.mjs`のDATA_SOURCES拡張が前提）
+7. Operator Plugin構想（本家Plugin SDK上に構築する新機能、まず仕様策定から）
+
+1・2・3は互いに独立（別ブランチ・別ファイル）なので並列着手する。4は3と同じF-05系だが独立に進められる。5・6は同じ`integration/dev-ja`ブランチに影響するため3の完了後に着手する。7は最後。
+
+---
+
+## Codex-本家PR: 10e2166b4(check-types修正)のcontrib化
+
+> カンガルー07番調査で無競合適用可能と判定済み。`contrib/<topic>`ブランチ作成からPR送信まで（本家PRのため晴樹さんの事前承認済み、2026-09-17指示）
+
+### タスク
+- [ ] `git fetch upstream` → `upstream/dev`から`contrib/check-types-path-fix`ブランチを作成
+- [ ] `10e2166b4`(fix: correct check-types script path and tsc resolution)を`git cherry-pick`する（無競合の想定、差分1行）
+- [ ] 実際に`npm run check-types`が完走することを確認する
+- [ ] `origin`へpush、`gh pr create --repo Sienci-Labs/gsender --base dev`でPR作成（タイトル・本文は淡々としたバグ修正トーン、英語）
+- [ ] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
+
+---
+
+## Codex-本家PR: pendant:electron:devのbash -lc修正
+
+> F-07(`scripts/wait-for-url.mjs`)と同じアプローチをupstream/dev側の`pendant:electron:dev`スクリプトに適用
+
+### タスク
+- [ ] `git fetch upstream` → `upstream/dev`から`contrib/pendant-electron-windows-fix`ブランチを作成
+- [ ] `upstream/dev`の`package.json`の`pendant:electron:dev`スクリプトを確認し、同じ`bash -lc '...'`依存を、F-07と同様にNode標準API等クロスプラットフォームな方式に置き換える（`scripts/wait-for-url.mjs`をそのまま再利用できるか確認、必要なら同等のものを追加）
+- [ ] Windowsで実際に動作確認する（ポート競合に注意。pendant用の別ポートを使うはずなので実機サーバーとは衝突しない想定だが、事前に使用ポートを確認すること）
+- [ ] `origin`へpush、`gh pr create --repo Sienci-Labs/gsender --base dev`でPR作成
+- [ ] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
+
+---
+
+## Agent-F-05拡張: Jogging canClick/canClickShortcutへのhasHomed組み込み
+
+> F-05実装時に「影響範囲が広いため別タスク」として意図的に先送りした残課題。`integration/dev-ja`上で実装し、`master`へも反映する（F-05と同じ方針）
+
+### タスク
+- [ ] `origin/integration/dev-ja`をcheckoutして作業する
+- [ ] `src/app/src/features/Jogging/index.tsx`の`canClick`/`canClickShortcut`を確認し、`hasHomed`(Redux `state.controller.hasHomed`)を判定条件に追加する。hasHomedがfalseの場合の挙動（ジョグボタンをdisabledにする／クリック時に警告を出す等）は、既存のF-05確認モーダルとの一貫性を考慮して判断する。判断に迷う場合は無理に進めず報告書に選択肢を挙げて指揮AIに確認を求める
+- [ ] `npm run i18n:sync` / `~/.claude/scripts/test-quiet.sh npm run test:app` / `npm run build`で確認
+- [ ] `integration/dev-ja`にコミット・push
+- [ ] 同じ修正を`master`へも個別コミットとして反映・push（F-05と同じ理由: 実機の安全確保）
+- [ ] `docs/spec/02_機能仕様.md`のF-05セクションに本拡張の内容を追記
+- [ ] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
 - 残課題: 既存の未翻訳25件(Visualizer options、プラグインbackup先設定等)はM2/M3-aのスコープ外のため未対応
