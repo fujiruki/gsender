@@ -361,11 +361,12 @@
 > F-05実装時に「影響範囲が広いため別タスク」として意図的に先送りした残課題。`integration/dev-ja`上で実装し、`master`へも反映する（F-05と同じ方針）
 
 ### タスク
-- [ ] `origin/integration/dev-ja`をcheckoutして作業する
-- [ ] `src/app/src/features/Jogging/index.tsx`の`canClick`/`canClickShortcut`を確認し、`hasHomed`(Redux `state.controller.hasHomed`)を判定条件に追加する。hasHomedがfalseの場合の挙動（ジョグボタンをdisabledにする／クリック時に警告を出す等）は、既存のF-05確認モーダルとの一貫性を考慮して判断する。判断に迷う場合は無理に進めず報告書に選択肢を挙げて指揮AIに確認を求める
-- [ ] `npm run i18n:sync` / `~/.claude/scripts/test-quiet.sh npm run test:app` / `npm run build`で確認
-- [ ] `integration/dev-ja`にコミット・push
-- [ ] 同じ修正を`master`へも個別コミットとして反映・push（F-05と同じ理由: 実機の安全確保）
-- [ ] `docs/spec/02_機能仕様.md`のF-05セクションに本拡張の内容を追記
-- [ ] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
+- [x] `origin/integration/dev-ja`をcheckoutして作業する（worktree制約により`origin/integration/dev-ja`追跡のローカル作業ブランチを作成して対応）
+- [x] `src/app/src/features/Jogging/index.tsx`の`canClick`/`canClickShortcut`を確認し、`hasHomed`(Redux `state.controller.hasHomed`)を判定条件に追加する。`state.controller.settings.settings.$22`(Homing cycle enable)が0（Homing無効機体）の場合はhasHomedを無視してジョグを許可し、Homing無効機体の副作用を回避。ブロック時はジョグ確認モーダルではなく赤字の短い注意文表示（`t('Homing required before jogging')`）を採用
+- [x] `npm run i18n:sync` / `~/.claude/scripts/test-quiet.sh npm run test:app`相当（jest直接実行、既存の無関係失敗3スイート除き問題なし） / `npm run build`で確認（いずれも成功。check-typesは環境側のtypescript依存が古く別問題のため対象外、`codex-checktypes-pr`対応待ち）
+- [x] `integration/dev-ja`にコミット・push
+- [x] 同じ修正を`master`へも個別コミットとして反映・push（F-05と同じ理由: 実機の安全確保）
+- [x] `docs/spec/02_機能仕様.md`のF-05セクションに本拡張の内容を追記
+- [x] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
+- 既知の限界: `JogWheel`等のマウス長押しジョグは`canClick`を実行時ガードとして使っておらず（スタイリングのみ）、キーボード/ゲームパッドのみ確実にブロックされる。この既存ギャップは本修正以前から存在し、対応は別タスクとする（詳細はspec参照）
 - 残課題: 既存の未翻訳25件(Visualizer options、プラグインbackup先設定等)はM2/M3-aのスコープ外のため未対応
