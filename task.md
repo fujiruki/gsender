@@ -305,9 +305,10 @@
 > Phase1/2で保留した残り2件。`c52b994dc`はATC/AccessoryInstaller周辺でupstream/dev側の構造(Wizardディレクトリ)が丸ごと変わっており、cherry-pickでは救えず新規に近い再wrapが必要と判明済み
 
 ### タスク
-- [ ] `origin/integration/dev-ja`をcheckoutして作業する（`master`には触れない）
-- [ ] `53e1e399a`(M2: Surfacing/Squaring/MovementTuning/Keyboard/Gamepad/Stats)をcherry-pickし、コンフリクトを解消する。Keyboard系は`.jsx→.tsx`化が進んでいる可能性があるため要注意
-- [ ] `c52b994dc`(M3-a: AccessoryInstaller/ATC/Rotary/RemoteMode/SDCard)に着手する。cherry-pickは機能しない前提で、upstream/dev側の新しいWizard構造（`src/app/src/components/Wizard/`等）を実際に読み、該当箇所に`t()`を当て直す形で新規実装する。無理に一度で終わらせず、対応できた範囲と残課題を明確に分けて報告する
-- [ ] 各段階で`npm run i18n:sync` / `~/.claude/scripts/test-quiet.sh npm run test:app` / `npm run build`を確認
-- [ ] `integration/dev-ja`にコミット・push
-- [ ] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
+- [x] `origin/integration/dev-ja`をcheckoutして作業する（`master`には触れない）
+- [x] `53e1e399a`(M2)をcherry-pick、56ファイル・149箇所のコンフリクトを「HEAD(dev-ja)の構造・クラス名を保持しt()ラップとimportだけ当て直す」方針で解消（コミット`c08ee1ef7`）。範囲超過の誤ラップ(`HelperInfo.tsx`)を是正(`0998f641c`)
+- [x] `c52b994dc`(M3-a)に着手 → **想定に反し全65ファイル対応完了**。Wizardシェル部分(9ファイル+hooks)以外の62ファイルはupstream/dev側で旧パスのまま変更されておらず、gitのrename検出込み3-way mergeで機械的に解消できた。Wizardシェルのみ新パス(`components/Wizard/`)へ手動再wrap。RemoteMode/index.tsxの新規拡張部分(推奨アドレス警告等)はスコープ外として意図的に未ラップ
+- [x] 各段階で`npm run i18n:sync`(M2: new 0/untranslated 22/orphans 332、M3-a: new 0/untranslated 20/orphans 20) / `~/.claude/scripts/test-quiet.sh npm run test:app`(既存3件の無関係な失敗のみ、新規失敗なし) / `npm run build`(exit 0)を確認
+- [x] `integration/dev-ja`にコミット・push（`0998f641c..94dfe7da8`、fast-forward成功）
+- [x] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新（指揮AI側で実施）
+- 残課題: 既存の未翻訳25件(Visualizer options、プラグインbackup先設定等)はM2/M3-aのスコープ外のため未対応
