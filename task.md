@@ -236,12 +236,12 @@
 > F-05の修正は`integration/dev-ja`上ではt()ラップ済み。本家(upstream)にはi18n機構が無いため、英語文字列のみでロジックを移植し直す必要がある。**ブランチ作成・コミットまでで、PR送信はしない**
 
 ### タスク
-- [ ] `git fetch upstream` → `upstream/dev`から`contrib/homing-safety-fix`ブランチを作成する
-- [ ] `GrblController.js`の修正1,2(hasHomedの成功判定修正・ALARM:6-9でのリセット)をロジックのみ移植する(UI文字列を伴わないため機械的に移植可能なはず)
-- [ ] 修正3(確認モーダル)は`t()`を使わず英語文字列のみで実装し直す。本家の既存UIコンポーネント・確認ダイアログ機構(`ConfirmationDialogLib`等、upstream/dev側に存在するもの)を使う
-- [ ] コミットメッセージは英語、本家のコーディングスタイルに合わせる(無関係な整形は混ぜない)
-- [ ] `origin`へ`contrib/homing-safety-fix`をpushする（upstreamへのpush・PR送信は一切しない）
-- [ ] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
+- [x] `git fetch upstream` → `upstream/dev`から`contrib/homing-safety-fix`ブランチを作成する
+- [x] `GrblController.js`の修正1,2(hasHomedの成功判定修正・ALARM:6-9でのリセット)をロジックのみ移植（コミット`49395374d`）
+- [x] 修正3(確認モーダル)は`t()`を使わず英語文字列のみで実装し直す → `UnlockButton/index.tsx`に`isHomingFailureAlarm()`/`confirmUnlockAfterHomingFailure()`を新設し共通化、`MachineStatus.tsx`からも利用
+- [x] コミットメッセージは英語、本家のコーディングスタイルに合わせる（無関係な整形は混ぜない）
+- [x] `origin`へ`contrib/homing-safety-fix`をpush（`49395374d`、upstreamへは未送信）
+- [x] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新（指揮AI側で実施）
 
 ---
 
