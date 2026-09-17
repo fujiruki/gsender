@@ -8,6 +8,7 @@ import { useToolChange } from 'app/features/ATC/utils/ToolChangeContext.tsx';
 import { useTypedSelector } from 'app/hooks/useTypedSelector.ts';
 import controller from 'app/lib/controller.ts';
 import store from 'app/store';
+import { t } from 'app/i18n';
 import type { RootState } from 'app/store/redux';
 import cn from 'classnames';
 import { Wrench } from 'lucide-react';
@@ -153,18 +154,18 @@ export function CurrentToolInfo({ disabled }: { disabled?: boolean }) {
                                     'font-semibold text-base dark:text-content-primary',
                                 )}
                             >
-                                {isEmptyTool ? 'Empty' : `T${selectedTool.id}`}
+                                {isEmptyTool ? t('Empty') : `T${selectedTool.id}`}
                             </span>
                             {!isEmptyTool && isRackTool && (
                                 <span className="text-gray-600 text-xs dark:text-content-secondary">
-                                    Rack
+                                    {t('Rack')}
                                 </span>
                             )}
                             {!isEmptyTool &&
                                 !isRackTool &&
                                 allowManualBadge && (
                                     <span className="text-gray-600 text-xs dark:text-content-secondary">
-                                        Manual
+                                        {t('Manual')}
                                     </span>
                                 )}
                         </div>
@@ -175,7 +176,7 @@ export function CurrentToolInfo({ disabled }: { disabled?: boolean }) {
                             className={`${state.backgroundColor} ${state.borderColor} border-2 min-w-18 ${state.textColor} text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1`}
                         >
                             <EmptyIcon size={12} />
-                            {state.label}
+                            {t(state.label)}
                         </Badge>
                     ) : (
                         <ToolStatusBadges
@@ -208,7 +209,7 @@ export function CurrentToolInfo({ disabled }: { disabled?: boolean }) {
                         size="custom"
                         className="h-9 px-4 text-sm"
                     >
-                        Probe
+                        {t('Probe')}
                     </Button>
                 </div>
             </div>

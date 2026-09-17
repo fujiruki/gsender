@@ -32,21 +32,21 @@ const MountingSetup = ({ isDisabled = false }: { isDisabled?: boolean }) => {
     const [open, setOpen] = useState(false);
     const [options, setOptions] = useState({
         'mounting-track-lines-up': {
-            label: 'Does the mounting track line up without interference?',
+            label: t('Does the mounting track line up without interference?'),
             subOptions: [
                 {
-                    label: 'Lines up',
+                    label: t('Lines up'),
                     value: 'lines-up',
                 },
                 {
-                    label: 'Does not line up',
+                    label: t('Does not line up'),
                     value: 'does-not-line-up',
                 },
             ],
             value: 'does-not-line-up',
         },
         'end-mill-diameter': {
-            label: 'End Mill Diameter',
+            label: t('End Mill Diameter'),
             subOptions: [
                 {
                     label: '¼"',
@@ -60,7 +60,7 @@ const MountingSetup = ({ isDisabled = false }: { isDisabled?: boolean }) => {
             value: 'quarter-inch',
         },
         'number-of-holes': {
-            label: 'Number of Holes',
+            label: t('Number of Holes'),
             subOptions: [
                 {
                     label: '6',
@@ -74,7 +74,7 @@ const MountingSetup = ({ isDisabled = false }: { isDisabled?: boolean }) => {
             value: 'six',
         },
         'extension-track-length': {
-            label: 'Extension Track Length',
+            label: t('Extension Track Length'),
             subOptions: [
                 {
                     label: '400mm',
@@ -193,7 +193,7 @@ const MountingSetup = ({ isDisabled = false }: { isDisabled?: boolean }) => {
 
     const shuttleControlEvents = {
         TOGGLE_MOUNTING_SETUP: {
-            title: 'Rotary Mounting Setup',
+            title: t('Rotary Mounting Setup'),
             keys: '',
             cmd: 'TOGGLE_MOUNTING_SETUP',
             preventDefault: false,
@@ -222,20 +222,20 @@ const MountingSetup = ({ isDisabled = false }: { isDisabled?: boolean }) => {
                     onClick={() => setOpen(true)}
                     disabled={isDisabled}
                     tooltip={{
-                        content: 'Open mounting setup tool',
+                        content: t('Open mounting setup tool'),
                     }}
                 >
-                    Mounting Setup
+                    {t('Mounting Setup')}
                 </Button>
             </DialogTrigger>
             <DialogContent className="bg-white w-11/12 max-w-6xl">
                 <DialogHeader>
-                    <DialogTitle>Rotary Mounting Setup</DialogTitle>
+                    <DialogTitle>{t('Rotary Mounting Setup')}</DialogTitle>
 
                     <DialogDescription>
-                        Make sure your router is mounted as far down as possible
-                        with the bit inserted not too far into the collet to
-                        prevent bottoming out.
+                        {t(
+                            'Make sure your router is mounted as far down as possible with the bit inserted not too far into the collet to prevent bottoming out.',
+                        )}
                     </DialogDescription>
                 </DialogHeader>
                 <div className="flex flex-col justify-between gap-8 mt-8">
@@ -272,13 +272,13 @@ const MountingSetup = ({ isDisabled = false }: { isDisabled?: boolean }) => {
                 <div className="flex flex-col gap-2 min-h-[400px] justify-center">
                     <img
                         src={getIllustrationImage()}
-                        alt="Mounting Setup"
+                        alt={t('Mounting Setup')}
                         className="w-full self-center"
                     />
                 </div>
                 <DialogFooter>
                     <Button type="submit" onClick={handleSubmit}>
-                        Load G-Code to Visualizer
+                        {t('Load G-Code to Visualizer')}
                     </Button>
                 </DialogFooter>
             </DialogContent>

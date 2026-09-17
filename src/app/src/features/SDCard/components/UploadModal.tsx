@@ -80,9 +80,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({
 
         if (errors.length > 0) {
             toast.error(
-                t('Some files were rejected:\n{{errors}}', {
-                    errors: errors.join('\n'),
-                }),
+                `${t('Some files were rejected:')}\n${errors.join('\n')}`,
             );
         }
 
@@ -146,9 +144,9 @@ export const UploadModal: React.FC<UploadModalProps> = ({
         <Dialog open={isOpen} onOpenChange={handleOpenChange}>
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
-                    <DialogTitle>Upload Files</DialogTitle>
+                    <DialogTitle>{t('Upload Files')}</DialogTitle>
                     <DialogDescription>
-                        Upload one or more valid gcode files to your SD card
+                        {t('Upload one or more valid gcode files to your SD card')}
                     </DialogDescription>
                 </DialogHeader>
 
@@ -168,17 +166,18 @@ export const UploadModal: React.FC<UploadModalProps> = ({
                     >
                         <Upload className="w-12 h-12 mx-auto mb-4 text-gray-400" />
                         <p className="text-sm text-gray-600 mb-2">
-                            Drag & drop files here, or{' '}
+                            {t('Drag & drop files here, or')}{' '}
                             <button
                                 onClick={() => fileInputRef.current?.click()}
                                 className="text-blue-500 hover:text-blue-600 font-medium"
                             >
-                                browse
+                                {t('browse')}
                             </button>
                         </p>
                         <p className="text-xs text-gray-500">
-                            Accepts: .gcode, .nc, .macro and other supported
-                            files
+                            {t(
+                                'Accepts: .gcode, .nc, .macro and other supported files',
+                            )}
                         </p>
                     </div>
 
@@ -194,7 +193,9 @@ export const UploadModal: React.FC<UploadModalProps> = ({
                     {selectedFiles.length > 0 && (
                         <div>
                             <h3 className="text-sm font-medium text-gray-700 mb-2">
-                                Selected Files ({selectedFiles.length}):
+                                {t('Selected Files ({{count}}):', {
+                                    count: selectedFiles.length,
+                                })}
                             </h3>
                             <div className="space-y-2 max-h-60 overflow-y-auto">
                                 {selectedFiles.map((file, index) => (
@@ -212,7 +213,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({
                                         <button
                                             onClick={() => removeFile(index)}
                                             className="p-1 hover:bg-gray-200 rounded transition-colors"
-                                            title="Remove file"
+                                            title={t('Remove file')}
                                         >
                                             <X className="w-4 h-4 text-gray-500" />
                                         </button>
@@ -228,7 +229,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({
                         onClick={() => handleOpenChange(false)}
                         className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors duration-200"
                     >
-                        Cancel
+                        {t('Cancel')}
                     </button>
                     <button
                         onClick={handleUpload}
@@ -236,8 +237,8 @@ export const UploadModal: React.FC<UploadModalProps> = ({
                         className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
                     >
                         {isLoading
-                            ? 'Uploading...'
-                            : `Upload ${selectedFiles.length > 0 ? `(${selectedFiles.length})` : ''}`}
+                            ? t('Uploading...')
+                            : `${t('Upload')} ${selectedFiles.length > 0 ? `(${selectedFiles.length})` : ''}`}
                     </button>
                 </DialogFooter>
             </DialogContent>

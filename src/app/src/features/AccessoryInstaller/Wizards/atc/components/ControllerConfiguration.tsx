@@ -2,6 +2,7 @@ import { StepActionButton } from 'app/components/Wizard/StepActionButton.tsx';
 import type { StepProps } from 'app/components/Wizard/types';
 import controller from 'app/lib/controller.ts';
 import store from 'app/store';
+import { t } from 'app/i18n';
 import { useState } from 'react';
 
 export function ControllerConfiguration({ onComplete }: StepProps) {
@@ -26,25 +27,26 @@ export function ControllerConfiguration({ onComplete }: StepProps) {
     return (
         <div className="flex flex-col gap-5 justify-start">
             <p className="dark:text-content-primary">
-                The following controller settings are being updated to ensure
-                compatibility with the ATC.
+                {t(
+                    'The following controller settings are being updated to ensure compatibility with the ATC.',
+                )}
             </p>
             <ul
                 className="list-disc list-inside text-gray-900 dark:text-content-primary"
                 style={{ fontSize: '1.1rem' }}
             >
-                <li>Homing direction</li>
-                <li>Tool number persistence</li>
-                <li>Input and output pin settings</li>
-                <li>Startup g-code</li>
+                <li>{t('Homing direction')}</li>
+                <li>{t('Tool number persistence')}</li>
+                <li>{t('Input and output pin settings')}</li>
+                <li>{t('Startup g-code')}</li>
             </ul>
 
             <p className="dark:text-content-primary">
-                Select <b>“Apply”</b> to apply these changes.
+                {t('Select')} <b>“{t('Apply')}”</b> {t('to apply these changes.')}
             </p>
             <StepActionButton
-                label={'Apply'}
-                runningLabel="Applying..."
+                label={t('Apply')}
+                runningLabel={t('Applying...')}
                 onApply={applySettings}
                 isComplete={isComplete}
                 error={error}

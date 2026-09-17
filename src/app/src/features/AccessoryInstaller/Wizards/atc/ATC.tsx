@@ -17,6 +17,7 @@ import {
 } from 'app/features/AccessoryInstaller/Wizards/atc/components/TemplateManagement.tsx';
 import { TLSPosition } from 'app/features/AccessoryInstaller/Wizards/atc/components/TLSPosition.tsx';
 import { Jogging } from 'app/features/Jogging';
+import { t } from 'app/i18n';
 import store from 'app/store';
 import { useMemo } from 'react';
 import RackA from './assets/Step_5A_Rack_Position_06.webp';
@@ -41,41 +42,41 @@ export function useSienciATCWizard(): Wizard {
     return useMemo<Wizard>(
         () => ({
             id: 'sienci-atc',
-            title: 'Sienci ATC',
+            title: t('Sienci ATC'),
             image: ATCiLogo,
             validations: [...validations],
             helpUrl: 'https://resources.sienci.com/view/atc-software/',
             subWizards: [
                 {
                     id: 'initial-setup',
-                    title: 'Setup Wizard',
-                    description: 'Configure your ATC for first time use',
-                    estimatedTime: '30 minutes - 2 hours',
+                    title: t('Setup Wizard'),
+                    description: t('Configure your ATC for first time use'),
+                    estimatedTime: t('30 minutes - 2 hours'),
                     configVersion: storeVersion,
                     completionPage: ATCCompletion,
                     completionImage: CompletionImg,
                     steps: [
                         {
                             id: 'macro-configuration',
-                            title: 'Tool Changing Macros',
+                            title: t('Tool Changing Macros'),
                             component: MacroConfiguration,
                             secondaryContent: [
                                 {
                                     type: 'image',
                                     content: SDImg,
-                                    title: 'SD Card Installation',
+                                    title: t('SD Card Installation'),
                                 },
                                 {
                                     type: 'link',
-                                    title: 'Need help?',
-                                    content: 'Follow along in our',
+                                    title: t('Need help?'),
+                                    content: t('Follow along in our'),
                                     url: 'https://resources.sienci.com/view/atc-software/',
                                 },
                             ],
                         },
                         {
                             id: 'controller-configuration',
-                            title: 'Controller Setup',
+                            title: t('Controller Setup'),
                             component: ControllerConfiguration,
                             secondaryContent: [
                                 {
@@ -84,15 +85,15 @@ export function useSienciATCWizard(): Wizard {
                                 },
                                 {
                                     type: 'link',
-                                    title: 'Need help?',
-                                    content: 'Follow along in our',
+                                    title: t('Need help?'),
+                                    content: t('Follow along in our'),
                                     url: 'https://resources.sienci.com/view/atc-software/',
                                 },
                             ],
                         },
                         {
                             id: 'rehome',
-                            title: 'Rehome',
+                            title: t('Rehome'),
                             component: RestartAndRehome,
                             secondaryContent: [
                                 {
@@ -101,15 +102,15 @@ export function useSienciATCWizard(): Wizard {
                                 },
                                 {
                                     type: 'link',
-                                    title: 'Need help?',
-                                    content: 'Follow along in our',
+                                    title: t('Need help?'),
+                                    content: t('Follow along in our'),
                                     url: 'https://resources.sienci.com/view/atc-software/',
                                 },
                             ],
                         },
                         {
                             id: 'tool-length-sensor',
-                            title: 'Tool Length Sensor Position',
+                            title: t('Tool Length Sensor Position'),
                             component: TLSPosition,
                             secondaryContent: [
                                 {
@@ -125,15 +126,15 @@ export function useSienciATCWizard(): Wizard {
                                 },
                                 {
                                     type: 'link',
-                                    title: 'Need help?',
-                                    content: 'Follow along in our',
+                                    title: t('Need help?'),
+                                    content: t('Follow along in our'),
                                     url: 'https://resources.sienci.com/view/atc-software/',
                                 },
                             ],
                         },
                         {
                             id: 'rack-position',
-                            title: 'Rack Position',
+                            title: t('Rack Position'),
                             component: RackPosition,
                             autoComplete: () =>
                                 store.get(
@@ -158,15 +159,15 @@ export function useSienciATCWizard(): Wizard {
                                 },
                                 {
                                     type: 'link',
-                                    title: 'Need help?',
-                                    content: 'Follow along in our',
+                                    title: t('Need help?'),
+                                    content: t('Follow along in our'),
                                     url: 'https://resources.sienci.com/view/atc-software/',
                                 },
                             ],
                         },
                         {
                             id: 'spindle-config',
-                            title: 'Spindle Setup - Part 1',
+                            title: t('Spindle Setup - Part 1'),
                             component: SpindleSetRestart,
                             secondaryContent: [
                                 {
@@ -175,15 +176,15 @@ export function useSienciATCWizard(): Wizard {
                                 },
                                 {
                                     type: 'link',
-                                    title: 'Need help?',
-                                    content: 'Follow along in our',
+                                    title: t('Need help?'),
+                                    content: t('Follow along in our'),
                                     url: 'https://resources.sienci.com/view/atc-software/',
                                 },
                             ],
                         },
                         {
                             id: 'modbus-config',
-                            title: 'Spindle Setup - Part 2',
+                            title: t('Spindle Setup - Part 2'),
                             component: Modbus,
                             secondaryContent: [
                                 {
@@ -192,8 +193,8 @@ export function useSienciATCWizard(): Wizard {
                                 },
                                 {
                                     type: 'link',
-                                    title: 'Need help?',
-                                    content: 'Follow along in our',
+                                    title: t('Need help?'),
+                                    content: t('Follow along in our'),
                                     url: 'https://resources.sienci.com/view/atc-software/',
                                 },
                             ],
@@ -202,14 +203,14 @@ export function useSienciATCWizard(): Wizard {
                 },
                 {
                     id: 'configure-atc',
-                    title: 'ATC Options',
-                    description: 'Adjust ATC settings',
-                    estimatedTime: '10 minutes',
+                    title: t('ATC Options'),
+                    description: t('Adjust ATC settings'),
+                    estimatedTime: t('10 minutes'),
                     configVersion: storeVersion,
                     steps: [
                         {
                             id: 'atc-settings',
-                            title: 'ATC Options',
+                            title: t('ATC Options'),
                             component: ATCConfigStep,
                             secondaryContent: [
                                 {
@@ -225,16 +226,16 @@ export function useSienciATCWizard(): Wizard {
                 },
                 {
                     id: 'template-management',
-                    title: 'Template Management',
-                    description: 'Manage ATC template macros',
-                    estimatedTime: '5 minutes',
+                    title: t('Template Management'),
+                    description: t('Manage ATC template macros'),
+                    estimatedTime: t('5 minutes'),
                     configVersion: storeVersion,
                     secondaryContentLeft: true,
                     hideVersionPrintout: true,
                     steps: [
                         {
                             id: 'template-management',
-                            title: 'Template Management',
+                            title: t('Template Management'),
                             component: TemplateManagementStep,
                             contextProvider: TemplateManagementContextProvider,
                             fillPrimaryContent: true,

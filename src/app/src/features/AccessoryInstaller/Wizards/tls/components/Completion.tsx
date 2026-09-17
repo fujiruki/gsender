@@ -1,5 +1,6 @@
 import { ATCI_SUPPORTED_VERSION } from 'app/features/ATC/utils/ATCiConstants.ts';
 import { useTypedSelector } from 'app/hooks/useTypedSelector.ts';
+import { t } from 'app/i18n';
 import { firmwareSemver } from 'app/lib/firmwareSemver.ts';
 import { RootState } from 'app/store/redux';
 import { AlertTriangle, CheckCircle } from 'lucide-react';
@@ -17,25 +18,28 @@ export function TLSCompletion() {
         <div className="flex flex-col items-center justify-center h-full text-center">
             <CheckCircle size={80} className="text-green-500 mb-6" />
             <h1 className="text-4xl font-bold text-gray-900 dark:text-content-primary mb-4">
-                Setup Complete!
+                {t('Setup Complete!')}
             </h1>
             <p className="text-xl text-gray-600 dark:text-content-secondary mb-8 max-w-2xl">
-                Your Tool Length Sensor and tool change behaviour have been
-                configured.
+                {t(
+                    'Your Tool Length Sensor and tool change behaviour have been configured.',
+                )}
             </p>
             {needsReboot && (
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 max-w-2xl">
                     <h3 className="font-semibold text-gray-900 dark:text-content-primary mb-2">
-                        Next Steps:
+                        {t('Next Steps:')}
                     </h3>
                     <ul className="text-left text-gray-700 dark:text-content-primary space-y-2">
                         <li>
-                            • Restart your controller using the power switch
-                            (power cycle)
+                            • {t(
+                                'Restart your controller using the power switch (power cycle)',
+                            )}
                         </li>
                         <li>
-                            • Reconnect in gSender to finish setting up your
-                            Tool Length Sensor.
+                            • {t(
+                                'Reconnect in gSender to finish setting up your Tool Length Sensor.',
+                            )}
                         </li>
                     </ul>
                 </div>
@@ -46,10 +50,11 @@ export function TLSCompletion() {
                     className="shrink-0 mr-3 text-yellow-600"
                 />
                 <span className="text-left">
-                    If you change your spindle or router's physical position
-                    (e.g. reinstalling it or a mounting bracket), you may need
-                    to update these settings in <b>Config</b> or run this
-                    installation wizard again.
+                    {t(
+                        "If you change your spindle or router's physical position (e.g. reinstalling it or a mounting bracket), you may need to update these settings in",
+                    )}{' '}
+                    <b>{t('Config')}</b>{' '}
+                    {t('or run this installation wizard again.')}
                 </span>
             </div>
         </div>

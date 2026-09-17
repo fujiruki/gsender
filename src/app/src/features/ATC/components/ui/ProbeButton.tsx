@@ -1,5 +1,6 @@
 import { Button } from 'app/components/Button/';
 import cn from 'classnames';
+import { t } from 'app/i18n';
 import { Settings } from 'lucide-react';
 
 export const ProbeButton = ({
@@ -17,7 +18,7 @@ export const ProbeButton = ({
             onClick={onProbe}
         >
             <Settings size={14} />
-            Probe Tool
+            {t('Probe Tool')}
         </Button>
     );
 };

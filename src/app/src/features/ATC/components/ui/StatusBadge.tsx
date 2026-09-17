@@ -4,6 +4,7 @@ import {
     getToolStateClasses,
     toolStateThemes,
 } from 'app/features/ATC/utils/ATCiConstants.ts';
+import { t } from 'app/i18n';
 import cn from 'classnames';
 
 export const StatusBadge = ({ status }: { status: ToolStatus }) => {
@@ -17,7 +18,7 @@ export const StatusBadge = ({ status }: { status: ToolStatus }) => {
             )}
         >
             <IconComponent size={16} />
-            {config.label}
+            {t(config.label)}
         </Badge>
     );
 };

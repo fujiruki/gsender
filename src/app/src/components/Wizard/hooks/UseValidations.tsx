@@ -1,6 +1,7 @@
 import { GRBL, GRBL_ACTIVE_STATE_IDLE, GRBLHAL } from 'app/constants';
 import { ATCI_SUPPORTED_VERSION } from 'app/features/ATC/utils/ATCiConstants.ts';
 import { useTypedSelector } from 'app/hooks/useTypedSelector.ts';
+import { t } from 'app/i18n';
 import { firmwareSemver } from 'app/lib/firmwareSemver.ts';
 import type { RootState } from 'app/store/redux';
 import { useMemo } from 'react';
@@ -32,14 +33,18 @@ export function useValidations() {
     const connectionValidation = useMemo(
         () => () => ({
             success: isConnected,
-            reason: 'Your controller is not connected.  Connect to your CNC to configure this accessory.',
+            reason: t(
+                'Your controller is not connected.  Connect to your CNC to configure this accessory.',
+            ),
         }),
         [isConnected],
     );
     const homingValidation = useMemo(
         () => () => ({
             success: hasHomed,
-            reason: 'Machine not homed. Please home your machine before proceeding with accessory configuration.',
+            reason: t(
+                'Machine not homed. Please home your machine before proceeding with accessory configuration.',
+            ),
         }),
         [hasHomed],
     );
@@ -48,15 +53,16 @@ export function useValidations() {
             success: currentFirmware,
             reason: (
                 <p>
-                    This setup wizard requires a newer firmware version, please
-                    update your firmware before proceeding.{' '}
+                    {t(
+                        'This setup wizard requires a newer firmware version, please update your firmware before proceeding.',
+                    )}{' '}
                     <a
                         target="_blank"
                         className="text-blue-500 underline"
                         href="https://resources.sienci.com/view/slb-firmware-flashing/"
                         rel="noopener"
                     >
-                        Learn More
+                        {t('Learn More')}
                     </a>
                 </p>
             ),
@@ -67,7 +73,9 @@ export function useValidations() {
     const grblHAlValidator = useMemo(
         () => () => ({
             success: firmwareType === GRBLHAL,
-            reason: 'You must be connected to a grblHAL device to use this wizard.',
+            reason: t(
+                'You must be connected to a grblHAL device to use this wizard.',
+            ),
         }),
         [firmwareType],
     );
@@ -75,7 +83,9 @@ export function useValidations() {
     const grblValidator = useMemo(
         () => () => ({
             success: firmwareType === GRBL,
-            reason: 'You must be connected to a grbl device to use this wizard.',
+            reason: t(
+                'You must be connected to a grbl device to use this wizard.',
+            ),
         }),
         [firmwareType],
     );

@@ -1,6 +1,7 @@
 /** biome-ignore-all lint/a11y/noRedundantAlt: <> */
 /** biome-ignore-all lint/a11y/useButtonType: <> */
 import { ArrowLeft, ArrowRight, HelpCircle } from 'lucide-react';
+import { t } from 'app/i18n';
 import Button from '../Button';
 import DefaultImage from './assets/placeholder.png';
 import type { SubWizard, ValidationResult } from './types/wizard';
@@ -86,7 +87,7 @@ export function WizardLanding({
                         className="flex items-center gap-2 text-gray-600 dark:text-content-secondary hover:text-gray-900 dark:hover:text-gray-100 mb-8 self-start"
                     >
                         <ArrowLeft size={20} />
-                        Back to Wizards
+                        {t('Back to Wizards')}
                     </Button>
                 )}
 
@@ -97,14 +98,14 @@ export function WizardLanding({
                     {activeSubWizard?.estimatedTime && (
                         <p className="text-gray-700 dark:text-content-muted mb-1">
                             <span className="font-semibold">
-                                Estimated time:
+                                {t('Estimated time:')}
                             </span>{' '}
                             {activeSubWizard.estimatedTime}
                         </p>
                     )}
                     {activeSubWizard?.configVersion && (
                         <p className="text-gray-700 dark:text-content-muted mb-8">
-                            Configuration File Version:{' '}
+                            {t('Configuration File Version:')}{' '}
                             {activeSubWizard.configVersion}
                         </p>
                     )}
@@ -145,7 +146,7 @@ export function WizardLanding({
             <div className="w-2/5 portrait:w-full portrait:h-2/5 bg-gray-200 dark:bg-surface-raised p-12 flex flex-col justify-between overflow-y-auto">
                 <div className="flex items-center justify-center flex-1">
                     <img
-                        alt="Wizard image"
+                        alt={t('Wizard image')}
                         src={image ?? DefaultImage}
                         className={`rounded-2xl${invertImageInDarkMode ? ' dark:invert' : ''}`}
                     />
@@ -159,10 +160,10 @@ export function WizardLanding({
                         />
                         <div>
                             <h3 className="font-semibold text-lg text-gray-900 dark:text-content-primary mb-1">
-                                Need Help?
+                                {t('Need Help?')}
                             </h3>
                             <p className="text-gray-600 dark:text-content-muted">
-                                Follow along in our{' '}
+                                {t('Follow along in our')}{' '}
                                 <a
                                     href={
                                         helpUrl ??
@@ -172,7 +173,7 @@ export function WizardLanding({
                                     rel="noopener noreferrer"
                                     className="text-blue-500 font-bold"
                                 >
-                                    online resources
+                                    {t('online resources')}
                                 </a>
                             </p>
                         </div>

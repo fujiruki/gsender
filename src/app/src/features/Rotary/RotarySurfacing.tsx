@@ -16,6 +16,7 @@ import {
 import useShuttleEvents from 'app/hooks/useShuttleEvents';
 import { useTypedSelector } from 'app/hooks/useTypedSelector';
 import { useWorkspaceState } from 'app/hooks/useWorkspaceState';
+import { t } from 'app/i18n';
 import controller from 'app/lib/controller';
 import { uploadGcodeFileToServer } from 'app/lib/fileupload';
 import { convertToImperial, convertToMetric } from 'app/lib/units';
@@ -130,7 +131,7 @@ const RotarySurfacing = () => {
 
     const shuttleControlEvents = {
         TOGGLE_ROTARY_SURFACING: {
-            title: 'Toggle Rotary Surfacing Display',
+            title: t('Toggle Rotary Surfacing Display'),
             keys: '',
             cmd: 'TOGGLE_ROTARY_SURFACING',
             preventDefault: false,
@@ -174,14 +175,16 @@ const RotarySurfacing = () => {
                 <div className="grid grid-cols-2 gap-4">
                     <div className="grid gap-4 xl:gap-2">
                         <p className="text-sm xl:text-base font-normal text-gray-500 dark:text-content-secondary">
-                            Make sure that your tool clears the surface of your
-                            material without running into the limits of your
-                            Z-axis. You should also use the probing feature to
-                            zero your Z-axis to the centerline before surfacing.
+                            {t(
+                                'Make sure that your tool clears the surface of your material without running into the limits of your Z-axis. You should also use the probing feature to zero your Z-axis to the centerline before surfacing.',
+                            )}
                         </p>
-                        <InputArea label="Length">
+                        <InputArea label={t('Length')}>
                             <Tooltip
-                                content={`Default is ${defaultValue.stockLength} ${units}`}
+                                content={t('Default is {{value}} {{units}}', {
+                                    value: defaultValue.stockLength,
+                                    units,
+                                })}
                             >
                                 <ControlledInput
                                     id="stockLength"
@@ -196,10 +199,13 @@ const RotarySurfacing = () => {
                             </Tooltip>
                         </InputArea>
 
-                        <InputArea label="Start & Final Diameter">
+                        <InputArea label={t('Start & Final Diameter')}>
                             <div className="grid grid-cols-[3fr_10px_3fr] gap-2 col-span-3">
                                 <Tooltip
-                                    content={`Default is ${defaultValue.startHeight} ${units}`}
+                                    content={t('Default is {{value}} {{units}}', {
+                                        value: defaultValue.startHeight,
+                                        units,
+                                    })}
                                 >
                                     <ControlledInput
                                         id="startHeight"
@@ -215,7 +221,10 @@ const RotarySurfacing = () => {
                                     &
                                 </span>
                                 <Tooltip
-                                    content={`Default is ${defaultValue.finalHeight} ${units}`}
+                                    content={t('Default is {{value}} {{units}}', {
+                                        value: defaultValue.finalHeight,
+                                        units,
+                                    })}
                                 >
                                     <ControlledInput
                                         id="finalHeight"
@@ -229,9 +238,12 @@ const RotarySurfacing = () => {
                                 </Tooltip>
                             </div>
                         </InputArea>
-                        <InputArea label="Stepdown">
+                        <InputArea label={t('Stepdown')}>
                             <Tooltip
-                                content={`Default is ${defaultValue.stepdown} ${units}`}
+                                content={t('Default is {{value}} {{units}}', {
+                                    value: defaultValue.stepdown,
+                                    units,
+                                })}
                             >
                                 <ControlledInput
                                     id="stepdown"
@@ -245,10 +257,13 @@ const RotarySurfacing = () => {
                                 />
                             </Tooltip>
                         </InputArea>
-                        <InputArea label="Bit Diameter & Tool">
+                        <InputArea label={t('Bit Diameter & Tool')}>
                             <div className="grid grid-cols-[3fr_10px_3fr] gap-2 col-span-3">
                                 <Tooltip
-                                    content={`Default is ${defaultValue.bitDiameter} ${units}`}
+                                    content={t('Default is {{value}} {{units}}', {
+                                        value: defaultValue.bitDiameter,
+                                        units,
+                                    })}
                                 >
                                     <ControlledInput
                                         id="bitDiameter"
@@ -264,7 +279,9 @@ const RotarySurfacing = () => {
                                     &
                                 </span>
                                 <Tooltip
-                                    content={`Default is ${defaultValue.toolNumber}`}
+                                    content={t('Default is {{value}}', {
+                                        value: defaultValue.toolNumber,
+                                    })}
                                 >
                                     <ControlledInput
                                         id="toolNumber"
@@ -278,9 +295,11 @@ const RotarySurfacing = () => {
                                 </Tooltip>
                             </div>
                         </InputArea>
-                        <InputArea label="Stepover">
+                        <InputArea label={t('Stepover')}>
                             <Tooltip
-                                content={`Default is ${defaultValue.stepover}%`}
+                                content={t('Default is {{value}}%', {
+                                    value: defaultValue.stepover,
+                                })}
                             >
                                 <ControlledInput
                                     id="stepover"
@@ -294,9 +313,12 @@ const RotarySurfacing = () => {
                                 />
                             </Tooltip>
                         </InputArea>
-                        <InputArea label="Feed Rate">
+                        <InputArea label={t('Feed Rate')}>
                             <Tooltip
-                                content={`Default is ${defaultValue.feedrate} ${units}/min`}
+                                content={t('Default is {{value}} {{units}}/min', {
+                                    value: defaultValue.feedrate,
+                                    units,
+                                })}
                             >
                                 <ControlledInput
                                     id="feedrate"
@@ -309,9 +331,11 @@ const RotarySurfacing = () => {
                                 />
                             </Tooltip>
                         </InputArea>
-                        <InputArea label="Spindle RPM">
+                        <InputArea label={t('Spindle RPM')}>
                             <Tooltip
-                                content={`Default is ${defaultValue.spindleRPM} RPM`}
+                                content={t('Default is {{value}} RPM', {
+                                    value: defaultValue.spindleRPM,
+                                })}
                             >
                                 <ControlledInput
                                     id="spindleRPM"
@@ -326,11 +350,15 @@ const RotarySurfacing = () => {
                             </Tooltip>
 
                             <Tooltip
-                                content={`Default is ${defaultValue.shouldDwell ? 'on' : 'off'}`}
+                                content={t('Default is {{value}}', {
+                                    value: defaultValue.shouldDwell
+                                        ? t('on')
+                                        : t('off'),
+                                })}
                             >
                                 <div className="flex items-center gap-2 justify-center">
                                     <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 col-span-2">
-                                        Delay
+                                        {t('Delay')}
                                     </label>
                                     <Switch
                                         checked={surfacingState.shouldDwell}
@@ -345,9 +373,13 @@ const RotarySurfacing = () => {
                             </Tooltip>
                         </InputArea>
 
-                        <InputArea label="Enable Rehoming">
+                        <InputArea label={t('Enable Rehoming')}>
                             <Tooltip
-                                content={`Default is ${defaultValue.enableRehoming ? 'on' : 'off'}`}
+                                content={t('Default is {{value}}', {
+                                    value: defaultValue.enableRehoming
+                                        ? t('on')
+                                        : t('off'),
+                                })}
                             >
                                 <div className="flex items-center gap-2 justify-center">
                                     <Switch
@@ -362,9 +394,9 @@ const RotarySurfacing = () => {
                                 </div>
                             </Tooltip>
                             <div className="flex flex-col gap-2 w-full col-span-2 text-xs xl:text-sm text-gray-500">
-                                Cut faster and cleaner by only rotating one
-                                direction, but you will need to rehome your
-                                A-axis at the end.
+                                {t(
+                                    'Cut faster and cleaner by only rotating one direction, but you will need to rehome your A-axis at the end.',
+                                )}
                             </div>
                         </InputArea>
                     </div>
@@ -376,7 +408,7 @@ const RotarySurfacing = () => {
                                     className="w-full"
                                     onClick={() => setTabSwitch(false)}
                                 >
-                                    Visualizer Preview
+                                    {t('Visualizer Preview')}
                                 </TabsTrigger>
                                 <TabsTrigger
                                     value="gcode"
@@ -387,7 +419,9 @@ const RotarySurfacing = () => {
                                     G-Code{' '}
                                     {gcode.length !== 0 ? (
                                         <span className="text-xs text-gray-500">
-                                            ({gcode.split('\n').length} lines)
+                                            {t('({{count}} lines)', {
+                                                count: gcode.split('\n').length,
+                                            })}
                                         </span>
                                     ) : null}
                                 </TabsTrigger>
@@ -423,13 +457,13 @@ const RotarySurfacing = () => {
                         onClick={handleGenerateGcode}
                         disabled={isDisabled}
                     >
-                        Generate G-Code
+                        {t('Generate G-Code')}
                     </Button>
                     <Button
                         onClick={handleLoadToMainVisualizer}
                         disabled={!gcode || isDisabled}
                     >
-                        Load to Main Visualizer
+                        {t('Load to Main Visualizer')}
                     </Button>
                 </div>
             </div>

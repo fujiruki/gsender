@@ -5,6 +5,7 @@ import { SpindleCompletion } from 'app/features/AccessoryInstaller/Wizards/spind
 import { ModbusConfig } from 'app/features/AccessoryInstaller/Wizards/spindle/components/ModbusConfig.tsx';
 import { SpindleConfig } from 'app/features/AccessoryInstaller/Wizards/spindle/components/SpindleConfig.tsx';
 import { SpindleGcodePreview } from 'app/features/AccessoryInstaller/Wizards/spindle/components/SpindleGcodePreview.tsx';
+import { t } from 'app/i18n';
 import { useMemo } from 'react';
 
 export function useSienciSpindle() {
@@ -17,35 +18,36 @@ export function useSienciSpindle() {
     return useMemo<Wizard>(
         () => ({
             id: 'sienci-spindle',
-            title: 'Sienci Spindle',
+            title: t('Sienci Spindle'),
             image: SpindlePlaceholder,
             validations: [...validations],
             subWizards: [
                 {
                     id: 'spindle-config',
-                    title: 'Sienci Spindle Config',
-                    description:
+                    title: t('Sienci Spindle Config'),
+                    description: t(
                         'Configure your Sienci Spindle for first time use',
-                    estimatedTime: '5 - 30 minutes',
+                    ),
+                    estimatedTime: t('5 - 30 minutes'),
                     configVersion: '1.0',
                     completionPage: SpindleCompletion,
                     steps: [
                         {
                             id: 'spindle-config',
-                            title: 'Spindle Config',
+                            title: t('Spindle Config'),
                             component: SpindleConfig,
                             secondaryContent: [
                                 {
                                     type: 'component',
                                     content: SpindleGcodePreview,
-                                    title: 'Commands to be sent',
+                                    title: t('Commands to be sent'),
                                     fill: true,
                                 },
                             ],
                         },
                         {
                             id: 'modbus-config',
-                            title: 'Modbus Configuration',
+                            title: t('Modbus Configuration'),
                             component: ModbusConfig,
                             secondaryContent: [],
                         },

@@ -8,6 +8,7 @@ import cn from 'classnames';
 import map from 'lodash/map';
 import mapValues from 'lodash/mapValues';
 import { AlertCircle } from 'lucide-react';
+import { t } from 'app/i18n';
 import type React from 'react';
 import { FiTarget } from 'react-icons/fi';
 
@@ -34,7 +35,7 @@ export const PositionInput: React.FC<PositionInputProps> = ({
     disabled = false,
     disableZ = false,
     hideZ = false,
-    actionLabel = 'Set Position',
+    actionLabel = t('Set Position'),
     secondaryActionLabel,
     onSecondaryAction,
     secondaryActionDisabled = false,
@@ -51,9 +52,9 @@ export const PositionInput: React.FC<PositionInputProps> = ({
             position.y === 0 ||
             (validateZ && position.z === 0));
     const validationText = validateZ
-        ? 'X, Y, and Z should not be 0.'
-        : 'X and Y should not be 0.';
-    const validationMessage = `${validationText} Verify the offsets are correct.`;
+        ? t('X, Y, and Z should not be 0.')
+        : t('X and Y should not be 0.');
+    const validationMessage = `${validationText} ${t('Verify the offsets are correct.')}`;
 
     const handleAxisChange = (axis: keyof Position, value: string) => {
         if (disabled) return;

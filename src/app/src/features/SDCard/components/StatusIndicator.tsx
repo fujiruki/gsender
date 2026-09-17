@@ -52,13 +52,13 @@ export function StatusIndicator({ isMounted }) {
     }, []);
 
     if (!isConnected) {
-        status = 'Disconnected';
+        status = t('Disconnected');
         colourClasses = 'bg-gray-50 dark:text- text-gray-700 border-gray-200';
     } else if (isMounted) {
-        status = 'Mounted';
+        status = t('Mounted');
         colourClasses = 'bg-green-50 text-green-700 border-green-200';
     } else {
-        status = 'Unmounted';
+        status = t('Unmounted');
         colourClasses = 'bg-red-50 text-red-700 border-red-200';
     }
 
@@ -69,7 +69,7 @@ export function StatusIndicator({ isMounted }) {
                     <div className="flex items-center space-x-4">
                         <HardDrive className="w-6 h-6 text-gray-600 dark:text-content-secondary" />
                         <span className="text-sm font-medium text-gray-700 dark:text-content-secondary">
-                            SD Card Status:
+                            {t('SD Card Status:')}
                         </span>
                     </div>
                     <div

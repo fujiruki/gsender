@@ -8,6 +8,7 @@ import { TLSLocation } from 'app/features/AccessoryInstaller/Wizards/tls/compone
 import { TLSOptions } from 'app/features/AccessoryInstaller/Wizards/tls/components/TLSOptions.tsx';
 import { Jogging } from 'app/features/Jogging';
 import store from 'app/store';
+import { t } from 'app/i18n';
 import { useMemo } from 'react';
 import { useValidations } from 'src/components/Wizard/hooks/UseValidations.tsx';
 import TLS_STEP_ONE from './assets/TLS_Step_01.png';
@@ -39,23 +40,24 @@ export function useSienciTLSWizard(): Wizard {
     return useMemo<Wizard>(
         () => ({
             id: 'sienci-tls',
-            title: 'Sienci TLS',
+            title: t('Sienci TLS'),
             image: TLS_STEP_ONE,
             validations: [...validations],
             helpUrl: HELP_URL,
             subWizards: [
                 {
                     id: 'tls-setup',
-                    title: 'TLS Setup Wizard',
-                    description:
+                    title: t('TLS Setup Wizard'),
+                    description: t(
                         'Configure your Tool Length Sensor and tool change behaviour',
-                    estimatedTime: '5 - 15 minutes',
+                    ),
+                    estimatedTime: t('5 - 15 minutes'),
                     completionPage: TLSCompletion,
                     completionImage: TLS_STEP_ONE,
                     steps: [
                         {
                             id: 'options',
-                            title: 'Tool Change Options',
+                            title: t('Tool Change Options'),
                             component: TLSOptions,
                             secondaryContent: [
                                 {
@@ -68,15 +70,15 @@ export function useSienciTLSWizard(): Wizard {
                                 },
                                 {
                                     type: 'link',
-                                    title: 'Need help?',
-                                    content: 'Follow along in our',
+                                    title: t('Need help?'),
+                                    content: t('Follow along in our'),
                                     url: HELP_URL,
                                 },
                             ],
                         },
                         {
                             id: 'tls-location',
-                            title: 'Set TLS Location',
+                            title: t('Set TLS Location'),
                             component: TLSLocation,
                             secondaryContent: [
                                 {
@@ -92,15 +94,15 @@ export function useSienciTLSWizard(): Wizard {
                                 },
                                 {
                                     type: 'link',
-                                    title: 'Need help?',
-                                    content: 'Follow along in our',
+                                    title: t('Need help?'),
+                                    content: t('Follow along in our'),
                                     url: HELP_URL,
                                 },
                             ],
                         },
                         {
                             id: 'manual-position',
-                            title: 'Set Tool Change Location',
+                            title: t('Set Tool Change Location'),
                             component: ManualToolChangePosition,
                             autoComplete: () =>
                                 !store.get(
@@ -121,15 +123,15 @@ export function useSienciTLSWizard(): Wizard {
                                 },
                                 {
                                     type: 'link',
-                                    title: 'Need help?',
-                                    content: 'Follow along in our',
+                                    title: t('Need help?'),
+                                    content: t('Follow along in our'),
                                     url: HELP_URL,
                                 },
                             ],
                         },
                         {
                             id: 'continuity-check',
-                            title: 'Verify TLS Continuity',
+                            title: t('Verify TLS Continuity'),
                             component: ContinuityCheck,
                             secondaryContent: [
                                 {
@@ -142,8 +144,8 @@ export function useSienciTLSWizard(): Wizard {
                                 },
                                 {
                                     type: 'link',
-                                    title: 'Need help?',
-                                    content: 'Follow along in our',
+                                    title: t('Need help?'),
+                                    content: t('Follow along in our'),
                                     url: HELP_URL,
                                 },
                             ],

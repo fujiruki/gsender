@@ -3,6 +3,7 @@ import {
     ContinuityIndicator,
     ContinuityPhase,
 } from 'app/features/AccessoryInstaller/Wizards/tls/components/ContinuityIndicator.tsx';
+import { t } from 'app/i18n';
 import { RootState } from 'app/store/redux';
 import { AlertCircle, CheckCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -56,8 +57,9 @@ export function ContinuityCheck({ onComplete, onUncomplete }: StepProps) {
     return (
         <div className="flex flex-col gap-5 justify-start">
             <p className="dark:text-content-primary">
-                Let's confirm your Tool Length Sensor is wired correctly. Press
-                the TLS down when prompted below.
+                {t(
+                    "Let's confirm your Tool Length Sensor is wired correctly. Press the TLS down when prompted below.",
+                )}
             </p>
 
             <div className="flex flex-col items-center justify-center gap-6 py-8">
@@ -65,7 +67,9 @@ export function ContinuityCheck({ onComplete, onUncomplete }: StepProps) {
 
                 {isWaiting && (
                     <p className="text-sm text-gray-600 dark:text-content-secondary text-center">
-                        Firmly press the TLS sensor to verify the connection.
+                        {t(
+                            'Firmly press the TLS sensor to verify the connection.',
+                        )}
                     </p>
                 )}
 
@@ -84,11 +88,12 @@ export function ContinuityCheck({ onComplete, onUncomplete }: StepProps) {
                             </div>
                             <div>
                                 <p className="text-xs font-semibold uppercase tracking-wide text-green-800/80 dark:text-green-100/80">
-                                    Success
+                                    {t('Success')}
                                 </p>
                                 <p className="text-base font-semibold text-green-900 dark:text-green-100">
-                                    Continuity check passed. Your TLS is working
-                                    correctly.
+                                    {t(
+                                        'Continuity check passed. Your TLS is working correctly.',
+                                    )}
                                 </p>
                             </div>
                         </div>
@@ -111,13 +116,12 @@ export function ContinuityCheck({ onComplete, onUncomplete }: StepProps) {
                                 </div>
                                 <div>
                                     <p className="text-xs font-semibold uppercase tracking-wide text-red-800/80 dark:text-red-100/80">
-                                        Error
+                                        {t('Error')}
                                     </p>
                                     <p className="text-base font-semibold text-red-900 dark:text-red-100">
-                                        Probe pin immediately asserted. Check
-                                        your wiring or probe for a short and
-                                        confirm $6 (Invert Probe Pin) is set
-                                        correctly.
+                                        {t(
+                                            'Probe pin immediately asserted. Check your wiring or probe for a short and confirm $6 (Invert Probe Pin) is set correctly.',
+                                        )}
                                     </p>
                                 </div>
                             </div>
@@ -126,7 +130,7 @@ export function ContinuityCheck({ onComplete, onUncomplete }: StepProps) {
                             onClick={handleRetry}
                             className="px-6 py-3 rounded-lg font-medium bg-gray-200 text-gray-900 hover:bg-gray-300"
                         >
-                            Try Again
+                            {t('Try Again')}
                         </button>
                     </div>
                 )}

@@ -1,6 +1,7 @@
 /** biome-ignore-all lint/a11y/useButtonType: <> */
 import { AlertCircle, Check, CheckCircle, Loader2 } from 'lucide-react';
 import type { ReactNode } from 'react';
+import { t } from 'app/i18n';
 import { useEffect, useState } from 'react';
 
 type ButtonState = 'available' | 'running' | 'finished' | 'error';
@@ -23,8 +24,8 @@ interface StepActionButtonProps {
 export function StepActionButton({
     label,
     runningLabel,
-    finishedLabel = 'Complete',
-    errorLabel = 'Error',
+    finishedLabel = t('Complete'),
+    errorLabel = t('Error'),
     onApply,
     isComplete = false,
     error = null,
@@ -97,7 +98,7 @@ export function StepActionButton({
                 return (
                     <>
                         <Loader2 className="animate-spin" size={20} />
-                        {runningLabel || `${label}...`}
+                        {runningLabel || t('{{label}}...', { label })}
                     </>
                 );
             case 'finished':
@@ -142,7 +143,7 @@ export function StepActionButton({
                         </div>
                         <div>
                             <p className="text-xs font-semibold uppercase tracking-wide text-red-800/80 dark:text-red-100/80">
-                                Error
+                                {t('Error')}
                             </p>
                             <p className="text-base font-semibold text-red-900 dark:text-red-100">
                                 {error}
@@ -167,7 +168,7 @@ export function StepActionButton({
                         </div>
                         <div>
                             <p className="text-xs font-semibold uppercase tracking-wide text-green-800/80 dark:text-green-100/80">
-                                Success
+                                {t('Success')}
                             </p>
                             <p className="text-base font-semibold text-green-900 dark:text-green-100">
                                 {success}

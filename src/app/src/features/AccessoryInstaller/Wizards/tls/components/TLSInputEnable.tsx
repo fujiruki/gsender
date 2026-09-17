@@ -1,4 +1,5 @@
 import { SettingBadge } from 'app/features/AccessoryInstaller/Wizards/tls/components/TLSContinuitySidebar.tsx';
+import { t } from 'app/i18n';
 import controller from 'app/lib/controller.ts';
 import { RootState } from 'app/store/redux';
 import get from 'lodash/get';
@@ -36,30 +37,30 @@ export function TLSInputEnable() {
     return (
         <div className="flex flex-col gap-3">
             <h3 className="text-sm font-semibold text-gray-700 dark:text-white">
-                TLS Input
+                {t('TLS Input')}
             </h3>
             <div className="flex items-center justify-between bg-white dark:bg-dark-darker rounded-lg px-3 py-2">
                 <span className="text-sm dark:text-white">
-                    $6 - Invert Probe Pin
+                    {t('$6 - Invert Probe Pin')}
                 </span>
                 <div className="flex items-center gap-2">
                     <span className="text-sm font-mono dark:text-white">
                         {invertProbePin ?? '-'}
                     </span>
                     <SettingBadge
-                        label={invertProbePinOk ? 'OK' : 'Expected 1'}
+                        label={invertProbePinOk ? t('OK') : t('Expected 1')}
                         ok={invertProbePinOk}
                     />
                 </div>
             </div>
             <div className="flex items-center justify-between bg-white dark:bg-dark-darker rounded-lg px-3 py-2">
-                <span className="text-sm dark:text-white">Probe Type</span>
+                <span className="text-sm dark:text-white">{t('Probe Type')}</span>
                 <div className="flex items-center gap-2">
                     <span className="text-sm font-mono dark:text-white">
                         {probeValue}
                     </span>
                     <SettingBadge
-                        label={probeValue === 1 ? 'OK' : 'Not Ready'}
+                        label={probeValue === 1 ? t('OK') : t('Not Ready')}
                         ok={probeValue === 1}
                     />
                 </div>
@@ -69,11 +70,11 @@ export function TLSInputEnable() {
                 disabled={probeValue === 1}
                 className="px-4 py-2 rounded-lg font-medium bg-blue-500 text-white hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-500"
             >
-                Enable TLS Input
+                {t('Enable TLS Input')}
             </button>
             {sent && (
                 <p className="text-xs text-gray-600 dark:text-gray-300">
-                    TLS input enable command sent.
+                    {t('TLS input enable command sent.')}
                 </p>
             )}
         </div>

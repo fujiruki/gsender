@@ -22,6 +22,7 @@ import { useTypedSelector } from 'app/hooks/useTypedSelector.ts';
 import controller from 'app/lib/controller.ts';
 import store from 'app/store';
 import { RootState } from 'app/store/redux';
+import { t } from 'app/i18n';
 import get from 'lodash/get';
 import partition from 'lodash/partition';
 import { ChevronDown } from 'lucide-react';
@@ -90,11 +91,11 @@ const ToolSection = ({
                     <Table>
                         <TableHeader>
                             <TableRow className="grid grid-cols-[2fr_1fr_1fr_1fr] portrait:grid-cols-[2fr_1fr_1fr]">
-                                <TableHead>Tool</TableHead>
+                                <TableHead>{t('Tool')}</TableHead>
                                 <TableHead className={'portrait:hidden'}>
-                                    Z Offset
+                                    {t('Z Offset')}
                                 </TableHead>
-                                <TableHead>Status</TableHead>
+                                <TableHead>{t('Status')}</TableHead>
                                 <TableHead>
                                     {defaultOpen ? (
                                         <Button
@@ -103,10 +104,10 @@ const ToolSection = ({
                                             onClick={probeEntireRack}
                                             disabled={disabled}
                                         >
-                                            Probe All
+                                            {t('Probe All')}
                                         </Button>
                                     ) : (
-                                        'Actions'
+                                        t('Actions')
                                     )}
                                 </TableHead>
                             </TableRow>
@@ -196,7 +197,7 @@ export function ToolTable({ tools = [], disabled }: ToolTableProps) {
     return (
         <div className="sm:rounded-lg w-full h-[500px] gap-1 flex flex-col">
             <ToolSection
-                title="Rack Loaded Tools"
+                title={t('Rack Loaded Tools')}
                 tools={onRackTools}
                 onProbe={() => {}}
                 defaultOpen={rackEnabled}
@@ -204,7 +205,7 @@ export function ToolTable({ tools = [], disabled }: ToolTableProps) {
                 allowManualBadge={allowManualBadge}
             />
             <ToolSection
-                title="Manually Loaded Tools"
+                title={t('Manually Loaded Tools')}
                 tools={offRackTools}
                 onProbe={() => {}}
                 defaultOpen={!rackEnabled}

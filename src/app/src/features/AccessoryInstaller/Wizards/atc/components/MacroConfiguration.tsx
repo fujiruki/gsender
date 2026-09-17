@@ -4,6 +4,7 @@ import type { StepProps } from 'app/components/Wizard/types';
 import { generateAllMacros } from 'app/features/ATC/components/Configuration/utils/ConfigUtils.ts';
 import controller from 'app/lib/controller';
 import store from 'app/store';
+import { t } from 'app/i18n';
 import { type SetStateAction, useEffect, useState } from 'react';
 
 export function MacroConfiguration({ onComplete }: StepProps) {
@@ -17,7 +18,7 @@ export function MacroConfiguration({ onComplete }: StepProps) {
             setIsComplete(true);
             setError(null);
             setSuccess(
-                'Successfully uploaded macro configuration to the SD card.',
+                t('Successfully uploaded macro configuration to the SD card.'),
             );
             onComplete();
             setTimeout(() => {
@@ -76,32 +77,35 @@ export function MacroConfiguration({ onComplete }: StepProps) {
         <div className="flex flex-col gap-5 justify-start">
             <div>
                 <label className="block text-sm font-semibold text-gray-900 dark:text-content-muted mb-2">
-                    Rack Size
+                    {t('Rack Size')}
                 </label>
                 <select
                     value={rackSize}
                     onChange={(e) => setRackSize(e.target.value)}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
-                    <option value={0}>No tool rack</option>
-                    <option value={6}>6 Tool Rack</option>
-                    <option value={12}>12 Tool Rack</option>
+                    <option value={0}>{t('No tool rack')}</option>
+                    <option value={6}>{t('6 Tool Rack')}</option>
+                    <option value={12}>{t('12 Tool Rack')}</option>
                 </select>
             </div>
             <p className="dark:text-content-primary">
-                Sienci ATC operates using a set of macro programs stored in the
-                micro SD card of your controller.
+                {t(
+                    'Sienci ATC operates using a set of macro programs stored in the micro SD card of your controller.',
+                )}
             </p>
 
             <p className="dark:text-content-primary">
-                Specify your rack size and press <b>“Upload Macros”</b> to
-                upload the relevant program files into the SD card. This can be
-                changed later.
+                {t('Specify your rack size and press')}{' '}
+                <b>“{t('Upload Macros')}”</b>{' '}
+                {t(
+                    'to upload the relevant program files into the SD card. This can be changed later.',
+                )}
             </p>
 
             <StepActionButton
-                label={'Upload Macros'}
-                runningLabel="Uploading..."
+                label={t('Upload Macros')}
+                runningLabel={t('Uploading...')}
                 onApply={handleUpload}
                 isComplete={isComplete}
                 error={error}

@@ -1,4 +1,5 @@
 import { useTypedSelector } from 'app/hooks/useTypedSelector.ts';
+import { t } from 'app/i18n';
 import controller from 'app/lib/controller.ts';
 import type { RootState } from 'app/store/redux';
 import { Shield, ShieldOff } from 'lucide-react';
@@ -30,7 +31,7 @@ export function KeepoutToggle() {
         }
     };
 
-    if (!flags) return <div>OK</div>;
+    if (!flags) return <div>{t('OK')}</div>;
 
     return (
         <button

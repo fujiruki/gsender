@@ -7,6 +7,7 @@ import {
 } from 'app/components/shadcn/Dialog.tsx';
 import controller from 'app/lib/controller.ts';
 import { FaPlay } from 'react-icons/fa';
+import { t } from 'app/i18n';
 
 export function ATCStartValidations({
     show = true,
@@ -20,7 +21,7 @@ export function ATCStartValidations({
     return (
         <Dialog open={show} onOpenChange={setShow}>
             <DialogContent className="w-[500px] min-h-[200px] flex flex-col">
-                <DialogTitle>ATC - {payload.title}</DialogTitle>
+                <DialogTitle>{t('ATC - {{title}}', { title: payload.title })}</DialogTitle>
                 <DialogDescription className="flex flex-col gap-4 text-gray-400">
                     {payload.body}
                     {payload.type === 'alert' && (
@@ -31,7 +32,7 @@ export function ATCStartValidations({
                                 setShow(false);
                             }}
                         >
-                            <FaPlay /> Run job
+                            <FaPlay /> {t('Run job')}
                         </Button>
                     )}
                 </DialogDescription>

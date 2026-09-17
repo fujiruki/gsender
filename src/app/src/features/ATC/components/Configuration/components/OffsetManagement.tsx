@@ -5,6 +5,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from 'app/components/shadcn/Select';
+import { t } from 'app/i18n';
 import { useState } from 'react';
 
 interface OffsetManagementWidgetProps {
@@ -50,17 +51,17 @@ export default function OffsetManagementWidget({
                         className="h-8 text-xs dark:border-outline dark:bg-surface-sunken dark:text-content-primary"
                         disabled={disabled}
                     >
-                        <SelectValue placeholder="Select mode" />
+                        <SelectValue placeholder={t('Select mode')} />
                     </SelectTrigger>
                     <SelectContent className="z-[10001] bg-white dark:bg-surface-elevated dark:text-content-primary">
                         <SelectItem value="0">
-                            Probe new offset after loading
+                            {t('Probe new offset after loading')}
                         </SelectItem>
                         <SelectItem value="1">
-                            Use Tool Table without verification
+                            {t('Use Tool Table without verification')}
                         </SelectItem>
                         <SelectItem value="2">
-                            Use Tool Table and probe to verify
+                            {t('Use Tool Table and probe to verify')}
                         </SelectItem>
                     </SelectContent>
                 </Select>

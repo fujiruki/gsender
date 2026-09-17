@@ -4,6 +4,7 @@ import {
     SPINDLE_395_V7_VERSION,
 } from 'app/features/ATC/utils/ATCiConstants.ts';
 import { useTypedSelector } from 'app/hooks/useTypedSelector.ts';
+import { t } from 'app/i18n';
 import controller from 'app/lib/controller.ts';
 import { firmwarePastVersion } from 'app/lib/firmwareSemver.ts';
 import store from 'app/store';
@@ -79,26 +80,28 @@ export function SpindleConfig({ onComplete }: Props) {
     return (
         <div className="flex flex-col gap-5 justify-start">
             <p className="dark:text-content-primary">
-                Your spindle settings are applied in this step and the
-                controller will restart automatically.
+                {t(
+                    'Your spindle settings are applied in this step and the controller will restart automatically.',
+                )}
             </p>
             <ol className="list-decimal p-5 gap-4 space-y-2">
                 <li>
-                    Press <b>"Apply And Restart"</b>
+                    {t('Press')} <b>"{t('Apply And Restart')}"</b>
                 </li>
                 {!firmwarePastVersion(ATCI_SUPPORTED_VERSION) && (
                     <li>
-                        Reboot your controller using the power switch and
-                        reconnect
+                        {t(
+                            'Reboot your controller using the power switch and reconnect',
+                        )}
                     </li>
                 )}
                 <li>
-                    Click <b>"Next"</b>
+                    {t('Click')} <b>"{t('Next')}"</b>
                 </li>
             </ol>
             <StepActionButton
-                label="Setup Spindle"
-                runningLabel="Configuring..."
+                label={t('Setup Spindle')}
+                runningLabel={t('Configuring...')}
                 onApply={setupSpindleAndReboot}
                 isComplete={hasSetupSpindle}
                 error={error}

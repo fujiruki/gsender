@@ -169,13 +169,13 @@ export function RemoteModeDialog({
             <DialogContent className="bg-white w-[750px] text-sm">
                 <form>
                     <DialogHeader>
-                        <DialogTitle>Wireless CNC Control</DialogTitle>
+                        <DialogTitle>{t('Wireless CNC Control')}</DialogTitle>
                     </DialogHeader>
                     <div className="grid grid-cols-2 text-gray-600 grid-">
                         <div className="flex flex-col gap-8 px-4">
                             <div className="flex flex-row gap-4 items-center">
                                 <span className="font-bold dark:text-content-primary">
-                                    Enable Wireless Control
+                                    {t('Enable Wireless Control')}
                                 </span>
                                 <Switch
                                     onChange={toggleRemoteMode}
@@ -192,7 +192,7 @@ export function RemoteModeDialog({
                                 <div className="flex flex-col w-full gap-1">
                                     <div className="flex flex-row w-full items-center gap-4">
                                         <span className="w-12 shrink-0 dark:text-content-primary">
-                                            Addr:
+                                            {t('Addr:')}
                                         </span>
                                         <Select
                                             onValueChange={onIPSelect}
@@ -312,7 +312,7 @@ export function RemoteModeDialog({
                                 </div>
                                 <div className="flex flex-row w-full items-center gap-4">
                                     <span className="w-12 shrink-0 dark:text-content-primary">
-                                        Port:
+                                        {t('Port:')}
                                     </span>
                                     <input
                                         className="border border-gray-200 rounded p-2 focus:outline-none w-full min-w-0 dark:bg-surface-raised dark:text-content-primary"
@@ -323,9 +323,10 @@ export function RemoteModeDialog({
                                 </div>
                             </div>
                             <p className="dark:text-content-primary text-sm">
-                                <b>Note:</b> Clicking "Save" will ask you to
-                                restart gSender so that the settings can be
-                                updated.
+                                <b>{t('Note:')}</b>{' '}
+                                {t(
+                                    'Clicking "Save" will ask you to restart gSender so that the settings can be updated.',
+                                )}
                             </p>
                             <hr />
                             <Button
@@ -333,7 +334,7 @@ export function RemoteModeDialog({
                                 disabled={!dirty}
                                 onClick={saveRemotePreferences}
                             >
-                                Save
+                                {t('Save')}
                             </Button>
                         </div>
 

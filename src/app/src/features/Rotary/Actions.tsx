@@ -7,6 +7,7 @@ import {
 } from 'app/constants';
 import { useTypedSelector } from 'app/hooks/useTypedSelector';
 import { useWorkspaceState } from 'app/hooks/useWorkspaceState';
+import { t } from 'app/i18n';
 import { useNavigate } from 'react-router';
 import MountingSetup from './MountingSetup';
 import {
@@ -36,10 +37,10 @@ const Actions = () => {
                 onClick={() => navigate('/tools/rotary-surfacing')}
                 disabled={firmwareType === GRBL && !isInRotaryMode}
                 tooltip={{
-                    content: 'Open rotary surfacing tool',
+                    content: t('Open rotary surfacing tool'),
                 }}
             >
-                Rotary Surfacing
+                {t('Rotary Surfacing')}
             </Button>
             <MountingSetup
                 isDisabled={
@@ -59,11 +60,11 @@ const Actions = () => {
                     activeState !== GRBL_ACTIVE_STATE_IDLE
                 }
                 tooltip={{
-                    content: 'Run rotary Z-axis probing',
+                    content: t('Run rotary Z-axis probing'),
                     side: 'left',
                 }}
             >
-                Probe Rotary Z-Axis
+                {t('Probe Rotary Z-Axis')}
             </Button>
             <Button
                 size="sm"
@@ -78,11 +79,11 @@ const Actions = () => {
                     activeState !== GRBL_ACTIVE_STATE_IDLE
                 }
                 tooltip={{
-                    content: 'Run rotary Y-axis alignment',
+                    content: t('Run rotary Y-axis alignment'),
                     side: 'left',
                 }}
             >
-                Y-Axis Alignment
+                {t('Y-Axis Alignment')}
             </Button>
         </div>
     );

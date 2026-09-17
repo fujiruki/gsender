@@ -1,6 +1,7 @@
 import { StepActionButton } from 'app/components/Wizard/StepActionButton.tsx';
 import type { StepProps } from 'app/components/Wizard/types';
 import { useTypedSelector } from 'app/hooks/useTypedSelector.ts';
+import { t } from 'app/i18n';
 import controller from 'app/lib/controller.ts';
 import type { RootState } from 'app/store/redux';
 import { useState } from 'react';
@@ -30,25 +31,27 @@ export function Modbus({ onComplete }: StepProps) {
         <div className="flex flex-col gap-5 justify-start">
             <p className="text-gray-900 dark:text-content-primary">
                 <b>
-                    You are able to complete this step while the controller is
-                    still alarmed
+                    {t(
+                        'You are able to complete this step while the controller is still alarmed',
+                    )}
                 </b>
             </p>
             <p className="dark:text-content-primary">
-                Additional spindle settings are applied in this step.
+                {t('Additional spindle settings are applied in this step.')}
             </p>
             <ol className="list-decimal p-5 gap-4 space-y-2">
                 <li>
-                    Reconnect to your controller. Please ignore any alarms that
-                    pop-up.
+                    {t(
+                        'Reconnect to your controller. Please ignore any alarms that pop-up.',
+                    )}
                 </li>
                 <li>
-                    Press <b>"Apply and Restart"</b>
+                    {t('Press')} <b>"{t('Apply and Restart')}"</b>
                 </li>
             </ol>
             <StepActionButton
-                label="Apply and Restart"
-                runningLabel="Applying..."
+                label={t('Apply and Restart')}
+                runningLabel={t('Applying...')}
                 onApply={configureModbus}
                 isComplete={hasConfiguredModbus}
                 error={error}

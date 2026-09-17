@@ -5,10 +5,9 @@ import {
     useConfigContext,
 } from 'app/features/ATC/components/Configuration/hooks/useConfigStore.tsx';
 import { repopulateFromSDCard } from 'app/features/ATC/components/Configuration/utils/ConfigUtils.ts';
+import { t } from 'app/i18n';
 import controller from 'app/lib/controller.ts';
 import { useEffect, useRef, useState } from 'react';
-
-const DEFAULT_UPLOAD_ERROR = 'SD card upload failed. Please try again.';
 
 function getUploadErrorMessage(error: unknown): string {
     if (typeof error === 'string') {
@@ -29,7 +28,7 @@ function getUploadErrorMessage(error: unknown): string {
         }
     }
 
-    return DEFAULT_UPLOAD_ERROR;
+    return t('SD card upload failed. Please try again.');
 }
 
 function ATCConfigStepContent() {

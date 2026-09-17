@@ -3,6 +3,7 @@ import type { StepProps } from 'app/components/Wizard/types';
 import { IMPERIAL_UNITS } from 'app/constants';
 import { PositionSetter } from 'app/features/AccessoryInstaller/Wizards/atc/components/PositionSetter.tsx';
 import { useWorkspaceState } from 'app/hooks/useWorkspaceState';
+import { t } from 'app/i18n';
 import controller from 'app/lib/controller.ts';
 import { in2mm, mapPositionToUnits } from 'app/lib/units.ts';
 import type { RootState } from 'app/store/redux';
@@ -57,10 +58,10 @@ export function TLSPosition({ onComplete, onUncomplete }: StepProps) {
     return (
         <div className="flex flex-col gap-5 justify-start">
             <p className="dark:text-content-primary">
-                Please jog until just above the Tool Length Sensor and set the
-                position of your tool length sensor using the{' '}
-                <b>“Set Position”</b>
-                button.
+                {t(
+                    'Please jog until just above the Tool Length Sensor and set the position of your tool length sensor using the',
+                )}{' '}
+                <b>“{t('Set Position')}”</b> {t('button.')}
             </p>
             <PositionSetter
                 showZ={false}
@@ -73,8 +74,8 @@ export function TLSPosition({ onComplete, onUncomplete }: StepProps) {
                 }}
                 actionButton={
                     <StepActionButton
-                        label={'Set Position'}
-                        runningLabel="Setting..."
+                        label={t('Set Position')}
+                        runningLabel={t('Setting...')}
                         onApply={setTLSPosition}
                         isComplete={isComplete}
                         error={error}

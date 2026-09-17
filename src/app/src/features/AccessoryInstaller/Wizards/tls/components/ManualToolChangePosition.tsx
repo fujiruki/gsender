@@ -4,6 +4,7 @@ import { IMPERIAL_UNITS } from 'app/constants';
 import { PositionSetter } from 'app/features/AccessoryInstaller/Wizards/atc/components/PositionSetter.tsx';
 import { getDefaultToolChangePositionMM } from 'app/features/AccessoryInstaller/Wizards/tls/utils/defaultToolChangePosition.ts';
 import { useWorkspaceState } from 'app/hooks/useWorkspaceState';
+import { t } from 'app/i18n';
 import controller from 'app/lib/controller.ts';
 import { in2mm, mapPositionToUnits } from 'app/lib/units.ts';
 import store from 'app/store';
@@ -79,7 +80,7 @@ export function ManualToolChangePosition({
             z: toMM(position.z),
         });
         pubsub.publish('repopulate');
-        setSuccess('Tool change location set.');
+        setSuccess(t('Tool change location set.'));
         setIsComplete(true);
         lastSetMposRef.current = mpos;
         onComplete();
@@ -101,15 +102,19 @@ export function ManualToolChangePosition({
     return (
         <div className="flex flex-col gap-5 justify-start">
             <p className="dark:text-content-primary">
-                Jog to the location you'd like the machine to move to for manual
-                tool changes, then set the position using the{' '}
-                <b>"Set Position"</b> button.
+                {t(
+                    "Jog to the location you'd like the machine to move to for manual tool changes, then set the position using the",
+                )}{' '}
+                <b>"{t('Set Position')}"</b> {t('button.')}
             </p>
             <p className="text-sm text-gray-600 dark:text-content-secondary">
-                The fields below are already filled with a recommended position.
-                Hit <b>"Go To"</b> to send the machine there, then jog to
-                fine-tune it from that starting point before setting the
-                position.
+                {t(
+                    'The fields below are already filled with a recommended position. Hit',
+                )}{' '}
+                <b>"{t('Go To')}"</b>{' '}
+                {t(
+                    'to send the machine there, then jog to fine-tune it from that starting point before setting the position.',
+                )}
             </p>
             <PositionSetter
                 showZ={true}
@@ -130,8 +135,8 @@ export function ManualToolChangePosition({
                 onGoTo={goToPosition}
                 actionButton={
                     <StepActionButton
-                        label={'Set Position'}
-                        runningLabel="Setting..."
+                        label={t('Set Position')}
+                        runningLabel={t('Setting...')}
                         onApply={setManualPosition}
                         isComplete={isComplete}
                         error={error}

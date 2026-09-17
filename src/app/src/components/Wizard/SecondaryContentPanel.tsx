@@ -6,6 +6,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from 'app/components/shadcn/Popover';
+import { t } from 'app/i18n';
 import { ExternalLink, QrCode } from 'lucide-react';
 import type { ComponentType } from 'react';
 import QRCodeComponent from 'react-qr-code';
@@ -65,7 +66,7 @@ export function SecondaryContentPanel({
                     <div className="flex-1 min-h-0 overflow-hidden flex items-center justify-center">
                         <img
                             src={itemContent as string}
-                            alt={item.title || 'Secondary content'}
+                            alt={item.title || t('Secondary content')}
                             className="max-h-full max-w-full rounded-xl"
                         />
                     </div>
@@ -143,7 +144,7 @@ export function SecondaryContentPanel({
                                             rel="noopener noreferrer"
                                             className="text-blue-600 hover:text-blue-700 hover:underline"
                                         >
-                                            online resources
+                                            {t('online resources')}
                                         </a>
                                     </>
                                 ) : (
@@ -168,7 +169,7 @@ export function SecondaryContentPanel({
                                     >
                                         <div className="flex flex-col items-center gap-3">
                                             <div className="text-sm font-semibold text-gray-900 dark:text-content-primary">
-                                                Scan QR Code
+                                                {t('Scan QR Code')}
                                             </div>
                                             <div className="bg-white dark:bg-surface-raised p-2 rounded border border-gray-100 dark:border-gray-600">
                                                 <QRCodeComponent

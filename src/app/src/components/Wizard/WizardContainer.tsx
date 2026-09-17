@@ -8,6 +8,7 @@ import Button from '../Button';
 import { useDefaultContext } from './DefaultContext';
 import ProgressBar from './ProgressBar';
 import { SecondaryContentPanel } from './SecondaryContentPanel';
+import { t } from 'app/i18n';
 import type { SubWizard } from './types/wizard';
 
 interface Props {
@@ -142,7 +143,7 @@ export function WizardContainer({ subWizard, onWizardExit }: Props) {
                         >
                             <path d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                         </svg>
-                        Exit
+                        {t('Exit')}
                     </Button>
                 </div>
             ) : (
@@ -182,7 +183,7 @@ export function WizardContainer({ subWizard, onWizardExit }: Props) {
                                 {subWizard.configVersion &&
                                     !subWizard.hideVersionPrintout && (
                                         <p className="text-gray-600 dark:text-content-muted mb-8">
-                                            Configuration File Version:{' '}
+                                            {t('Configuration File Version:')}{' '}
                                             {subWizard.configVersion}
                                         </p>
                                     )}
@@ -230,7 +231,7 @@ export function WizardContainer({ subWizard, onWizardExit }: Props) {
                                 variant="nothing"
                                 className="flex h-full items-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors bg-gray-900 text-white hover:bg-gray-800"
                             >
-                                Exit Wizard
+                                {t('Exit Wizard')}
                             </Button>
                             <Button
                                 onClick={resetWizard}
@@ -238,7 +239,7 @@ export function WizardContainer({ subWizard, onWizardExit }: Props) {
                                 variant="nothing"
                                 className="flex h-full items-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors text-gray-900 bg-gray-200 hover:bg-gray-100"
                             >
-                                Restart Wizard
+                                {t('Restart Wizard')}
                             </Button>
                         </div>
                     ) : (
@@ -258,7 +259,7 @@ export function WizardContainer({ subWizard, onWizardExit }: Props) {
               `}
                             >
                                 <ChevronLeft size={20} />
-                                Previous
+                                {t('Previous')}
                             </Button>
 
                             <Button
@@ -275,7 +276,7 @@ export function WizardContainer({ subWizard, onWizardExit }: Props) {
                 }
               `}
                             >
-                                Next
+                                {t('Next')}
                                 <ChevronRight size={20} />
                             </Button>
                         </>

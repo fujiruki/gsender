@@ -1,4 +1,5 @@
 import { AlertCircle } from 'lucide-react';
+import { t } from 'app/i18n';
 import type { ReactNode } from 'react';
 import { useEffect, useState } from 'react';
 import type { ValidationResult } from './types/wizard';
@@ -17,7 +18,7 @@ export function ValidationBanner({ validations }: ValidationBannerProps) {
             for (const validation of validations) {
                 const result = validation();
                 if (!result.success) {
-                    setValidationError(result.reason || 'Validation failed');
+                    setValidationError(result.reason || t('Validation failed'));
                     return;
                 }
             }

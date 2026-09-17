@@ -6,6 +6,7 @@ import { IMPERIAL_UNITS } from 'app/constants';
 import { PositionSetter } from 'app/features/AccessoryInstaller/Wizards/atc/components/PositionSetter.tsx';
 import { useTypedSelector } from 'app/hooks/useTypedSelector.ts';
 import { useWorkspaceState } from 'app/hooks/useWorkspaceState';
+import { t } from 'app/i18n';
 import controller from 'app/lib/controller.ts';
 import { in2mm, mapPositionToUnits } from 'app/lib/units.ts';
 import store from 'app/store';
@@ -42,7 +43,7 @@ export function RackPosition({ onComplete }: StepProps) {
     useEffect(() => {
         if (ATCIMacroAborted === 1) {
             setIsComplete(false);
-            setError('Utility failed - fix reported issue and try again');
+            setError(t('Utility failed - fix reported issue and try again'));
             setTimeout(() => {
                 setError('');
             }, 3000);
@@ -111,12 +112,14 @@ export function RackPosition({ onComplete }: StepProps) {
         return (
             <div className="flex flex-col gap-5 justify-start">
                 <p className="dark:text-content-primary">
-                    For ATC Configuration, you selected “No Tool Rack” and so do
-                    not need to set a rack position.
+                    {t(
+                        'For ATC Configuration, you selected “No Tool Rack” and so do not need to set a rack position.',
+                    )}
                 </p>
                 <p className="dark:text-content-primary">
-                    If you have a rack installed, please return to the previous
-                    step to correct your selection.
+                    {t(
+                        'If you have a rack installed, please return to the previous step to correct your selection.',
+                    )}
                 </p>
             </div>
         );
@@ -126,43 +129,43 @@ export function RackPosition({ onComplete }: StepProps) {
         <div className="flex flex-col gap-5 justify-start">
             <div>
                 <label className="block text-sm font-semibold text-gray-900 dark:text-content-primary mb-2">
-                    Find Rack Position Method
+                    {t('Find Rack Position Method')}
                 </label>
                 <select
                     value={rackPositionMethod}
                     onChange={(e) => setRackPositionMethod(e.target.value)}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
-                    <option value="utility">Automatic</option>
-                    <option value="manual">Manual</option>
+                    <option value="utility">{t('Automatic')}</option>
+                    <option value="manual">{t('Manual')}</option>
                 </select>
             </div>
             {rackPositionMethod === 'utility' && (
                 <>
                     <ol className="list-decimal p-5 gap-4 space-y-2">
                         <li className="dark:text-content-primary">
-                            Populate your tool rack with tool holders
+                            {t('Populate your tool rack with tool holders')}
                         </li>
                         <li className="dark:text-content-primary">
-                            Position the spindle so that the tool-stud sensor is
-                            directly over the right most tool holder. Once in
-                            the proper position, the LED on the sensor will
-                            light up.
+                            {t(
+                                'Position the spindle so that the tool-stud sensor is directly over the right most tool holder. Once in the proper position, the LED on the sensor will light up.',
+                            )}
                         </li>
                         <li className="dark:text-content-primary">
-                            Press the <b>“Find Rack”</b> button for the wizard
-                            to determine the precise position of your tool
-                            holders.
+                            {t('Press the')} <b>“{t('Find Rack')}”</b>{' '}
+                            {t(
+                                'button for the wizard to determine the precise position of your tool holders.',
+                            )}
                         </li>
                     </ol>
                     <p className="dark:text-content-primary">
-                        The machine will take a few minutes to check the
-                        position of the left-most and right-most position of
-                        each tool rack.
+                        {t(
+                            'The machine will take a few minutes to check the position of the left-most and right-most position of each tool rack.',
+                        )}
                     </p>
                     <StepActionButton
-                        label="Find Rack"
-                        runningLabel="Finding..."
+                        label={t('Find Rack')}
+                        runningLabel={t('Finding...')}
                         onApply={handleUseUtility}
                         isComplete={isComplete}
                         error={error}
@@ -174,22 +177,24 @@ export function RackPosition({ onComplete }: StepProps) {
                 <>
                     <p className="text-gray-900 dark:text-content-primary">
                         <b>
-                            It is highly recommended that you use the automatic
-                            method, your rack may be damaged if done
-                            incorrectly.
+                            {t(
+                                'It is highly recommended that you use the automatic method, your rack may be damaged if done incorrectly.',
+                            )}
                         </b>
                     </p>
                     <ol className="list-decimal p-5 gap-4 space-y-2">
                         <li>
-                            Install a tool holder (with pull-stud removed) into
-                            the left-most slot
+                            {t(
+                                'Install a tool holder (with pull-stud removed) into the left-most slot',
+                            )}
                         </li>
                         <li>
-                            Lower the spindle taper onto the tool holder until
-                            the tapers match
+                            {t(
+                                'Lower the spindle taper onto the tool holder until the tapers match',
+                            )}
                         </li>
                         <li>
-                            Press <b>“Set Position”</b>
+                            {t('Press')} <b>“{t('Set Position')}”</b>
                         </li>
                     </ol>
                     <PositionSetter
@@ -204,8 +209,8 @@ export function RackPosition({ onComplete }: StepProps) {
                         }}
                         actionButton={
                             <StepActionButton
-                                label="Set Position"
-                                runningLabel="Setting..."
+                                label={t('Set Position')}
+                                runningLabel={t('Setting...')}
                                 onApply={setPositionViaPositionSetting}
                                 isComplete={isComplete}
                                 error={error}

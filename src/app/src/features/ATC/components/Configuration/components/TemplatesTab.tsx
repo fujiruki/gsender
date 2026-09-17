@@ -28,6 +28,7 @@ import {
     useRef,
     useState,
 } from 'react';
+import { t } from 'app/i18n';
 
 type TemplateUploadData = Pick<ATCIMacroConfig, 'version' | 'macros'> &
     Partial<ATCIMacroConfig>;
@@ -117,7 +118,7 @@ export function TemplateManagerProvider({
         }
 
         if (!file.name.toLowerCase().endsWith('.json')) {
-            setUploadError('Please select a valid JSON file');
+            setUploadError(t('Please select a valid JSON file'));
             input.value = '';
             return;
         }
@@ -150,7 +151,7 @@ export function TemplateManagerProvider({
                 setSelectedTemplateName(nextTemplates.macros[0]?.name ?? null);
                 setUploadError('');
             } catch {
-                setUploadError('Invalid JSON file or incorrect structure');
+                setUploadError(t('Invalid JSON file or incorrect structure'));
             } finally {
                 input.value = '';
             }
@@ -234,12 +235,12 @@ function TemplateManagerVersionInfo() {
 
     const syncStatusLabel =
         versionSyncState === 'controller_outdated'
-            ? 'Controller outdated'
+            ? t('Controller outdated')
             : versionSyncState === 'local_outdated'
-              ? 'Local outdated'
+              ? t('Local outdated')
               : versionSyncState === 'in_sync'
-                ? 'In sync'
-                : 'Controller version unavailable';
+                ? t('In sync')
+                : t('Controller version unavailable');
     const syncStatusBadgeClass = cn(
         'h-6 min-w-[11rem] justify-center gap-1.5 border px-2.5 py-0 text-xs font-semibold shadow-sm',
         {
@@ -265,7 +266,7 @@ function TemplateManagerVersionInfo() {
             <div className="flex flex-wrap items-start gap-4">
                 <div className="flex items-center gap-2 min-w-[16rem]">
                     <span className="text-sm font-semibold dark:text-content-primary">
-                        Local Templates:
+                        {t('Local Templates:')}
                     </span>
                     <Badge
                         variant="secondary"
@@ -276,7 +277,7 @@ function TemplateManagerVersionInfo() {
                 </div>
                 <div className="flex items-center gap-2 min-w-[16rem]">
                     <span className="text-sm font-semibold dark:text-content-primary">
-                        Controller Templates:
+                        {t('Controller Templates:')}
                     </span>
                     <Badge
                         variant="secondary"
@@ -289,7 +290,7 @@ function TemplateManagerVersionInfo() {
                 </div>
                 <div className="flex items-center gap-2 min-w-[14rem]">
                     <span className="text-sm font-semibold dark:text-content-primary">
-                        Status:
+                        {t('Status:')}
                     </span>
                     <Badge variant="secondary" className={syncStatusBadgeClass}>
                         <SyncStatusIcon className="h-3.5 w-3.5" />
@@ -311,7 +312,7 @@ function TemplateManagerUploadSection() {
                 className="w-full flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white"
             >
                 <Upload className="h-4 w-4" />
-                Upload JSON Template File
+                {t('Upload JSON Template File')}
             </Button>
             {uploadError && (
                 <div className="flex items-center gap-2 text-red-500 text-xs mt-2">
@@ -334,7 +335,7 @@ function TemplateViewer({ className = '' }: { className?: string }) {
             )}
         >
             <h1 className="text-sm font-semibold p-2 text-blue-500">
-                {selectedTemplate ? selectedTemplate.name : 'Content'}
+                {selectedTemplate ? selectedTemplate.name : t('Content')}
             </h1>
             <div className="flex-1 min-h-0 p-2 overflow-hidden">
                 <div className="border rounded h-full min-h-0 overflow-hidden dark:border-outline dark:bg-surface-sunken">
@@ -347,7 +348,7 @@ function TemplateViewer({ className = '' }: { className?: string }) {
                         </div>
                     ) : (
                         <div className="text-center text-muted-foreground text-sm py-8">
-                            Select a macro to view its contents
+                            {t('Select a macro to view its contents')}
                         </div>
                     )}
                 </div>
@@ -372,7 +373,7 @@ export function TemplateManagerListContent({
 
             <div className="border border-border bg-white dark:border-outline dark:bg-surface-raised flex flex-col min-h-0 flex-1 overflow-hidden">
                 <h1 className="text-sm font-semibold text-blue-500 p-2">
-                    Macros ({sortedTemplates.length})
+                    {t('Macros ({{count}})', { count: sortedTemplates.length })}
                 </h1>
                 <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain">
                     {sortedTemplates.map((template) => (

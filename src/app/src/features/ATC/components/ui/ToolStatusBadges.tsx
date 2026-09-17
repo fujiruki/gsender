@@ -5,6 +5,7 @@ import {
     manualChipTheme,
     toolStateThemes,
 } from 'app/features/ATC/utils/ATCiConstants.ts';
+import { t } from 'app/i18n';
 import cn from 'classnames';
 
 const sizeClasses = {
@@ -64,7 +65,7 @@ export function ToolStatusBadges({
             )}
         >
             <StatusIcon size={sizeConfig.pillIcon} />
-            {showLabel ? statusTheme.label : null}
+            {showLabel ? t(statusTheme.label) : null}
         </Badge>
     );
 
@@ -77,8 +78,8 @@ export function ToolStatusBadges({
                 manualChipTheme.textColor,
                 sizeConfig.chip,
             )}
-            title="Manual (off-rack)"
-            aria-label="Manual tool (off-rack)"
+            title={t('Manual (off-rack)')}
+            aria-label={t('Manual tool (off-rack)')}
         >
             <ManualIcon size={sizeConfig.chipIcon} aria-hidden />
         </Badge>

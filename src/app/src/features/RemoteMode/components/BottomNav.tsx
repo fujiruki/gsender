@@ -2,6 +2,7 @@ import { FaTasks } from 'react-icons/fa';
 import { IoSpeedometerOutline } from 'react-icons/io5';
 import { RiToolsFill } from 'react-icons/ri';
 import { RxDashboard } from 'react-icons/rx';
+import { t } from 'app/i18n';
 import { Link, useLocation } from 'react-router';
 export function BottomNavLink({ label, icon, href }) {
     return (
@@ -28,22 +29,22 @@ export function BottomNav() {
             <div className="grid h-full max-w-lg grid-cols-4 mx-auto font-medium">
                 <BottomNavLink
                     href="/remote/"
-                    label="Control"
+                    label={t('Control')}
                     icon={<RxDashboard />}
                 />
                 <BottomNavLink
                     href="/remote/workflow"
-                    label="Workflow"
+                    label={t('Workflow')}
                     icon={<IoSpeedometerOutline />}
                 />
                 <BottomNavLink
                     href="/remote/tools"
-                    label="Tools"
+                    label={t('Tools')}
                     icon={<RiToolsFill />}
                 />
                 <BottomNavLink
                     href="/remote/info"
-                    label="Info"
+                    label={t('Info')}
                     icon={<FaTasks />}
                 />
             </div>
