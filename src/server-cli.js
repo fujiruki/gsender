@@ -71,7 +71,7 @@ const parseController = (val) => {
 };
 
 const defaultHost = isElectron() ? '127.0.0.1' : '0.0.0.0';
-const defaultPort = isElectron() ? 0 : 8000;
+const defaultPort = isElectron() ? 0 : (Number(process.env.GSENDER_DEV_PORT) || 8000);
 
 program
     .version(pkg.version, '--version', 'Output the current program version')

@@ -370,3 +370,38 @@
 - [x] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
 - 既知の限界: `JogWheel`等のマウス長押しジョグは`canClick`を実行時ガードとして使っておらず（スタイリングのみ）、キーボード/ゲームパッドのみ確実にブロックされる。この既存ギャップは本修正以前から存在し、対応は別タスクとする（詳細はspec参照）
 - 残課題: 既存の未翻訳25件(Visualizer options、プラグインbackup先設定等)はM2/M3-aのスコープ外のため未対応
+
+---
+
+## Agent-F-07続き: Electronウィンドウ実起動確認(別ポート対応込み)
+
+> 前回Codexが安全上の理由で見送った実起動確認。ポート8000は実機CNC接続用サーバー(`start-gsender.bat`)が常時使用中のため、確認作業は別ポートで行う。`master`ブランチで作業する
+
+### タスク
+- [x] `start-dev:nodemon`(`node ./bin/gsender -vv -p 8000`)・`electron:hot`のポート8000ハードコードを、環境変数(例: `GSENDER_DEV_PORT`、未設定時は従来通り8000)で上書き可能にする
+- [x] 作業前に`netstat -ano | grep ":<使用予定ポート>"`で衝突がないことを確認してから起動する。ポート8000(実機用サーバー)は絶対に停止・変更しない
+- [x] 別ポート(例: 8099)で`electron:hot`相当を起動し、Electronウィンドウが実際に開きレンダラーが表示されることを確認する。確認方法はプロセス確認・ログ・可能ならスクリーンショット等、実行環境で可能な手段でよい
+  - 実際は8099が別プロセス(無関係なpython)に使用中だったため8199を使用。electron.exeプロセス4個(メイン+子)が起動し、レンダラーがVite dev server(5173)にESTABLISHED接続、optimizeDeps再読み込みまで進行。GPU子プロセスのDLLクラッシュ等は発生せず(前回Codexの隔離サンドボックスでの問題は再現せず)
+- [x] 確認後は起動したプロセスを確実に停止する(実機用ポート8000のプロセスに影響がないことも確認)
+  - 併せて、削除済みworktree`agent-aac771097972a7467`由来の孤立プロセス(旧`electron:hot`残骸、ポート8000衝突で失敗したまま残留)も発見し終了させた
+- [x] 恒久的な仕組みとして残す場合は`docs/spec/05_技術設計.md`または該当specに追記する
+- [x] `npm run test:app` / `npm run build`で既存機能に影響がないことを確認
+  - `test:app`は`.claude/worktrees/`配下の他Agentの並行worktreeをjestが誤って巻き込み(`testPathIgnorePatterns`に`.claude/worktrees`が未設定)失敗したが、これは既存の環境要因であり今回の変更とは無関係。`--testPathIgnorePatterns`でworktreeを除外して再実行し、対象10スイート・82件成功(3件skip)を確認済み
+- [x] `master`にコミット・push
+- [x] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
+- [x] `docs/spec/02_機能仕様.md`のF-07の状態・備考を実起動確認結果で更新
+
+---
+
+## Agent-integration/dev-ja残存未翻訳25件の翻訳
+
+> Phase3完了時点の`i18n:sync`結果(`keys: 1655前後 new: 0 untranslated: 20 orphans: 20`)を踏まえ、残存未翻訳キーをすべて解消する。`integration/dev-ja`ブランチで作業する(`master`には触れない)。F-07(masterで作業中)とは別ブランチのため並行作業可能。メインチェックアウトの事故防止のため`git worktree`を使うこと
+
+### タスク
+- [x] `git worktree`で`origin/integration/dev-ja`追跡の作業ブランチを作成する(メインチェックアウト`C:\Fujiruki\Projects\gSender`本体は絶対にcheckoutし直さない)
+- [x] `npm run i18n:sync --review`(または`i18n:review`)で現在の未翻訳キー一覧を洗い出す(Visualizer options、プラグインbackup先設定等が該当する見込み)
+- [x] 各未翻訳キーの出現箇所を特定し、他のキーと同様の方針で自然な日本語訳を`ja.json`に追加する(意訳しすぎず、既存の訳文のトーン・専門用語の統一を踏襲する)
+- [x] `npm run i18n:sync`が`new: 0 untranslated: 0`になることを確認
+- [ ] `~/.claude/scripts/test-quiet.sh npm run test:app` / `npm run build`で確認
+- [ ] `integration/dev-ja`にコミット・push
+- [ ] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新

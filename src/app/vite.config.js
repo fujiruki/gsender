@@ -7,6 +7,8 @@ import { patchCssModules } from 'vite-css-modules';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import { sentryVitePlugin } from '@sentry/vite-plugin';
 
+const devServerPort = process.env.GSENDER_DEV_PORT || 8000;
+
 export default defineConfig({
     root: path.resolve(__dirname, './'), // Set root to the directory containing index.html
     base: './',
@@ -52,11 +54,11 @@ export default defineConfig({
         },
         proxy: {
             '/api': {
-                target: 'http://127.0.0.1:8000',
+                target: `http://127.0.0.1:${devServerPort}`,
                 changeOrigin: true,
             },
             '/socket.io': {
-                target: 'http://127.0.0.1:8000',
+                target: `http://127.0.0.1:${devServerPort}`,
                 changeOrigin: true,
                 ws: true,
             },
