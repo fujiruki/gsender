@@ -117,6 +117,14 @@ export function Jogging({ hideRotary = false }) {
         (state: RootState) => state.controller.type,
     );
 
+    const hasHomed = useSelector(
+        (state: RootState) => state.controller.hasHomed,
+    );
+    const homingEnabled = useSelector(
+        (state: RootState) =>
+            Number(get(state, 'controller.settings.settings.$22', 0)) !== 0,
+    );
+
     useEffect(() => {
         setFirmware(firmwareType as FirmwareFlavour);
     }, [firmwareType]);
@@ -124,11 +132,12 @@ export function Jogging({ hideRotary = false }) {
     const canClick = useCallback((): boolean => {
         if (!isConnected) return false;
         if (workflowState === WORKFLOW_STATE_RUNNING) return false;
+        if (homingEnabled && !hasHomed) return false;
 
         const states = [GRBL_ACTIVE_STATE_IDLE, GRBL_ACTIVE_STATE_JOG];
 
         return includes(states, activeState);
-    }, [isConnected, workflowState, activeState])();
+    }, [isConnected, workflowState, activeState, homingEnabled, hasHomed])();
 
     const posthog = usePostHog();
 
@@ -145,9 +154,19 @@ export function Jogging({ hideRotary = false }) {
             reduxStore.getState(),
             'controller.state.status.activeState',
         );
+        const hasHomed = get(reduxStore.getState(), 'controller.hasHomed');
+        const homingEnabled =
+            Number(
+                get(
+                    reduxStore.getState(),
+                    'controller.settings.settings.$22',
+                    0,
+                ),
+            ) !== 0;
 
         if (!isConnected) return false;
         if (workflowState === WORKFLOW_STATE_RUNNING) return false;
+        if (homingEnabled && !hasHomed) return false;
 
         const states = [GRBL_ACTIVE_STATE_IDLE, GRBL_ACTIVE_STATE_JOG];
 
@@ -1009,8 +1028,18 @@ export function Jogging({ hideRotary = false }) {
             rotaryWidgetState.tab.show) ||
             useAaxisForGrbl);
 
+    const needsHomingBeforeJog = isConnected && homingEnabled && !hasHomed;
+
     return (
         <>
+            {needsHomingBeforeJog && (
+                <div
+                    className="text-center text-xs text-red-500"
+                    title={t('Homing required before jogging')}
+                >
+                    {t('Homing required before jogging')}
+                </div>
+            )}
             <div className="flex flex-row w-full gap-2 justify-around items-center select-none max-xl:scale-90">
                 <div className="min-w-[180px] portrait:min-w-[210px] relative">
                     <JogWheel
