@@ -68,7 +68,7 @@
     "dev": "npm run prebuild-dev && npm run build-dev-server && concurrently --kill-others-on-fail --names \"esbuild,server,tailwind\" \"npm run watch-dev\" \"npm run start-dev:nodemon\" \"npm run tailwind-dev\"",
     "vite:dev": "cd src/app && vite --port 5173 --host",
     "electron:dev": "npm run electron:hot",
-    "electron:hot": "npm run build-dev && concurrently --kill-others-on-fail --names \"esbuild,server,vite,electron\" \"npm run watch-dev\" \"npm run start-dev:nodemon\" \"npm run vite:dev\" \"bash -lc 'until curl -sf http://127.0.0.1:5173 >/dev/null; do sleep 0.2; done; cross-env NODE_ENV=development ELECTRON_RENDERER_URL=http://127.0.0.1:5173 electron ./output/main'\"",
+    "electron:hot": "npm run build-dev && concurrently --kill-others-on-fail --names \"esbuild,server,vite,electron\" \"npm run watch-dev\" \"npm run start-dev:nodemon\" \"npm run vite:dev\" \"node scripts/wait-for-url.mjs http://127.0.0.1:5173 && cross-env NODE_ENV=development ELECTRON_RENDERER_URL=http://127.0.0.1:5173 electron ./output/main\"",
     "prod": "npm run build-prod && NODE_ENV=production ./bin/gsender",
     "format": "biome format --write .",
     "format:check": "biome format .",

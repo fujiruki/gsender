@@ -289,14 +289,14 @@
 > 対応spec: `docs/spec/02_機能仕様.md` F-07。`master`に実装する
 
 ### タスク
-- [ ] `master`をcheckoutして作業する
-- [ ] `package.json`の`electron:hot`スクリプトの`bash -lc '...'`（Vite dev server起動待ちのポーリング）を、クロスプラットフォームで動く方式に置き換える（`wait-on`パッケージ等の軽量な既存手段を優先、自前実装は最小限に）
+- [x] `master`をcheckoutして作業する
+- [x] `package.json`の`electron:hot`スクリプトの`bash -lc '...'`（Vite dev server起動待ちのポーリング）を、クロスプラットフォームで動く方式に置き換える（`wait-on`パッケージ等の軽量な既存手段を優先、自前実装は最小限に）
 - [ ] このbackPC(Windows)で実際に`npm run electron:hot`を実行し、Electronウィンドウが起動することを確認する
-- [ ] `npm run test:app` / `npm run build`で確認
-- [ ] 本家`upstream/dev`の`package.json`に同じ`bash -lc`依存が存在するか確認し、結果を報告に記載する（存在すれば本家PR候補として記録するのみ、今回はPR送信しない）
+- [x] `npm run test:app` / `npm run build`で確認
+- [x] 本家`upstream/dev`の`package.json`に同じ`bash -lc`依存が存在するか確認し、結果を報告に記載する（存在すれば本家PR候補として記録するのみ、今回はPR送信しない）
 - [ ] `master`にコミット・push
-- [ ] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
-- [ ] `docs/spec/02_機能仕様.md`のF-07の状態を「未実装」→「実装済み」に更新
+- [x] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
+- [x] `docs/spec/02_機能仕様.md`のF-07の状態を「未実装」→「実装済み」に更新
 
 ---
 
