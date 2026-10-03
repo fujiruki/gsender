@@ -486,3 +486,26 @@ export function confirmUnlockAfterHomingFailure(code, onUnlock) {
 - [x] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
 - [x] 段階2(本家Issue提起): https://github.com/Sienci-Labs/gsender/issues/965 (2026-10-03投稿。機能追加を要求せず方針相談のトーン。事前にPR#953/954/955のマージ状況・既存Issue・upstream/dev直近動向を確認済み、衝突や重複なし)
 - [ ] 段階3(hasHomedの3値化等)は今回のスコープに含めない
+
+---
+
+## Agent-Plugin管理UIのi18n化
+
+> ロードマップ6番目。`integration/dev-ja`ブランチ限定の作業(`master`には`packages/plugin-sdk`/`features/Plugins`が未取り込みのため存在しない。確認済み: `git ls-tree -r --name-only origin/master -- src/app/src/features/Plugins/` は0件)
+>
+> **スコープ確定(発注者承認2026-10-03)**: Plugin管理UI本体(`src/app/src/features/Plugins/`配下)の静的UI文字列のみ対象。サンプルPlugin(`plugins/*`の`gsender-plugin.json`)・SDK本体(`packages/plugin-sdk/`)は対象外(サンプルは開発者向けデモで日常使わない、将来のOperator Pluginは自作なので最初から日本語で書ける)
+
+### タスク
+- [ ] `git worktree`で`origin/integration/dev-ja`を作業(既存worktree `.claude/worktrees/agent-af3adeb91b76d108d`を再利用可。originがbehind 1の可能性があるため`git pull --ff-only`してから開始すること)
+- [ ] 対象18ファイル(テスト`__tests__/*.test.tsx`除く)を確認し、ユーザー向け静的UI文字列(ボタンラベル・見出し・トースト/エラーメッセージ等)のみ`import { t } from 'app/i18n'` + `t('...')`でラップする
+  - `src/app/src/features/Plugins/components/{InstallPluginDialog,PluginManager,PluginPage,PluginPanel,PluginProxy,PluginTabPanel,PluginVisualizerOverlayHost}.tsx`
+  - `src/app/src/features/Plugins/hooks/{usePluginIframeTheme,usePluginInstall,usePlugins}.ts`
+  - `src/app/src/features/Plugins/{index.ts,types.ts}`
+  - `src/app/src/features/Plugins/utils/{capabilities,plugin-permissions,pluginBridge}.ts`
+  - **ラップ禁止**: Plugin registryから取得した動的文字列(`plugin.name`/`plugin.description`等、各`gsender-plugin.json`由来のデータ)。固定のUI文字列のみが対象
+  - 既存コーディングルール通り、無関係な整形・リファクタは混ぜない
+- [ ] `npm run i18n:sync`で新規キー(new)を確認、`ja.json`に翻訳を追加（英文キー方式、既存の訳と語彙・文体を揃える）
+- [ ] `~/.claude/scripts/test-quiet.sh npm run test:app` / `npm run build`で確認(既知の無関係な失敗`StepThroughStatus`/`surfacing-output`/`InstallPluginDialog`以外に新規失敗がないこと)
+- [ ] `integration/dev-ja`にコミット・push
+- [ ] `docs/spec/02_機能仕様.md`に本件の状態を追記(該当セクションがなければ新設)
+- [ ] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
