@@ -1,0 +1,53 @@
+{
+  "id": "com.fujiruki.operator",
+  "name": "Operator Plugin",
+  "description": "Standardizes daily CNC operation (origin restore, startup sequence, probing, safety checklist, routine mode) so part-time operators can run the machine safely.",
+  "version": "0.1.0",
+  "engine": ">=1.6.0",
+  "ui": {
+    "entry": "ui/index.html",
+    "contributions": [
+      {
+        "slot": "tools-page",
+        "route": "operator-plugin",
+        "label": "Operator"
+      }
+    ]
+  },
+  "parsers": [
+    {
+      "id": "probe",
+      "label": "Probe result",
+      "mode": "line",
+      "match": {
+        "source": "^\\[PRB:(?<x>[-\\d.]+),(?<y>[-\\d.]+),(?<z>[-\\d.]+)(?:,[-\\d.]+)*:(?<ok>[01])\\]$"
+      }
+    }
+  ],
+  "permissions": [
+    "machine:read",
+    "machine:write",
+    "machine:parse",
+    "machine:query",
+    "machine:command",
+    "redux:read",
+    "storage"
+  ],
+  "capabilities": {
+    "requestTypes": [
+      "machine:get:context",
+      "machine:command",
+      "machine:query",
+      "machine:busy:set",
+      "redux:get:state",
+      "storage:get",
+      "storage:set",
+      "storage:delete",
+      "storage:get:all",
+      "storage:set:all",
+      "storage:clear"
+    ],
+    "topics": ["redux", "controller", "parser"],
+    "allowedFunctions": ["machine", "getSelector", "storage"]
+  }
+}
