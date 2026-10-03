@@ -528,3 +528,31 @@ export function confirmUnlockAfterHomingFailure(code, onUnlock) {
 - [x] `npm run test:app` / `npm run build`で確認(影響範囲が新規Pluginのみであることを確認) → `test:app`: Test Suites 23 passed/3 failed(失敗3件は`StepThroughStatus`/`InstallPluginDialog`/`surfacing-output`。既知の無関係な失敗で新規失敗なし)。`build`: exit 0、basic-camのみdefault pluginとしてバンドルされoperator-pluginは影響なし。加えて`plugins/operator-plugin`単体でも`npm run build`・`tsc --noEmit`を実行し成功を確認
 - [x] `integration/dev-ja`にコミット・push → コミット`562971336`、push成功
 - [x] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新(Agent側で実施)
+
+---
+
+## Agent-Operator Plugin T2: 機械状態取得＋ステートマシン骨格
+
+> 対応spec: `docs/spec/07_OperatorPlugin.md`の「ステートマシン設計」節(必読)。T1で作った`plugins/operator-plugin/`に追加実装する。`integration/dev-ja`ブランチ限定
+
+### タスク
+- [ ] `git worktree`(T1と同じ`.claude/worktrees/agent-af3adeb91b76d108d`)で作業。開始前に`git pull --ff-only`
+- [ ] TDDで進める(プロジェクト既定の開発方式)。まずテーブル駆動テストを書き、失敗を確認してからロジックを実装する
+- [ ] `MachineSnapshot`型を定義。フィールド: `connection.isConnected` / `controller.hasHomed` / `controller.state.status.activeState`(Idle/Run/Hold/Alarm/Home/Jog) / `controller.workflow.state`(idle/running/paused) / `controller.modal`(wcs, distance, units) / `controller.settings.parameters`(G54..G59, G92, PRB) / `mpos, wpos, wco` / `fileInfo.fileLoaded, fileName` / `pluginState.busy`
+- [ ] `aux`型(storage由来の補助データ)を定義: 原点スロット一覧 / チェックリスト履歴 / `routine.{active,fileName}` / 管理者PINハッシュ(任意) / Plugin設定(プレート寸法等)。**状態名(HOMED/READY等)はstorageに保存しない**
+- [ ] `deriveWorkflowState(snapshot, aux)`純関数を実装。導出順(上から優先、spec/07の記載通り):
+  1. `!connected` → DISCONNECTED
+  2. `activeState==='Alarm'` → ALARM
+  3. `workflow==='running'` → RUNNING / `'paused'` → PAUSED
+  4. `activeState==='Home'` → HOMING / `!hasHomed` → CONNECTED_UNHOMED
+  5. `pluginBusy` → PROBING
+  6. `params.G92 ≠ 0` → G92_PRESENT
+  7. `params.G54`が保存スロットのどれかと±0.01mmで一致 → ORIGIN_SET / 不一致 → HOMED_UNVERIFIED
+  8. `fileLoaded` → FILE_LOADED → `Idle`なら READY
+- [ ] テーブル駆動テストで上記8分岐すべて(境界値含む)を検証。導出順の優先度(例: ALARMはhasHomed等より優先される)も検証
+- [ ] `controller.settings.parameters`は`$#`発行時のみ更新されるため、Pluginマウント時・接続時に`machine.query('$#')`を発行し、取得結果をsnapshotへ反映する処理を実装
+- [ ] `subscribeSelector`で上記snapshotの各フィールドをredux/workspaceから購読し、状態が変わるたびに`deriveWorkflowState`を再評価するフックを実装
+- [ ] UIはT1の疎通確認画面を拡張し、現在の導出状態名(DISCONNECTED/ALARM/HOMING/CONNECTED_UNHOMED/PROBING/G92_PRESENT/ORIGIN_SET/HOMED_UNVERIFIED/FILE_LOADED/READY等)とその理由を表示するだけでよい(原点保存復元・プローブ等の操作UIはT3/T4)
+- [ ] `npm run test:app` / `npm run build`で確認
+- [ ] `integration/dev-ja`にコミット・push
+- [ ] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
