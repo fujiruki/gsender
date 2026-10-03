@@ -402,15 +402,16 @@
 - [x] `npm run i18n:sync --review`(または`i18n:review`)で現在の未翻訳キー一覧を洗い出す(Visualizer options、プラグインbackup先設定等が該当する見込み)
 - [x] 各未翻訳キーの出現箇所を特定し、他のキーと同様の方針で自然な日本語訳を`ja.json`に追加する(意訳しすぎず、既存の訳文のトーン・専門用語の統一を踏襲する)
 - [x] `npm run i18n:sync`が`new: 0 untranslated: 0`になることを確認
-- [ ] `~/.claude/scripts/test-quiet.sh npm run test:app` / `npm run build`で確認
-- [ ] `integration/dev-ja`にコミット・push
-- [ ] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
+- [x] `~/.claude/scripts/test-quiet.sh npm run test:app` / `npm run build`で確認
+- [x] `integration/dev-ja`にコミット・push
+- [x] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
 
 ---
 
 ## 残課題メモ(未着手、優先度低)
 
 - **jest設定の`.claude/worktrees`除外漏れ**: `jest.config.js`の`testPathIgnorePatterns`が`.claude/worktrees`配下を除外しておらず、並行worktree作業中に他Agentの作業ファイルをjestが誤って巻き込み`npm run test:app`が不安定になることがある(F-07 Agent報告、2026-09-17)。次にworktreeを使うAgentタスクの際にでも合わせて修正する
+- **ゾンビ化したworktree(`agent-aa3c45ae337d7315f`, `contrib/homing-safety-fix`用)**: 過去の「Codex-F-05 本家contrib準備」タスクの残骸とみられ、`claude.exe`(PID 20768、このセッションのteammateには存在しない孤立プロセス)にロックされたまま`49395374d`で停止している(2026-09-18確認)。発注者判断で当面放置。次にこのworktreeを使う/触る際は、originが`ea1128c50`まで進んでいることを踏まえ`git pull --ff-only`してから作業すること
 
 ---
 
