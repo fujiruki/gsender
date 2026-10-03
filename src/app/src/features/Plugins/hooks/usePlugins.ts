@@ -1,4 +1,5 @@
 import api from 'app/api';
+import { t } from 'app/i18n';
 import controller from 'app/lib/controller';
 import store from 'app/store';
 import { useCallback, useEffect, useState } from 'react';
@@ -28,7 +29,9 @@ export const usePlugins = () => {
             setPluginsDir(resolvedPluginsDir);
         } catch (err) {
             setError(
-                err instanceof Error ? err.message : 'Failed to load plugins',
+                err instanceof Error
+                    ? err.message
+                    : t('Failed to load plugins'),
             );
             setPlugins([]);
         } finally {

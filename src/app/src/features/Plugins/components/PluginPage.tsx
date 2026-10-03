@@ -1,4 +1,5 @@
 import Page from 'app/components/Page';
+import { t } from 'app/i18n';
 import combokeys from 'app/lib/combokeys';
 import {
     holdShortcuts,
@@ -38,7 +39,7 @@ const PluginPage = () => {
 
     if (loading) {
         return (
-            <Page title="Plugin" withGoBackButton>
+            <Page title={t('Plugin')} withGoBackButton>
                 <div className="h-full flex items-center justify-center">
                     <div className="flex flex-col gap-2 justify-center items-center h-full">
                         <div className="flex gap-2">
@@ -54,12 +55,12 @@ const PluginPage = () => {
 
     if (!plugin) {
         return (
-            <Page title="Plugin" withGoBackButton>
+            <Page title={t('Plugin')} withGoBackButton>
                 <div className="h-full flex items-center justify-center">
                     <p className="text-gray-500 dark:text-content-secondary">
-                        Plugin not found or disabled. Install plugins to{' '}
-                        <code className="text-sm">plugins</code> folder and
-                        restart gSender.
+                        {t('Plugin not found or disabled. Install plugins to')}{' '}
+                        <code className="text-sm">plugins</code>{' '}
+                        {t('folder and restart gSender.')}
                     </p>
                 </div>
             </Page>

@@ -1,4 +1,5 @@
 import api from 'app/api';
+import { t } from 'app/i18n';
 import isElectron from 'is-electron';
 import { useCallback, useEffect, useReducer, useRef } from 'react';
 import type {
@@ -159,7 +160,7 @@ export const usePluginInstall = ({
             )?.response?.data;
             dispatch({
                 type: 'failed',
-                error: messageFromError(err, 'Could not read that plugin'),
+                error: messageFromError(err, t('Could not read that plugin')),
                 log: data?.log,
                 manifestErrors: data?.manifestErrors,
             });
@@ -193,7 +194,8 @@ export const usePluginInstall = ({
             if (payload?.error || !payload?.path) {
                 dispatch({
                     type: 'failed',
-                    error: payload?.error || 'Could not open the file picker',
+                    error:
+                        payload?.error || t('Could not open the file picker'),
                 });
                 return;
             }
@@ -210,7 +212,9 @@ export const usePluginInstall = ({
         if (!isElectron()) {
             dispatch({
                 type: 'failed',
-                error: 'Installing plugins from a file needs the gSender desktop app. Copy the plugin folder into the plugins directory instead.',
+                error: t(
+                    'Installing plugins from a file needs the gSender desktop app. Copy the plugin folder into the plugins directory instead.',
+                ),
             });
             return;
         }
@@ -239,7 +243,7 @@ export const usePluginInstall = ({
             )?.response?.data;
             dispatch({
                 type: 'failed',
-                error: messageFromError(err, 'The install did not complete'),
+                error: messageFromError(err, t('The install did not complete')),
                 log: data?.log,
                 restored: data?.restored,
             });

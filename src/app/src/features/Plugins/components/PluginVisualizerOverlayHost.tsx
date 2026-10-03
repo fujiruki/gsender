@@ -2,6 +2,7 @@ import { Tooltip } from 'app/components/Tooltip';
 import { GRBL_ACTIVE_STATE_IDLE } from 'app/constants';
 import { visualizerBridge } from 'app/features/Visualizer/visualizerBridge';
 import { useTypedSelector } from 'app/hooks/useTypedSelector';
+import { t } from 'app/i18n';
 import cx from 'classnames';
 import { X } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -56,7 +57,7 @@ const OverlayPanel = ({
                 </span>
                 <button
                     type="button"
-                    aria-label="Close plugin"
+                    aria-label={t('Close plugin')}
                     className="inline-flex h-6 w-6 items-center justify-center rounded text-gray-500 hover:bg-gray-100 hover:text-gray-800 dark:text-gray-400 dark:hover:bg-dark-lighter dark:hover:text-gray-100"
                     onClick={onClose}
                 >
@@ -134,7 +135,9 @@ const PluginVisualizerOverlayHost = ({ baseBottomPx, leftPx }: Props) => {
                         <Tooltip
                             content={
                                 gated
-                                    ? `${label} — machine must be idle`
+                                    ? t('{{label}} — machine must be idle', {
+                                          label,
+                                      })
                                     : label
                             }
                             side="top"

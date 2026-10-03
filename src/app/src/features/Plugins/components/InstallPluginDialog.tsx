@@ -10,6 +10,7 @@ import {
     AlertDialogTitle,
 } from 'app/components/shadcn/AlertDialog';
 import { DialogOverlay } from 'app/components/shadcn/Dialog';
+import { t } from 'app/i18n';
 import cx from 'classnames';
 import isElectron from 'is-electron';
 import {
@@ -91,30 +92,53 @@ const STEPS: { id: InstallStep; label: string }[] = [
 const stepIndexFor = (step: InstallStep) =>
     step === 'error' ? 1 : STEPS.findIndex((entry) => entry.id === step);
 
-const STEP_TITLE: Record<InstallStep, string> = {
-    source: 'Choose',
-    review: 'Review',
-    installing: 'Installing',
-    done: 'Finish',
-    error: 'Problem',
+// Translated through a switch (rather than a Record of plain strings) so the
+// i18n-sync script's static scan of t() calls can actually see these keys.
+const stepTitle = (step: InstallStep): string => {
+    switch (step) {
+        case 'source':
+            return t('Choose');
+        case 'review':
+            return t('Review');
+        case 'installing':
+            return t('Installing');
+        case 'done':
+            return t('Finish');
+        case 'error':
+            return t('Problem');
+    }
 };
 
-const EYEBROW: Record<InstallStep, string> = {
-    source: 'Choose a plugin',
-    review: 'Review permissions',
-    installing: 'Installing',
-    done: 'All done',
-    error: 'Install stopped',
+const eyebrowText = (step: InstallStep): string => {
+    switch (step) {
+        case 'source':
+            return t('Choose a plugin');
+        case 'review':
+            return t('Review permissions');
+        case 'installing':
+            return t('Installing');
+        case 'done':
+            return t('All done');
+        case 'error':
+            return t('Install stopped');
+    }
 };
 
 // What the primary button says. Downgrades and reinstalls are allowed but the
 // label makes clear which one you are about to do.
-const KIND_ACTION: Record<PluginInstallKind, string> = {
-    new: 'Install',
-    update: 'Update',
-    downgrade: 'Downgrade anyway',
-    reinstall: 'Reinstall',
-    unknown: 'Install anyway',
+const kindActionLabel = (kind: PluginInstallKind): string => {
+    switch (kind) {
+        case 'new':
+            return t('Install');
+        case 'update':
+            return t('Update');
+        case 'downgrade':
+            return t('Downgrade anyway');
+        case 'reinstall':
+            return t('Reinstall');
+        case 'unknown':
+            return t('Install anyway');
+    }
 };
 
 const Callout = ({
@@ -176,12 +200,12 @@ const InfoPanel = ({
     pluginsDir?: string;
 }) => (
     <aside className={CHROME.side}>
-        <SideSection label="Details">
+        <SideSection label={t('Details')}>
             {plan ? (
                 <dl className="flex flex-col gap-2">
-                    <Fact label="Plugin" value={plan.plugin.name} />
+                    <Fact label={t('Plugin')} value={plan.plugin.name} />
                     <Fact
-                        label="Identifier"
+                        label={t('Identifier')}
                         value={
                             <code className={CHROME.code}>
                                 {plan.plugin.id}
@@ -189,7 +213,7 @@ const InfoPanel = ({
                         }
                     />
                     <Fact
-                        label="Version"
+                        label={t('Version')}
                         value={
                             plan.installedVersion ? (
                                 <span>
@@ -204,7 +228,7 @@ const InfoPanel = ({
                     />
                     {plan.plugin.contributions.length > 0 && (
                         <Fact
-                            label="Adds"
+                            label={t('Adds')}
                             value={plan.plugin.contributions
                                 .map(
                                     (contribution) =>
@@ -213,23 +237,23 @@ const InfoPanel = ({
                                 .join(', ')}
                         />
                     )}
-                    <Fact label="Installs to" value={plan.targetDir} />
+                    <Fact label={t('Installs to')} value={plan.targetDir} />
                 </dl>
             ) : (
                 <div className="flex flex-col gap-2">
                     <p className={CHROME.body}>
-                        A gSender plugin is a folder holding a{' '}
+                        {t('A gSender plugin is a folder holding a')}{' '}
                         <code className={cx('text-xs', CHROME.code)}>
                             gsender-plugin.json
                         </code>{' '}
-                        manifest and a{' '}
+                        {t('manifest and a')}{' '}
                         <code className={cx('text-xs', CHROME.code)}>ui/</code>{' '}
-                        build, or a{' '}
+                        {t('build, or a')}{' '}
                         <code className={cx('text-xs', CHROME.code)}>.zip</code>{' '}
-                        of that folder.
+                        {t('of that folder.')}
                     </p>
                     {pluginsDir && (
-                        <Fact label="Installs into" value={pluginsDir} />
+                        <Fact label={t('Installs into')} value={pluginsDir} />
                     )}
                 </div>
             )}
@@ -243,8 +267,8 @@ const VersionBanner = ({ plan }: { plan: PluginInstallPlan }) => {
     if (kind === 'new') {
         return (
             <Callout tone="success" icon={<PackagePlus size={13} />}>
-                New install of <strong>{plan.plugin.name}</strong> v
-                {incomingVersion}.
+                {t('New install of')} <strong>{plan.plugin.name}</strong>{' '}
+                {t('v{{version}}.', { version: incomingVersion })}
             </Callout>
         );
     }
@@ -252,8 +276,11 @@ const VersionBanner = ({ plan }: { plan: PluginInstallPlan }) => {
     if (kind === 'update') {
         return (
             <Callout tone="success" icon={<Check size={13} />}>
-                Updating <strong>{plan.plugin.name}</strong> from v
-                {installedVersion} to v{incomingVersion}.
+                {t('Updating')} <strong>{plan.plugin.name}</strong>{' '}
+                {t('from v{{installedVersion}} to v{{incomingVersion}}.', {
+                    installedVersion,
+                    incomingVersion,
+                })}
             </Callout>
         );
     }
@@ -261,10 +288,11 @@ const VersionBanner = ({ plan }: { plan: PluginInstallPlan }) => {
     if (kind === 'downgrade') {
         return (
             <Callout tone="warn" icon={<ArrowDownCircle size={13} />}>
-                <strong>This is a downgrade.</strong> You have v
-                {installedVersion} installed and this package is v
-                {incomingVersion}. Any settings or files the newer version
-                created may not work with the older one.
+                <strong>{t('This is a downgrade.')}</strong>{' '}
+                {t(
+                    'You have v{{installedVersion}} installed and this package is v{{incomingVersion}}. Any settings or files the newer version created may not work with the older one.',
+                    { installedVersion, incomingVersion },
+                )}
             </Callout>
         );
     }
@@ -272,35 +300,47 @@ const VersionBanner = ({ plan }: { plan: PluginInstallPlan }) => {
     if (kind === 'reinstall') {
         return (
             <Callout tone="warn" icon={<RotateCw size={13} />}>
-                <strong>v{incomingVersion} is already installed.</strong>{' '}
-                Continuing replaces the installed copy with this one.
+                <strong>
+                    {t('v{{version}} is already installed.', {
+                        version: incomingVersion,
+                    })}
+                </strong>{' '}
+                {t('Continuing replaces the installed copy with this one.')}
             </Callout>
         );
     }
 
     return (
         <Callout tone="warn" icon={<HelpCircle size={13} />}>
-            <strong>Version numbers could not be compared.</strong> Installed:{' '}
-            {installedVersion}. This package: {incomingVersion}. Continuing
-            replaces the installed copy.
+            <strong>{t('Version numbers could not be compared.')}</strong>{' '}
+            {t('Installed:')} {installedVersion}. {t('This package:')}{' '}
+            {incomingVersion}. {t('Continuing replaces the installed copy.')}
         </Callout>
     );
 };
 
 const PermissionList = ({ plan }: { plan: PluginInstallPlan }) => (
     <div className="flex flex-col gap-2">
-        <p className={CHROME.heading}>Permissions</p>
+        <p className={CHROME.heading}>{t('Permissions')}</p>
 
         {plan.unverifiable && (
             <Callout tone="warn" icon={<AlertTriangle size={13} />}>
                 <p className="font-semibold">
-                    This plugin&apos;s use of gSender cannot be fully verified.
+                    {t(
+                        "This plugin's use of gSender cannot be fully verified.",
+                    )}
                 </p>
                 <p>
                     {plan.scanned
-                        ? 'It loads parts of the gSender SDK in a way we cannot inspect, so it may use more than the permissions listed below.'
-                        : 'No readable plugin bundle was found, so no permissions could be determined.'}{' '}
-                    Only continue if you trust where this plugin came from.
+                        ? t(
+                              'It loads parts of the gSender SDK in a way we cannot inspect, so it may use more than the permissions listed below.',
+                          )
+                        : t(
+                              'No readable plugin bundle was found, so no permissions could be determined.',
+                          )}{' '}
+                    {t(
+                        'Only continue if you trust where this plugin came from.',
+                    )}
                 </p>
             </Callout>
         )}
@@ -329,7 +369,7 @@ const PermissionList = ({ plan }: { plan: PluginInstallPlan }) => (
                                 </code>
                                 {declaredOnly && (
                                     <span className="text-[10px] text-amber-700 dark:text-amber-400">
-                                        declared, not confirmed
+                                        {t('declared, not confirmed')}
                                     </span>
                                 )}
                             </li>
@@ -338,19 +378,17 @@ const PermissionList = ({ plan }: { plan: PluginInstallPlan }) => (
                 </ul>
                 {plan.declaredOnlyPermissions.length > 0 && (
                     <p className={CHROME.muted}>
-                        Permissions marked &ldquo;declared, not confirmed&rdquo;
-                        are ones the plugin asks for that we could not find in
-                        its code. That is normal for plugins that bundle
-                        gSender&apos;s SDK, but it does mean you are taking the
-                        author&apos;s word for it.
+                        {t(
+                            'Permissions marked "declared, not confirmed" are ones the plugin asks for that we could not find in its code. That is normal for plugins that bundle gSender\'s SDK, but it does mean you are taking the author\'s word for it.',
+                        )}
                     </p>
                 )}
             </>
         ) : (
             <p className={CHROME.body}>
                 {plan.scanned
-                    ? 'This plugin does not request any permissions.'
-                    : 'No permissions will be granted.'}
+                    ? t('This plugin does not request any permissions.')
+                    : t('No permissions will be granted.')}
             </p>
         )}
     </div>
@@ -417,10 +455,10 @@ export const InstallPluginDialog = ({
         switch (step) {
             case 'review':
                 return {
-                    back: { label: 'Back', onClick: startOver },
+                    back: { label: t('Back'), onClick: startOver },
                     primary: plan
                         ? {
-                              label: KIND_ACTION[plan.kind],
+                              label: kindActionLabel(plan.kind),
                               onClick: install,
                               disabled: busy,
                           }
@@ -428,8 +466,8 @@ export const InstallPluginDialog = ({
                 };
             case 'error':
                 return {
-                    back: { label: 'Close', onClick: onClose },
-                    primary: { label: 'Try again', onClick: startOver },
+                    back: { label: t('Close'), onClick: onClose },
+                    primary: { label: t('Try again'), onClick: startOver },
                 };
             default:
                 return { back: null, primary: null };
@@ -469,28 +507,28 @@ export const InstallPluginDialog = ({
                                 className={CHROME.titleIcon}
                             />
                             <DialogPrimitive.Title className={CHROME.titleText}>
-                                Install a plugin
+                                {t('Install a plugin')}
                             </DialogPrimitive.Title>
                             <span className={CHROME.muted} aria-hidden>
                                 &rsaquo;
                             </span>
                             <span className="text-xs text-gray-600 dark:text-content-primary truncate">
-                                {STEP_TITLE[step]}
+                                {stepTitle(step)}
                             </span>
                         </div>
                         <DialogPrimitive.Close
                             className={CHROME.titlebarButton}
                             disabled={!canClose}
-                            aria-label="Close"
+                            aria-label={t('Close')}
                         >
                             <X size={14} />
                         </DialogPrimitive.Close>
                     </div>
 
                     <DialogPrimitive.Description className="sr-only">
-                        Install a gSender plugin from a folder or a zip file.
-                        You will be shown what it can do before anything is
-                        installed.
+                        {t(
+                            'Install a gSender plugin from a folder or a zip file. You will be shown what it can do before anything is installed.',
+                        )}
                     </DialogPrimitive.Description>
 
                     {/* Fixed body height: the left column scrolls so the panel never
@@ -499,14 +537,16 @@ export const InstallPluginDialog = ({
                         <InfoPanel plan={plan} pluginsDir={pluginsDir} />
 
                         <div className={CHROME.main}>
-                            <p className={CHROME.eyebrow}>{EYEBROW[step]}</p>
+                            <p className={CHROME.eyebrow}>
+                                {eyebrowText(step)}
+                            </p>
 
                             {step === 'source' && (
                                 <div className="flex flex-col gap-4">
                                     <p className={CHROME.body}>
-                                        Pick the plugin you want to install.
-                                        Nothing is copied anywhere until you
-                                        have seen what it can do.
+                                        {t(
+                                            'Pick the plugin you want to install. Nothing is copied anywhere until you have seen what it can do.',
+                                        )}
                                     </p>
 
                                     {!isElectron() && (
@@ -514,10 +554,9 @@ export const InstallPluginDialog = ({
                                             tone="warn"
                                             icon={<AlertTriangle size={13} />}
                                         >
-                                            Picking a file needs the gSender
-                                            desktop app. In the browser, copy
-                                            the plugin folder into the plugins
-                                            directory by hand.
+                                            {t(
+                                                'Picking a file needs the gSender desktop app. In the browser, copy the plugin folder into the plugins directory by hand.',
+                                            )}
                                         </Callout>
                                     )}
 
@@ -532,7 +571,7 @@ export const InstallPluginDialog = ({
                                             )}
                                         >
                                             <FolderOpen size={12} />
-                                            From folder&hellip;
+                                            {t('From folder...')}
                                         </button>
                                         <button
                                             type="button"
@@ -544,7 +583,7 @@ export const InstallPluginDialog = ({
                                             )}
                                         >
                                             <FileArchive size={12} />
-                                            From .zip&hellip;
+                                            {t('From .zip...')}
                                         </button>
                                     </div>
 
@@ -559,13 +598,14 @@ export const InstallPluginDialog = ({
                                                 size={13}
                                                 className="animate-spin"
                                             />
-                                            Reading the plugin&hellip;
+                                            {t('Reading the plugin...')}
                                         </p>
                                     )}
 
                                     <p className={CHROME.muted}>
-                                        Only install plugins from sources you
-                                        trust.
+                                        {t(
+                                            'Only install plugins from sources you trust.',
+                                        )}
                                     </p>
                                 </div>
                             )}
@@ -598,15 +638,20 @@ export const InstallPluginDialog = ({
                                                     <AlertTriangle size={13} />
                                                 }
                                             >
-                                                This plugin targets gSender{' '}
+                                                {t(
+                                                    'This plugin targets gSender',
+                                                )}{' '}
                                                 <strong>
                                                     {plan.engine.range}
                                                 </strong>{' '}
-                                                and you are running{' '}
+                                                {t('and you are running')}{' '}
                                                 <strong>
                                                     {plan.engine.appVersion}
                                                 </strong>
-                                                . It may not work correctly.
+                                                .{' '}
+                                                {t(
+                                                    'It may not work correctly.',
+                                                )}
                                             </Callout>
                                         )}
 
@@ -615,8 +660,9 @@ export const InstallPluginDialog = ({
                                             tone="warn"
                                             icon={<AlertTriangle size={13} />}
                                         >
-                                            Another copy of this plugin is
-                                            already loaded from{' '}
+                                            {t(
+                                                'Another copy of this plugin is already loaded from',
+                                            )}{' '}
                                             <code
                                                 className={cx(
                                                     'text-xs',
@@ -625,9 +671,9 @@ export const InstallPluginDialog = ({
                                             >
                                                 {plan.shadowedBy}
                                             </code>{' '}
-                                            and will take priority over this
-                                            one. Remove it if you want this
-                                            version to be used.
+                                            {t(
+                                                'and will take priority over this one. Remove it if you want this version to be used.',
+                                            )}
                                         </Callout>
                                     )}
 
@@ -642,11 +688,14 @@ export const InstallPluginDialog = ({
                                         className="animate-spin text-blue-600 dark:text-blue-400"
                                     />
                                     <p className={CHROME.body}>
-                                        Installing {plan?.plugin.name}&hellip;
+                                        {t('Installing {{name}}...', {
+                                            name: plan?.plugin.name ?? '',
+                                        })}
                                     </p>
                                     <p className={CHROME.muted}>
-                                        Your previous version is kept until this
-                                        finishes.
+                                        {t(
+                                            'Your previous version is kept until this finishes.',
+                                        )}
                                     </p>
                                 </div>
                             )}
@@ -657,17 +706,19 @@ export const InstallPluginDialog = ({
                                         tone="success"
                                         icon={<Check size={13} />}
                                     >
-                                        <strong>{plan?.plugin.name}</strong> v
-                                        {plan?.incomingVersion} was{' '}
+                                        <strong>{plan?.plugin.name}</strong>{' '}
+                                        {t('v{{version}} was', {
+                                            version:
+                                                plan?.incomingVersion ?? '',
+                                        })}{' '}
                                         {result?.replaced
-                                            ? 'updated'
-                                            : 'installed'}
-                                        .
+                                            ? t('updated.')
+                                            : t('installed.')}
                                     </Callout>
                                     <p className={CHROME.body}>
-                                        gSender registers plugin pages when it
-                                        starts, so it needs a restart before you
-                                        can open this plugin.
+                                        {t(
+                                            'gSender registers plugin pages when it starts, so it needs a restart before you can open this plugin.',
+                                        )}
                                     </p>
                                 </div>
                             )}
@@ -694,15 +745,16 @@ export const InstallPluginDialog = ({
 
                                     {restored && (
                                         <Callout tone="info">
-                                            Your previously installed version
-                                            was put back and still works.
+                                            {t(
+                                                'Your previously installed version was put back and still works.',
+                                            )}
                                         </Callout>
                                     )}
 
                                     <p className={CHROME.body}>
-                                        Nothing was left half-installed. You can
-                                        pick a different folder or zip and try
-                                        again.
+                                        {t(
+                                            'Nothing was left half-installed. You can pick a different folder or zip and try again.',
+                                        )}
                                     </p>
                                 </div>
                             )}
@@ -771,16 +823,21 @@ export const InstallPluginDialog = ({
             >
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>Restart now?</AlertDialogTitle>
+                        <AlertDialogTitle>{t('Restart now?')}</AlertDialogTitle>
                         <AlertDialogDescription>
-                            {plan?.plugin.name} v{plan?.incomingVersion} was{' '}
-                            {result?.replaced ? 'updated' : 'installed'}.
-                            gSender needs a restart before you can open it.
+                            {plan?.plugin.name}{' '}
+                            {t('v{{version}} was', {
+                                version: plan?.incomingVersion ?? '',
+                            })}{' '}
+                            {result?.replaced ? t('updated.') : t('installed.')}{' '}
+                            {t(
+                                'gSender needs a restart before you can open it.',
+                            )}
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                         <AlertDialogCancel onClick={onClose}>
-                            Later
+                            {t('Later')}
                         </AlertDialogCancel>
                         <AlertDialogAction
                             onClick={(event) => {
@@ -789,7 +846,7 @@ export const InstallPluginDialog = ({
                             }}
                             disabled={!isElectron()}
                         >
-                            Restart now
+                            {t('Restart now')}
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>

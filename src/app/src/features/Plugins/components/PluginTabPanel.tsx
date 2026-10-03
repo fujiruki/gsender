@@ -1,3 +1,4 @@
+import { t } from 'app/i18n';
 import { useRef } from 'react';
 
 import { usePluginIframeTheme } from '../hooks/usePluginIframeTheme';
@@ -36,7 +37,11 @@ export const PluginTabIframe = ({
     const plugin = plugins.find((p) => p.id === pluginId);
 
     if (!plugin) {
-        return <p className="text-sm text-gray-500 p-4">Plugin unavailable.</p>;
+        return (
+            <p className="text-sm text-gray-500 p-4">
+                {t('Plugin unavailable.')}
+            </p>
+        );
     }
 
     return <PluginTabPanel plugin={plugin} isActive={isActive} />;

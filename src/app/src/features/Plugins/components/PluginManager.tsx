@@ -14,6 +14,7 @@ import {
 } from 'app/components/shadcn/AlertDialog';
 import { Badge } from 'app/components/shadcn/Badge';
 import { Tooltip } from 'app/components/Tooltip';
+import { t } from 'app/i18n';
 import { toast } from 'app/lib/toaster';
 import isElectron from 'is-electron';
 import { Trash2 } from 'lucide-react';
@@ -70,7 +71,9 @@ const PluginManager = () => {
         setRemoving(true);
         try {
             await api.plugins.uninstall(pendingRemoval.id);
-            toast.success(`${pendingRemoval.name} was removed.`);
+            toast.success(
+                t('{{name}} was removed.', { name: pendingRemoval.name }),
+            );
             setRestartRequired(true);
             setPendingRemoval(null);
             await refresh();
@@ -78,7 +81,7 @@ const PluginManager = () => {
             const message =
                 (err as { response?: { data?: { error?: string } } })?.response
                     ?.data?.error ??
-                'Could not remove the plugin. Please try again.';
+                t('Could not remove the plugin. Please try again.');
             toast.error(message, { position: 'bottom-right' });
         } finally {
             setRemoving(false);
@@ -87,16 +90,18 @@ const PluginManager = () => {
 
     return (
         <Page
-            title="Plugins"
-            description="Manage UI plugins installed on this machine"
+            title={t('Plugins')}
+            description={t('Manage UI plugins installed on this machine')}
             withGoBackButton
             withFullPadding
         >
             <div className="flex flex-col gap-4">
                 <p className="text-sm text-gray-600 dark:text-content-secondary">
-                    Plugins directory:{' '}
+                    {t('Plugins directory:')}{' '}
                     {canOpenDir ? (
-                        <Tooltip content="Open this folder in your file manager">
+                        <Tooltip
+                            content={t('Open this folder in your file manager')}
+                        >
                             <button
                                 type="button"
                                 onClick={handleOpenDir}
@@ -112,22 +117,24 @@ const PluginManager = () => {
                 </p>
 
                 <p className="text-sm text-gray-500 dark:text-content-muted">
-                    Each plugin is a folder containing{' '}
-                    <code className="text-xs">gsender-plugin.json</code> and a{' '}
-                    <code className="text-xs">ui/</code> build output. After
-                    installing, removing or enabling a plugin, restart gSender
-                    for mount routes to apply.
+                    {t('Each plugin is a folder containing')}{' '}
+                    <code className="text-xs">gsender-plugin.json</code>{' '}
+                    {t('and a')} <code className="text-xs">ui/</code>{' '}
+                    {t(
+                        'build output. After installing, removing or enabling a plugin, restart gSender for mount routes to apply.',
+                    )}
                 </p>
 
                 {restartRequired && (
                     <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-700 dark:bg-amber-950 dark:text-amber-100">
                         <span>
-                            Restart gSender to apply plugin changes. Mount
-                            routes are registered when the server starts.
+                            {t(
+                                'Restart gSender to apply plugin changes. Mount routes are registered when the server starts.',
+                            )}
                         </span>
                         {isElectron() && (
                             <Button onClick={handleRestart} size="sm">
-                                Restart now
+                                {t('Restart now')}
                             </Button>
                         )}
                     </div>
@@ -135,10 +142,10 @@ const PluginManager = () => {
 
                 <div className="flex gap-2">
                     <Button onClick={() => setShowInstall(true)}>
-                        Install Plugin
+                        {t('Install Plugin')}
                     </Button>
                     <Button onClick={refresh} disabled={loading}>
-                        Refresh
+                        {t('Refresh')}
                     </Button>
                 </div>
 
@@ -149,12 +156,14 @@ const PluginManager = () => {
                 )}
 
                 {loading && (
-                    <p className="text-sm text-gray-500">Loading plugins...</p>
+                    <p className="text-sm text-gray-500">
+                        {t('Loading plugins...')}
+                    </p>
                 )}
 
                 {!loading && plugins.length === 0 && (
                     <p className="text-sm text-gray-500">
-                        No plugins installed.
+                        {t('No plugins installed.')}
                     </p>
                 )}
 
@@ -180,7 +189,7 @@ const PluginManager = () => {
                                 )}
                                 {plugin.contributions.length > 0 && (
                                     <p className="mt-2 text-xs text-gray-500">
-                                        Slots:{' '}
+                                        {t('Slots:')}{' '}
                                         {plugin.contributions
                                             .map((c) => c.slot)
                                             .join(', ')}
@@ -204,7 +213,10 @@ const PluginManager = () => {
                             </div>
                             <div className="mt-4 flex items-center justify-between">
                                 <Tooltip
-                                    content={`Remove ${plugin.name} from this machine`}
+                                    content={t(
+                                        'Remove {{name}} from this machine',
+                                        { name: plugin.name },
+                                    )}
                                 >
                                     <div>
                                         <Button
@@ -218,15 +230,15 @@ const PluginManager = () => {
                                             }
                                             className="border-red-500 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
                                         >
-                                            Uninstall
+                                            {t('Uninstall')}
                                         </Button>
                                     </div>
                                 </Tooltip>
                                 <Tooltip
                                     content={
                                         plugin.enabled
-                                            ? 'Disable this plugin'
-                                            : 'Enable this plugin'
+                                            ? t('Disable this plugin')
+                                            : t('Enable this plugin')
                                     }
                                 >
                                     <div>
@@ -238,8 +250,8 @@ const PluginManager = () => {
                                             disabled={!plugin.valid}
                                             label={
                                                 plugin.enabled
-                                                    ? 'Enabled'
-                                                    : 'Disabled'
+                                                    ? t('Enabled')
+                                                    : t('Disabled')
                                             }
                                             onColor="#22c55e" // Tailwind green-500
                                         />
@@ -270,18 +282,19 @@ const PluginManager = () => {
                 <AlertDialogContent>
                     <AlertDialogHeader>
                         <AlertDialogTitle>
-                            Remove {pendingRemoval?.name}?
+                            {t('Remove {{name}}?', {
+                                name: pendingRemoval?.name ?? '',
+                            })}
                         </AlertDialogTitle>
                         <AlertDialogDescription>
-                            This deletes the plugin folder from your plugins
-                            directory. Any data it stored is kept, but the
-                            plugin itself will be gone until you install it
-                            again. gSender will need a restart afterwards.
+                            {t(
+                                'This deletes the plugin folder from your plugins directory. Any data it stored is kept, but the plugin itself will be gone until you install it again. gSender will need a restart afterwards.',
+                            )}
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                         <AlertDialogCancel disabled={removing}>
-                            Cancel
+                            {t('Cancel')}
                         </AlertDialogCancel>
                         <AlertDialogAction
                             onClick={(event) => {
@@ -292,7 +305,7 @@ const PluginManager = () => {
                             }}
                             disabled={removing}
                         >
-                            {removing ? 'Removing...' : 'Uninstall'}
+                            {removing ? t('Removing...') : t('Uninstall')}
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
