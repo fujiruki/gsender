@@ -519,12 +519,12 @@ export function confirmUnlockAfterHomingFailure(code, onUnlock) {
 > 対応spec: `docs/spec/02_機能仕様.md`(F-09)・`docs/spec/07_OperatorPlugin.md`(詳細設計、必読)。`integration/dev-ja`ブランチ限定(`master`へのバックポートは当面行わない)
 
 ### タスク
-- [ ] `git worktree`で`origin/integration/dev-ja`を作業する(既存worktree `.claude/worktrees/agent-af3adeb91b76d108d`を再利用可。originがbehindの可能性があるため`git pull --ff-only`してから開始すること)
-- [ ] `plugins/react-ts-app/`をテンプレートに`plugins/operator-plugin/`を新規作成。`gsender-plugin.json`の`id`は`com.fujiruki.operator`、`capabilities`は`machine:get:context, machine:command, machine:query, machine:busy:set, redux:get:state, storage:*`、topicsは`redux, controller, parser`、PRBパーサ(`^\[PRB:(?<x>..),(?<y>..),(?<z>..)(?:,[-\d.]+)*:(?<ok>[01])\]$`)を登録
-- [ ] Tailwindを`plugins/basic-cam/`を参考に追加
-- [ ] `plugins/README.md`の「Local development」手順に従い、devモードでPluginが自動ビルド・ロードされることを確認
-- [ ] 接続確認・`machine.query('$#')`での現在のWCS値取得・`storage.set/get`の疎通確認のみを行う最小UI(本格的な機能はT2以降)
-- [ ] `plugins/operator-plugin/README.md`に、ブランチ方針(開発は`integration/dev-ja`限定、`master`へのバックポートは当面行わない。現場投入可能になった段階で`integration/dev-ja`系を次期現場版へ昇格させる)を明記
-- [ ] `npm run test:app` / `npm run build`で確認(影響範囲が新規Pluginのみであることを確認)
-- [ ] `integration/dev-ja`にコミット・push
-- [ ] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
+- [x] `git worktree`で`origin/integration/dev-ja`を作業する(既存worktree `.claude/worktrees/agent-af3adeb91b76d108d`を再利用可。originがbehindの可能性があるため`git pull --ff-only`してから開始すること) → 既にup to date(HEAD `7615976a8`)だった
+- [x] `plugins/react-ts-app/`をテンプレートに`plugins/operator-plugin/`を新規作成。`gsender-plugin.json`の`id`は`com.fujiruki.operator`、`capabilities`は`machine:get:context, machine:command, machine:query, machine:busy:set, redux:get:state, storage:*`、topicsは`redux, controller, parser`、PRBパーサ(`^\[PRB:(?<x>..),(?<y>..),(?<z>..)(?:,[-\d.]+)*:(?<ok>[01])\]$`)を登録 → `storage:*`は実体の6requestType(`storage:get/set/delete/get:all/set:all/clear`)に展開して記載(`src/server/services/pluginregistry/grants.js`で確認)。PRBパーサは設計書の`..`プレースホルダーを、動作実績のある`parser-demo`と同じ`[-\d.]+`に置換(文字通り2文字一致では実データに合わないため)。グループ名`x/y/z/ok`は設計書通り維持
+- [x] Tailwindを`plugins/basic-cam/`を参考に追加 → `@tailwindcss/vite`導入、`index.css`は`@custom-variant dark`含めbasic-camと同一パターンを踏襲
+- [x] `plugins/README.md`の「Local development」手順に従い、devモードでPluginが自動ビルド・ロードされることを確認 → `node scripts/prepare-dev-plugins.js`を直接実行し、operator-pluginの`npm install`→`vite build`が自動実行され`ui/`が生成されることを確認(他の既存サンプルPluginと同じ扱いで動作)
+- [x] 接続確認・`machine.query('$#')`での現在のWCS値取得・`storage.set/get`の疎通確認のみを行う最小UI(本格的な機能はT2以降) → `useTypedSelector`で接続状態表示、`machine.query('$#')`のレスポンスからG54行を正規表現抽出してX/Y/Z表示、`storage.set`/`storage.get`の往復確認UIを実装
+- [x] `plugins/operator-plugin/README.md`に、ブランチ方針(開発は`integration/dev-ja`限定、`master`へのバックポートは当面行わない。現場投入可能になった段階で`integration/dev-ja`系を次期現場版へ昇格させる)を明記
+- [x] `npm run test:app` / `npm run build`で確認(影響範囲が新規Pluginのみであることを確認) → `test:app`: Test Suites 23 passed/3 failed(失敗3件は`StepThroughStatus`/`InstallPluginDialog`/`surfacing-output`。既知の無関係な失敗で新規失敗なし)。`build`: exit 0、basic-camのみdefault pluginとしてバンドルされoperator-pluginは影響なし。加えて`plugins/operator-plugin`単体でも`npm run build`・`tsc --noEmit`を実行し成功を確認
+- [x] `integration/dev-ja`にコミット・push → コミット`562971336`、push成功
+- [x] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新(Agent側で実施)
