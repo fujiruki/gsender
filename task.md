@@ -316,15 +316,15 @@
 
 ## ロードマップ(2026-09-17、発注者指定の優先順)
 
-1. `10e2166b4`(check-types修正)の本家PR化
-2. `pendant:electron:dev`の`bash -lc`問題を本家へ提案
-3. F-05: `Jogging/index.tsx`の`canClick`/`canClickShortcut`にhasHomedを組み込む
-4. F-07: Electronウィンドウの実起動確認（ポート競合を回避する方法込み）
-5. 既存の未翻訳25件の翻訳
-6. Plugin SDK配下のUI日本語化（`i18n-sync.mjs`のDATA_SOURCES拡張が前提）
-7. Operator Plugin構想（本家Plugin SDK上に構築する新機能、まず仕様策定から）
+1. [x] `10e2166b4`(check-types修正)の本家PR化 → PR #955 MERGED
+2. [x] `pendant:electron:dev`の`bash -lc`問題を本家へ提案 → PR #954 MERGED
+3. [x] F-05: `Jogging/index.tsx`の`canClick`/`canClickShortcut`にhasHomedを組み込む
+4. [x] F-07: Electronウィンドウの実起動確認（ポート競合を回避する方法込み）
+5. [x] 既存の未翻訳25件の翻訳
+6. [ ] Plugin SDK配下のUI日本語化（`i18n-sync.mjs`のDATA_SOURCES拡張が前提）
+7. [ ] Operator Plugin構想（本家Plugin SDK上に構築する新機能、まず仕様策定から）
 
-1・2・3は互いに独立（別ブランチ・別ファイル）なので並列着手する。4は3と同じF-05系だが独立に進められる。5・6は同じ`integration/dev-ja`ブランチに影響するため3の完了後に着手する。7は最後。
+1〜5は完了。なお本家PR #953(F-05 Homing safety fix)もkglovern氏指摘を踏まえた追加対応(Rehomeダイアログ化)込みで2026-09-21にMERGED済み。6・7が残作業。
 
 ---
 
@@ -348,10 +348,10 @@
 > F-07(`scripts/wait-for-url.mjs`)と同じアプローチをupstream/dev側の`pendant:electron:dev`スクリプトに適用
 
 ### タスク
-- [ ] `git fetch upstream` → `upstream/dev`から`contrib/pendant-electron-windows-fix`ブランチを作成
-- [ ] `upstream/dev`の`package.json`の`pendant:electron:dev`スクリプトを確認し、同じ`bash -lc '...'`依存を、F-07と同様にNode標準API等クロスプラットフォームな方式に置き換える（`scripts/wait-for-url.mjs`をそのまま再利用できるか確認、必要なら同等のものを追加）
-- [ ] Windowsで実際に動作確認する（ポート競合に注意。pendant用の別ポートを使うはずなので実機サーバーとは衝突しない想定だが、事前に使用ポートを確認すること）
-- [ ] `origin`へpush、`gh pr create --repo Sienci-Labs/gsender --base dev`でPR作成
+- [x] `git fetch upstream` → `upstream/dev`から`contrib/pendant-electron-windows-fix`ブランチを作成
+- [x] `upstream/dev`の`package.json`の`pendant:electron:dev`スクリプトの`bash -lc '...'`依存を、`scripts/wait-for-url.mjs`(Node標準http/httpsでポーリング、追加依存なし)に置き換え(コミット`fc5bef793`)
+- [x] `origin`へpush、PR作成・マージ完了: https://github.com/Sienci-Labs/gsender/pull/954 (2026-09-21、kglovern氏マージ)
+- [x] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新（指揮AI側で発見・実施。2026-09-17時点で実施済みだったがtask.md更新漏れ）
 - [ ] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
 
 ---
