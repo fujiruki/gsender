@@ -511,3 +511,20 @@ export function confirmUnlockAfterHomingFailure(code, onUnlock) {
 - [x] `integration/dev-ja`にコミット・push → コミット`7615976a8`、push成功
 - [x] `docs/spec/02_機能仕様.md`に本件の状態を追記(該当セクションがなければ新設) → F-08として新設
 - [x] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
+
+---
+
+## Agent-Operator Plugin T1: Plugin足場・SDK接続確認
+
+> 対応spec: `docs/spec/02_機能仕様.md`(F-09)・`docs/spec/07_OperatorPlugin.md`(詳細設計、必読)。`integration/dev-ja`ブランチ限定(`master`へのバックポートは当面行わない)
+
+### タスク
+- [ ] `git worktree`で`origin/integration/dev-ja`を作業する(既存worktree `.claude/worktrees/agent-af3adeb91b76d108d`を再利用可。originがbehindの可能性があるため`git pull --ff-only`してから開始すること)
+- [ ] `plugins/react-ts-app/`をテンプレートに`plugins/operator-plugin/`を新規作成。`gsender-plugin.json`の`id`は`com.fujiruki.operator`、`capabilities`は`machine:get:context, machine:command, machine:query, machine:busy:set, redux:get:state, storage:*`、topicsは`redux, controller, parser`、PRBパーサ(`^\[PRB:(?<x>..),(?<y>..),(?<z>..)(?:,[-\d.]+)*:(?<ok>[01])\]$`)を登録
+- [ ] Tailwindを`plugins/basic-cam/`を参考に追加
+- [ ] `plugins/README.md`の「Local development」手順に従い、devモードでPluginが自動ビルド・ロードされることを確認
+- [ ] 接続確認・`machine.query('$#')`での現在のWCS値取得・`storage.set/get`の疎通確認のみを行う最小UI(本格的な機能はT2以降)
+- [ ] `plugins/operator-plugin/README.md`に、ブランチ方針(開発は`integration/dev-ja`限定、`master`へのバックポートは当面行わない。現場投入可能になった段階で`integration/dev-ja`系を次期現場版へ昇格させる)を明記
+- [ ] `npm run test:app` / `npm run build`で確認(影響範囲が新規Pluginのみであることを確認)
+- [ ] `integration/dev-ja`にコミット・push
+- [ ] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
