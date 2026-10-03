@@ -496,16 +496,18 @@ export function confirmUnlockAfterHomingFailure(code, onUnlock) {
 > **スコープ確定(発注者承認2026-10-03)**: Plugin管理UI本体(`src/app/src/features/Plugins/`配下)の静的UI文字列のみ対象。サンプルPlugin(`plugins/*`の`gsender-plugin.json`)・SDK本体(`packages/plugin-sdk/`)は対象外(サンプルは開発者向けデモで日常使わない、将来のOperator Pluginは自作なので最初から日本語で書ける)
 
 ### タスク
-- [ ] `git worktree`で`origin/integration/dev-ja`を作業(既存worktree `.claude/worktrees/agent-af3adeb91b76d108d`を再利用可。originがbehind 1の可能性があるため`git pull --ff-only`してから開始すること)
-- [ ] 対象18ファイル(テスト`__tests__/*.test.tsx`除く)を確認し、ユーザー向け静的UI文字列(ボタンラベル・見出し・トースト/エラーメッセージ等)のみ`import { t } from 'app/i18n'` + `t('...')`でラップする
+- [x] `git worktree`で`origin/integration/dev-ja`を作業(既存worktree `.claude/worktrees/agent-af3adeb91b76d108d`を再利用可。originがbehind 1の可能性があるため`git pull --ff-only`してから開始すること)
+- [x] 対象18ファイル(テスト`__tests__/*.test.tsx`除く)を確認し、ユーザー向け静的UI文字列(ボタンラベル・見出し・トースト/エラーメッセージ等)のみ`import { t } from 'app/i18n'` + `t('...')`でラップする
   - `src/app/src/features/Plugins/components/{InstallPluginDialog,PluginManager,PluginPage,PluginPanel,PluginProxy,PluginTabPanel,PluginVisualizerOverlayHost}.tsx`
   - `src/app/src/features/Plugins/hooks/{usePluginIframeTheme,usePluginInstall,usePlugins}.ts`
   - `src/app/src/features/Plugins/{index.ts,types.ts}`
   - `src/app/src/features/Plugins/utils/{capabilities,plugin-permissions,pluginBridge}.ts`
   - **ラップ禁止**: Plugin registryから取得した動的文字列(`plugin.name`/`plugin.description`等、各`gsender-plugin.json`由来のデータ)。固定のUI文字列のみが対象
   - 既存コーディングルール通り、無関係な整形・リファクタは混ぜない
-- [ ] `npm run i18n:sync`で新規キー(new)を確認、`ja.json`に翻訳を追加（英文キー方式、既存の訳と語彙・文体を揃える）
-- [ ] `~/.claude/scripts/test-quiet.sh npm run test:app` / `npm run build`で確認(既知の無関係な失敗`StepThroughStatus`/`surfacing-output`/`InstallPluginDialog`以外に新規失敗がないこと)
-- [ ] `integration/dev-ja`にコミット・push
-- [ ] `docs/spec/02_機能仕様.md`に本件の状態を追記(該当セクションがなければ新設)
-- [ ] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
+  - 実際にt()でラップしたのは7ファイル(`InstallPluginDialog.tsx`/`PluginManager.tsx`/`PluginPage.tsx`/`PluginTabPanel.tsx`/`PluginVisualizerOverlayHost.tsx`/`usePluginInstall.ts`/`usePlugins.ts`)。残りは対象外と判明: `PluginPanel.tsx`・`usePluginIframeTheme.ts`・`index.ts`・`types.ts`・`utils/capabilities.ts`・`utils/plugin-permissions.ts`は固定UI文字列なし。`utils/pluginBridge.ts`のエラーメッセージはUI非表示のPlugin SDKプロトコルエラー(開発者向け)のため対象外。`PluginProxy.tsx`は構文エラーを含む未使用(どこからもimportされていない)ファイルと判明、対象外
+  - `InstallPluginDialog.tsx`の`STEP_TITLE`/`EYEBROW`/`KIND_ACTION`(ステップ名・アクションボタンラベル)はプレーンRecordの値をそのまま`t()`で包むと機能しない(モジュールトップレベル評価のため`initI18n()`実行前に固定化される問題 + `i18n-sync.mjs`がリテラル`t('...')`呼び出ししか検出できない問題の二重理由)と判明したため、switch文ベースの関数(`stepTitle`/`eyebrowText`/`kindActionLabel`)に書き換えて対応
+- [x] `npm run i18n:sync`で新規キー(new)を確認、`ja.json`に翻訳を追加（英文キー方式、既存の訳と語彙・文体を揃える）→ 新規103件追加・翻訳済み(new: 0 / untranslated: 0。既存の無関係なorphan7件は変更前と同一のまま)
+- [x] `~/.claude/scripts/test-quiet.sh npm run test:app` / `npm run build`で確認(既知の無関係な失敗`StepThroughStatus`/`surfacing-output`/`InstallPluginDialog`以外に新規失敗がないこと) → 確認済み(Test Suites: 3 failed/23 passed、失敗3件は既知のもののみ。buildはexit 0)
+- [x] `integration/dev-ja`にコミット・push → コミット`7615976a8`、push成功
+- [x] `docs/spec/02_機能仕様.md`に本件の状態を追記(該当セクションがなければ新設) → F-08として新設
+- [x] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
