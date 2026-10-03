@@ -484,4 +484,5 @@ export function confirmUnlockAfterHomingFailure(code, onUnlock) {
 - [x] PR #953にpushしたコミットを反映させた上で、kglovern氏への返信コメントを英語で下書きする(投稿は指揮AI確認後に行う。「dialog now offers Rehome as primary action, and ALARM 8/9 additionally explain how to disable homing via $22 to keep using the machine while the switch is repaired」等の趣旨)
   - 下書きは指揮AIへの完了報告に記載。投稿(`gh pr comment`)は未実施
 - [x] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
-- [ ] 段階2(本家Issue提起)・段階3(hasHomedの3値化等)は今回のスコープに含めない
+- [x] 段階2(本家Issue提起): https://github.com/Sienci-Labs/gsender/issues/965 (2026-10-03投稿。機能追加を要求せず方針相談のトーン。事前にPR#953/954/955のマージ状況・既存Issue・upstream/dev直近動向を確認済み、衝突や重複なし)
+- [ ] 段階3(hasHomedの3値化等)は今回のスコープに含めない
