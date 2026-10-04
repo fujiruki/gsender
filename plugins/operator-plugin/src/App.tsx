@@ -2,6 +2,8 @@ import { machine, storage } from '@sienci/gsender-plugin-sdk';
 import { useTypedSelector } from '@sienci/gsender-plugin-sdk/react';
 import { useState } from 'react';
 
+import AdminControls from './admin/AdminControls';
+import { AdminRoleProvider } from './admin/AdminRoleContext';
 import ChecklistPanel from './checklist/ChecklistPanel';
 import OriginPanel from './origin/OriginPanel';
 import ProbePanel from './probe/ProbePanel';
@@ -69,11 +71,12 @@ const App = () => {
     };
 
     return (
+        <AdminRoleProvider>
         <main className="mx-auto flex max-w-xl flex-col gap-6">
             <header>
                 <h1 className="text-xl font-semibold">Operator Plugin</h1>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                    T6: safety checklist.
+                    T7: routine mode.
                 </p>
             </header>
 
@@ -86,6 +89,8 @@ const App = () => {
                     {workflow.reason}
                 </p>
             </section>
+
+            <AdminControls />
 
             <StartupPanel />
 
@@ -196,6 +201,7 @@ const App = () => {
                 )}
             </section>
         </main>
+        </AdminRoleProvider>
     );
 };
 

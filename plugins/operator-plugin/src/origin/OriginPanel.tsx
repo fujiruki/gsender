@@ -1,6 +1,7 @@
 import { machine } from '@sienci/gsender-plugin-sdk';
 import { useEffect, useState } from 'react';
 
+import { useAdminRole } from '../admin/AdminRoleContext';
 import { useConfirmDialog } from '../components/useConfirmDialog';
 import { canRestoreOrigin } from './canRestoreOrigin';
 import {
@@ -36,14 +37,14 @@ const formatResult = (result: RestoreResult): string => {
 };
 
 /**
- * T3: origin slot restore/save UI. Role enforcement (Admin-only "save
- * current position") is T7 scope — the control is simply labelled as such
- * for now.
+ * T3: origin slot restore/save UI. "Save current position" is Admin-only
+ * (T7's role enforcement, wired up here).
  */
 const OriginPanel = () => {
     const guard = useRestoreGuardState();
     const guardResult = canRestoreOrigin(guard);
     const { requestConfirm, dialog } = useConfirmDialog();
+    const { role } = useAdminRole();
 
     const [slots, setSlots] = useState<OriginSlot[]>([]);
     const [zSlots, setZSlots] = useState<ZOriginSlot[]>([]);
@@ -159,32 +160,39 @@ const OriginPanel = () => {
                 ))}
             </ul>
 
-            <div className="mt-4 flex items-end gap-2 border-t border-gray-200 pt-3 text-sm dark:border-gray-800">
-                <label className="flex flex-col gap-1">
-                    <span>New slot name (admin)</span>
-                    <input
-                        type="text"
-                        value={newSlotName}
-                        onChange={(event) =>
-                            setNewSlotName(event.target.value)
+            {role === 'ADMIN' ? (
+                <div className="mt-4 flex items-end gap-2 border-t border-gray-200 pt-3 text-sm dark:border-gray-800">
+                    <label className="flex flex-col gap-1">
+                        <span>New slot name (admin)</span>
+                        <input
+                            type="text"
+                            value={newSlotName}
+                            onChange={(event) =>
+                                setNewSlotName(event.target.value)
+                            }
+                            placeholder="e.g. Jig B front-left"
+                            className="rounded-md border border-gray-300 px-2 py-1.5 dark:border-gray-700 dark:bg-gray-800"
+                        />
+                    </label>
+                    <button
+                        type="button"
+                        onClick={handleSaveCurrentPosition}
+                        disabled={
+                            !guardResult.allowed ||
+                            savingSlot ||
+                            !newSlotName.trim()
                         }
-                        placeholder="e.g. Jig B front-left"
-                        className="rounded-md border border-gray-300 px-2 py-1.5 dark:border-gray-700 dark:bg-gray-800"
-                    />
-                </label>
-                <button
-                    type="button"
-                    onClick={handleSaveCurrentPosition}
-                    disabled={
-                        !guardResult.allowed ||
-                        savingSlot ||
-                        !newSlotName.trim()
-                    }
-                    className="rounded-md border border-gray-300 px-3 py-1.5 disabled:opacity-50 dark:border-gray-700"
-                >
-                    {savingSlot ? 'Saving…' : 'Save current position'}
-                </button>
-            </div>
+                        className="rounded-md border border-gray-300 px-3 py-1.5 disabled:opacity-50 dark:border-gray-700"
+                    >
+                        {savingSlot ? 'Saving…' : 'Save current position'}
+                    </button>
+                </div>
+            ) : (
+                <p className="mt-4 border-t border-gray-200 pt-3 text-sm text-gray-500 dark:border-gray-800 dark:text-gray-400">
+                    Switch to Admin mode to save the current position as a
+                    new slot.
+                </p>
+            )}
 
             {zSlots.map((slot) => (
                 <div
