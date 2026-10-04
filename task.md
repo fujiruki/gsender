@@ -577,9 +577,38 @@ export function confirmUnlockAfterHomingFailure(code, onUnlock) {
 - Zのみスロット(「NC底面Z0」)復元後は`deriveWorkflowState`のORIGIN_SET判定(X/Y/Z全軸一致)にかからず`HOMED_UNVERIFIED`のままになる。発注者確認の結果、現状のままでよいとの判断(T8実機試験で実際の運用パターンを見てから、マッチャー拡張の要否を判断する)
 
 ### 要修正: 「現在のG54を新スロットとして保存」の実装
-`G10 L20 P1 X0 Y0 Z0`を実際に送信してから`$#`で値を読み取る実装になっているが、これは不要かつ危険と判断。「現在のG54を保存」は`machine.query('$#')`でアクティブなG54の値を読んで記録するだけでよく、`G10 L20`コマンドを実機に送信する必要はない(数学的には同じ値になるはずでも、実機のWCS設定を実際に書き換えてしまう操作をわざわざ行うべきではない)。`machine.command('gcode', [...])`でのG10 L20送信を削除し、`$#`の読み取りのみで実装し直すこと。T3タスク定義(本ファイル)の「`G10 L20`で現在位置基準に保存」という記載自体が誤解を招く書き方だったため、指示を訂正する。
-- [ ] `restoreOrigin.ts`または該当モジュールから`G10 L20`送信処理を削除し、`$#`読み取りのみに修正
-- [ ] 関連テストを修正(G10 L20送信を検証していたテストがあれば、`$#`読み取りのみの検証に変更)
-- [ ] `npm run test:app` / `npm run build`で再確認
+- [x] `G10 L20`の実機への送信処理を削除し、`$#`読み取りのみに修正 → `saveCurrentPosition.ts`から送信処理削除、依存を`Pick<RestoreDeps, 'query'>`に縮小
+- [x] 関連テストを修正 → `query('$#')`が1回だけ呼ばれG-code送信が一切ないことを検証する形に修正
+- [x] `npm run test:app` / `npm run build`で再確認 → 新規失敗なし
+- [x] `integration/dev-ja`にコミット・push → コミット`5b9c6306e`
+- [x] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新(指揮AI側で実施)
+
+---
+
+## Agent-Operator Plugin T4: 既存CNCjsプローブの移植(Z/XY/XYZ)
+
+> 対応spec: `docs/spec/07_OperatorPlugin.md`の「プローブ(XYZ一括/XYのみ/Zのみ)」節(必読)。移植元は`docs/spec/reference/cncjs-probe-macros-source.md`のマクロ1・2・4(gSender本体の`Probing.ts`は参考資料のみ、正本にしない)。`integration/dev-ja`ブランチ限定
+
+### 前提(必読)
+- gSenderのマクロ処理エンジン(feeder)は`Math`等の関数をcontext変数に含まないため、CNCjsマクロの`Math.abs(...)`等はそのまま動かない。**全数値をPlugin(TypeScript)側で決定論的に計算し、数値リテラルだけのG-code行を`machine.command('gcode', lines)`で送ること**(`%`行・`[式]`を含むマクロをそのまま送信してはいけない)
+- 実機ファームウェアはGrbl 1.1固定。grblHAL分岐は不要
+- **G92は一切生成しない**(T3のG92方針と同じ)
+- **Grbl 1.1固有の注意**: `G91`(相対座標)モード中の`G53`は増分として扱われるため、`G53`移動は必ず`G90`に切り替えてから発行し、直後に`G91`へ戻すこと
+
+### タスク
+- [ ] `git worktree`(同じ`.claude/worktrees/agent-af3adeb91b76d108d`)で作業。開始前に`git pull --ff-only`
+- [ ] TDDで進める
+- [ ] **ゴールデンテストを先に書く**: マクロ1(「XYZ Probe右奥 軸径必要！」φ3.20)・マクロ2(「XYZプローブ左奥 軸径必要！」φ3.16)の定数を入力したとき、G92関連行(開始の`G92 X0 Y0 Z0`と、それに依存していた絶対移動2箇所)以外は元マクロと行単位で一致することを検証するテストを用意
+- [ ] **XYZ一括プローブ生成関数**を実装。spec/07の「XYZ一括プローブ(マクロ1・2のG92排除版)」セクションのG-code構造をそのまま使う。入力パラメータ: エンドミル径(プリセットφ3.20/φ3.16、または数値入力)、治具バリアント(`right-rear`: keepoutX=-13 / `left-rear`: keepoutX=+13、keepoutY=-13共通)、プレート厚(Z=5.01/Y=10.03/X=10.00、デフォルト値・変更可)、送り(A=70/B=30)、退避10、XY開始距離20
+  - G92が担っていた絶対移動2箇所は`G53`(機械座標系、`H`=開始時MPos基準)に置換。`G90`→`G53 G0 ...`→`G91`の順を厳守
+  - `G10 L20`は常に明示`P1`
+- [ ] **XYのみプローブ生成関数**を実装。XYZ版と`includeZ: boolean`フラグで共有すること。Z方向の接触・退避区間を**丸ごと行わない**。開始時の先端深さをそのまま側面探査の深さとして使う(Z下降量は`-10`、XYZ版の`-13`とは異なる)
+  - 送信前ガード: `mpos.z + 10 ≤ 0`(Z上限超過なし)、`activeState==='Idle'`、G92=0
+- [ ] **Zのみプローブ生成関数**を実装(マクロ4の移植)。`G10 L20 P0`→`P1`に変更、先頭に`G21 G54`、末尾`G90`を維持
+- [ ] PRBパーサ(T1で登録済みの正規表現)を使い、完了判定を実装: 接触回数のカウント+`activeState==='Idle'`復帰+モーダル(`G90`)復帰の確認
+- [ ] プローブ実行中は`machine.setBusy(true, 'Probing')`を呼ぶこと
+- [ ] 失敗時(ALARM:4/5)の案内文言と、`unlock`コマンドでの回復導線を実装
+- [ ] プローブ完了後、結果(接触位置から計算した原点候補値)をT3の原点スロットとして保存するか提案するUIを追加(「プローブ結果を新スロットとして保存しますか?」程度の簡単な導線でよい)
+- [ ] `npm run test:app` / `npm run build`で確認
 - [ ] `integration/dev-ja`にコミット・push
 - [ ] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
