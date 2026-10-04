@@ -3,6 +3,7 @@ import { useTypedSelector } from '@sienci/gsender-plugin-sdk/react';
 import { useState } from 'react';
 
 import OriginPanel from './origin/OriginPanel';
+import ProbePanel from './probe/ProbePanel';
 import { useWorkflowState } from './workflow/useWorkflowState';
 
 type RootState = {
@@ -70,7 +71,7 @@ const App = () => {
             <header>
                 <h1 className="text-xl font-semibold">Operator Plugin</h1>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                    T3: origin save/restore.
+                    T4: probe migration (Z/XY/XYZ).
                 </p>
             </header>
 
@@ -85,6 +86,8 @@ const App = () => {
             </section>
 
             <OriginPanel />
+
+            <ProbePanel />
 
             <section className="rounded-md border border-gray-300 p-4 dark:border-gray-700">
                 <h2 className="mb-2 font-medium">Connection</h2>
