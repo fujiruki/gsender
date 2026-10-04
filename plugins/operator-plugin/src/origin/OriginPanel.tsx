@@ -113,7 +113,6 @@ const OriginPanel = () => {
         try {
             const slot = await saveCurrentPositionAsOriginSlot(name, {
                 query: (cmd) => machine.query(cmd),
-                sendGcode: (lines) => machine.command('gcode', lines),
             });
             await saveOriginSlot(slot);
             setSlots(await listOriginSlots());

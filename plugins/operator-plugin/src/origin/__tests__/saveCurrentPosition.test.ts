@@ -7,9 +7,8 @@ describe('saveCurrentPositionAsOriginSlot', () => {
     const okResponse = (...lines: string[]) =>
         Promise.resolve({ lines: [...lines, 'ok'] });
 
-    it('zeroes the current position into G54, then reads back the resulting absolute offset', async () => {
-        const deps: Pick<RestoreDeps, 'query' | 'sendGcode'> = {
-            sendGcode: vi.fn().mockResolvedValue(undefined),
+    it('reads the currently-active G54 via $# and does not send any gcode', async () => {
+        const deps: Pick<RestoreDeps, 'query'> = {
             query: vi
                 .fn()
                 .mockResolvedValueOnce(
@@ -22,10 +21,8 @@ describe('saveCurrentPositionAsOriginSlot', () => {
             deps,
         );
 
-        expect(deps.sendGcode).toHaveBeenCalledWith([
-            'G10 L20 P1 X0 Y0 Z0',
-            '$#',
-        ]);
+        expect(deps.query).toHaveBeenCalledWith('$#');
+        expect(deps.query).toHaveBeenCalledTimes(1);
         expect(slot).toEqual({
             id: expect.any(String),
             name: 'Jig B front-left',
@@ -36,8 +33,7 @@ describe('saveCurrentPositionAsOriginSlot', () => {
     });
 
     it('throws rather than saving a bogus slot when the $# response has no G54 line', async () => {
-        const deps: Pick<RestoreDeps, 'query' | 'sendGcode'> = {
-            sendGcode: vi.fn().mockResolvedValue(undefined),
+        const deps: Pick<RestoreDeps, 'query'> = {
             query: vi.fn().mockResolvedValueOnce(okResponse()),
         };
 

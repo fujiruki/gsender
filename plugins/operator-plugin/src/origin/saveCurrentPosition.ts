@@ -8,27 +8,26 @@ const generateSlotId = (): string =>
 
 /**
  * Admin-only convenience: jog to a known physical reference point, then call
- * this to bookmark it as a reusable, position-independent slot.
+ * this to bookmark the machine's currently-active G54 as a reusable,
+ * position-independent slot.
  *
- * `G10 L20 P1 X0 Y0 Z0` makes the CURRENT machine position read as (0,0,0) in
- * G54 (`WCS = MPos − target`, so target=0 means WCS = MPos exactly). Reading
- * G54 back immediately after therefore gives the absolute machine-coordinate
- * value to persist — the same kind of constant macro 3/5 hard-code, just
- * captured instead of hand-measured.
+ * Reads the active G54 via `$#` only — it never sends any G-code. The
+ * active G54 is already the absolute machine-coordinate value we want to
+ * persist, so there is nothing to compute or redefine; issuing a command
+ * (e.g. `G10 L20`) here would needlessly rewrite the machine's live WCS
+ * setting just to read a value that was already available.
  *
  * Role enforcement (Admin vs Operator) is T7 scope; this function does not
  * itself check a role.
  */
 export const saveCurrentPositionAsOriginSlot = async (
     name: string,
-    deps: Pick<RestoreDeps, 'query' | 'sendGcode'>,
+    deps: Pick<RestoreDeps, 'query'>,
 ): Promise<OriginSlot> => {
-    await deps.sendGcode(['G10 L20 P1 X0 Y0 Z0', '$#']);
-
     const response = await deps.query('$#');
     const { G54 } = parseParameterLines(response.lines);
     if (!G54) {
-        throw new Error('No G54 line in the $# response after G10 L20.');
+        throw new Error('No G54 line in the $# response.');
     }
 
     return {
