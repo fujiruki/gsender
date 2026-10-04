@@ -621,17 +621,44 @@ export function confirmUnlockAfterHomingFailure(code, onUnlock) {
 CNCjsマクロ3「ホーミング＋いつもの左前XY0に設定する」(`$H` → `G10 L2 ...`)の`$H`部分をWorkflow側に分離した2段構成。「接続確認→安全確認(可動域確認ダイアログ)→ホーミング→加工原点復元(T3)→READY」という一連の手順を1つの画面で案内する。
 
 ### タスク
+- [x] `git worktree`(同じ`.claude/worktrees/agent-af3adeb91b76d108d`)で作業。開始前に`git pull --ff-only`
+- [x] TDDで進める → 新規11テスト、T2-T4の75件と合わせてplugin内合計85件全PASS
+- [x] 接続状態の表示(未接続時は本体側での接続を促す案内のみ、Pluginから接続操作はしない)
+- [x] 安全確認ダイアログ(簡易1項目確認、T3のG92確認ダイアログと同じ`useConfirmDialog`基盤を再利用)。承認後のみホーミングへ進む
+- [x] ホーミング実行(`machine.command('homing')`)
+- [x] `homing:has-homed`+`activeState==='Idle'`復帰待ち。60秒タイムアウトでALARM扱い
+- [x] ホーミング完了後、T3の`restoreOrigin`を**そのまま呼び出す**(再実装せず合成)。スロットはプルダウンで選択可能(固定ではなく一覧から選択、デフォルトは一覧先頭)。ガード状態はホーミング完了**後**に読み取る設計(事前固定するとrestoreOriginが常にBLOCKEDになるため、テストで明示検証済み)
+- [x] `deriveWorkflowState`の進行(ORIGIN_SET→READY等)をUIに表示
+- [x] 1画面にまとめたWorkflow UI(Connect/Safety check/Homing/Restore origin/Readyの5段階ステッパー)
+- [x] `npm run test:app` / `npm run build`で確認 → 新規失敗なし
+- [x] `integration/dev-ja`にコミット・push → コミット`2cef6e107`
+- [x] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新(指揮AI側で実施)
+
+---
+
+## Agent-Operator Plugin T6: 安全チェックリスト
+
+> 対応spec: `docs/spec/07_OperatorPlugin.md`の状態遷移図(`READY → [安全チェックリスト全項目✓] → PRECHECK_OK → [実行] → RUNNING ⇄ PAUSED → JOB_DONE`)。`integration/dev-ja`ブランチ限定
+
+### チェックリスト項目(発注者ヒアリング原文、2026-10-03)
+1. 刃物交換が正しく行われているか
+2. 集塵機が動いているか
+3. 移動範囲に金属製の固定具等の干渉物がないか
+4. ワークが固定されているか
+5. 固定具の締め具合は確認したか
+6. 一時停止・緊急停止ボタンがすぐ押せる体制か
+
+### タスク
 - [ ] `git worktree`(同じ`.claude/worktrees/agent-af3adeb91b76d108d`)で作業。開始前に`git pull --ff-only`
 - [ ] TDDで進める
-- [ ] 接続状態の表示(T1/T2で既に購読している`connection.isConnected`を利用。未接続時は本体側での接続操作を促す案内のみ、Pluginから接続操作はしない)
-- [ ] 安全確認ダイアログ: ホーミング実行前に「周囲に障害物がないか」等の確認を人間に求める(本格的なチェックリスト機構はT6だが、ここでは簡易な1項目確認でよい)。承認後のみホーミングへ進む
-- [ ] ホーミング実行: `machine.command('homing')`を送信
-- [ ] `homing:has-homed`イベント(または`hasHomed`状態の変化)を監視し、`activeState==='Idle'`への復帰も合わせて待つ。**60秒タイムアウト**でALARM扱いとし、エラー文言を表示する
-- [ ] ホーミング完了後、T3の`restoreOrigin`を呼び出す(どのスロットを復元するか選ばせる。デフォルトは「いつもの左前XY0」)
-- [ ] `deriveWorkflowState`が`ORIGIN_SET`→`READY`(ファイルロード済みの場合)まで進んだことをUIに表示
-- [ ] 一連の手順(接続確認→安全確認→ホーミング→復元→READY)を1つの画面にまとめたWorkflow UIを作成。各ステップの進行状況が視覚的にわかるようにする(ステッパー等、過度に凝ったものは不要)
+- [ ] 上記6項目のチェックリストUIを実装。各項目にチェックボックス+説明文+画像表示エリア。**実際のイラスト素材はまだ用意されていないため、今回はプレースホルダー(シンプルなアイコン等)で実装し、画像を後から差し替えやすい構造(項目ごとに画像パスを設定できる等)にしておくこと**。画像の実素材作成は別タスク・別相談とする
+- [ ] 全6項目がチェック済みでないと実行ボタンを有効化しない(`deriveWorkflowState`に`PRECHECK_OK`状態を追加するか、`READY`状態での追加フラグとして扱うか、T2の設計(`deriveWorkflowState`は実機状態のみから導出する純関数)との整合性を考慮して設計すること。チェック結果自体は実機から導出できない情報なので、Plugin内のローカル状態として扱うのが筋。T2のステートマシンを拡張する場合は、既存テストへの影響を確認すること)
+- [ ] **Plugin再読込後は常にチェックを再要求する**(安全側デフォルト。T2のステートマシンと同じく、チェック済みという状態をstorageから復元してはいけない)
+- [ ] チェック履歴(いつチェックしたか)はstorageに記録してよい(安全性には使わない、監査ログ用途)
+- [ ] 実行ボタン押下で`machine.command('gcode:start')`を送信してジョブを開始する
+- [ ] `machine.addListener('workflow:state', ...)`で`idle`/`running`/`paused`の変化を購読し、RUNNING⇄PAUSED⇄JOB_DONE(`idle`に戻ったら完了)の状態をUIに反映
+- [ ] PAUSED中は一時停止/再開ボタンを表示(`machine.command('gcode:pause')`/`machine.command('gcode:resume')`)
 - [ ] `npm run test:app` / `npm run build`で確認
 - [ ] `integration/dev-ja`にコミット・push
 - [ ] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
-- [ ] `integration/dev-ja`にコミット・push
 - [ ] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
