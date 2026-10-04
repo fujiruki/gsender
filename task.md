@@ -649,16 +649,37 @@ CNCjsマクロ3「ホーミング＋いつもの左前XY0に設定する」(`$H`
 6. 一時停止・緊急停止ボタンがすぐ押せる体制か
 
 ### タスク
+- [x] `git worktree`(同じ`.claude/worktrees/agent-af3adeb91b76d108d`)で作業。開始前に`git pull --ff-only`
+- [x] TDDで進める → 新規12テスト、T2-T5の85件と合わせてplugin内合計97件全PASS
+- [x] 6項目のチェックリストUI実装(チェックボックス+説明文+画像プレースホルダー、`imageSrc`未設定時は点線枠表示、差し替えやすい構造)
+- [x] 全6項目チェック済みでないと実行ボタンを有効化しない → T2の`deriveWorkflowState`は変更せず、独立した純関数`canExecuteJob(workflowState, checklistComplete)`で「READY(実機由来)」と「チェック完了(操作者確認)」のANDとして判定。T2の既存24テストは無改修・無影響
+- [x] Plugin再読込後は常にチェックを再要求する → チェック状態は`useState`のみで管理、storageに一切保存しない
+- [x] チェック履歴はstorageに記録(安全判定には使わない、監査ログ用途)
+- [x] 実行ボタン押下で`machine.command('gcode:start')`を送信
+- [x] `workflow:state`購読でRUNNING⇄PAUSED⇄JOB_DONEを反映 → `idle`単体では「未実行」と「ちょうど完了」を区別できないため、セッションローカルな`wasRunningOrPaused`フラグと組み合わせた`deriveJobPhase`で解決
+- [x] PAUSED中の一時停止/再開ボタン実装
+- [x] `npm run test:app` / `npm run build`で確認 → 新規失敗なし
+- [x] `integration/dev-ja`にコミット・push → コミット`344f2c203`
+- [x] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新(指揮AI側で実施)
+
+---
+
+## Agent-Operator Plugin T7: Routine Mode
+
+> 対応spec: `docs/spec/07_OperatorPlugin.md`の「UIロック(ルーチンモード中の誤操作防止)の扱い」節・状態遷移図(`JOB_DONE → mode=ROUTINE → ROUTINE_SWAP → PRECHECK_OK`)。`integration/dev-ja`ブランチ限定
+
+### 今回のスコープに含めないもの(重要)
+**本体(gSender)のナビゲーション・接続操作・ゲームパッドのロックはこのタスクでは実装しない。** 現状のPlugin SDKでは実現できないと判明済みで(T1調査済み)、「パートさん向け正式Operator Modeの完成条件」として本家への機能提案(`ui:lock:set`案)が必要という位置づけのまま、T9で検討する。今回はPlugin内でできる範囲(mode管理・短縮チェックリスト・離脱の意図的操作要求)のみ実装する。
+
+### タスク
 - [ ] `git worktree`(同じ`.claude/worktrees/agent-af3adeb91b76d108d`)で作業。開始前に`git pull --ff-only`
 - [ ] TDDで進める
-- [ ] 上記6項目のチェックリストUIを実装。各項目にチェックボックス+説明文+画像表示エリア。**実際のイラスト素材はまだ用意されていないため、今回はプレースホルダー(シンプルなアイコン等)で実装し、画像を後から差し替えやすい構造(項目ごとに画像パスを設定できる等)にしておくこと**。画像の実素材作成は別タスク・別相談とする
-- [ ] 全6項目がチェック済みでないと実行ボタンを有効化しない(`deriveWorkflowState`に`PRECHECK_OK`状態を追加するか、`READY`状態での追加フラグとして扱うか、T2の設計(`deriveWorkflowState`は実機状態のみから導出する純関数)との整合性を考慮して設計すること。チェック結果自体は実機から導出できない情報なので、Plugin内のローカル状態として扱うのが筋。T2のステートマシンを拡張する場合は、既存テストへの影響を確認すること)
-- [ ] **Plugin再読込後は常にチェックを再要求する**(安全側デフォルト。T2のステートマシンと同じく、チェック済みという状態をstorageから復元してはいけない)
-- [ ] チェック履歴(いつチェックしたか)はstorageに記録してよい(安全性には使わない、監査ログ用途)
-- [ ] 実行ボタン押下で`machine.command('gcode:start')`を送信してジョブを開始する
-- [ ] `machine.addListener('workflow:state', ...)`で`idle`/`running`/`paused`の変化を購読し、RUNNING⇄PAUSED⇄JOB_DONE(`idle`に戻ったら完了)の状態をUIに反映
-- [ ] PAUSED中は一時停止/再開ボタンを表示(`machine.command('gcode:pause')`/`machine.command('gcode:resume')`)
+- [ ] `mode`(NORMAL/ROUTINE)フラグをstorageに永続化。READY状態から「ルーチンモード開始」操作でROUTINEに切り替え、その時点でロード中のファイル名を記録する
+- [ ] `routine.active`の自動解除: 現在ロード中のファイル名が記録したファイル名と一致しない場合、自動的にROUTINEモードを解除する(ファイル差し替え時の事故防止)
+- [ ] JOB_DONE後、mode=ROUTINEの場合は「短縮チェックリスト(材料交換用)」を表示してからPRECHECK_OKへ進む設計にする。**短縮版の項目選定はあなたの判断で候補を提案し、確定前に報告してください**(安全に関わる判断のため、発注者確認を挟みます。T6の6項目から、材料交換のたびに確認すべきもの/省略してよいものを整理した案を示してください)
+- [ ] ROUTINEモードからの離脱は「長押し+確認」で実装(長押しUIコンポーネントが無ければ、既存ライブラリかシンプルな自前実装で可)
+- [ ] 管理者PIN(任意設定、デフォルト未設定): WebCryptoの`SHA-256`でハッシュ化してstorageに保存。PIN未設定ならAdmin Modeトグルは自由、設定済みならPIN入力を要求。ROUTINE離脱時、PIN設定済みならPIN入力も要求する
+- [ ] `role`(OPERATOR/ADMIN)はセッション限定(storageに保存せず、Plugin再読込で常にOPERATORに戻る)
 - [ ] `npm run test:app` / `npm run build`で確認
 - [ ] `integration/dev-ja`にコミット・push
-- [ ] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
 - [ ] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
