@@ -680,19 +680,20 @@ CNCjsマクロ3「ホーミング＋いつもの左前XY0に設定する」(`$H`
 (刃物交換・集塵機・干渉物・非常停止の4項目は、同一ジョブの繰り返しでは状態が変わらないため省略)
 
 ### タスク
-- [ ] `git worktree`(同じ`.claude/worktrees/agent-af3adeb91b76d108d`)で作業。開始前に`git pull --ff-only`
-- [ ] TDDで進める
-- [ ] `mode`(NORMAL/ROUTINE)フラグをstorageに永続化。READY状態から「ルーチンモード開始」操作でROUTINEに切り替え、その時点でロード中のファイル名を記録する
-- [ ] `routine.active`の自動解除: 現在ロード中のファイル名が記録したファイル名と一致しない場合、自動的にROUTINEモードを解除する(ファイル差し替え時の事故防止)
-- [ ] **サイクルカウンター**: ルーチンモード中に何サイクル実行したかをstorageに記録する。JOB_DONE→ROUTINE_SWAP(短縮チェックリスト)→次サイクル開始のたびにインクリメント。UIに現在のサイクル数を表示する
-- [ ] JOB_DONE後、mode=ROUTINEの場合は上記確定2項目の短縮チェックリストを表示してからPRECHECK_OKへ進む
-- [ ] **非常停止(ALARM/ERROR)からの復旧**: ルーチンモードの進行状況(mode=ROUTINE、サイクル数、対象ファイル名)はstorageに保持されているため、既存のステートマシン経路(`ALARM/ERROR → [確認] → unlock/reset → CONNECTED_UNHOMED`、T5のホーミング・原点復元フローへ戻る)をそのまま通ればルーチンへ自然に復帰できる設計のはず。ALARM発生時は「ルーチンモード中に停止しました(Nサイクル目)。安全確認・復旧後、ルーチンを継続します」という案内をUIに表示すること。T2の`deriveWorkflowState`やT5のホーミングフローに手を入れる必要が本当にないか確認しながら実装し、もし追加のつなぎ込みが必要なら報告すること
-- [ ] ROUTINEモードからの離脱は「長押し+確認」で実装(長押しUIコンポーネントが無ければ、既存ライブラリかシンプルな自前実装で可)
-- [ ] 管理者PIN(任意設定、デフォルト未設定): WebCryptoの`SHA-256`でハッシュ化してstorageに保存。PIN未設定ならAdmin Modeトグルは自由、設定済みならPIN入力を要求。ROUTINE離脱時、PIN設定済みならPIN入力も要求する
-- [ ] `role`(OPERATOR/ADMIN)はセッション限定(storageに保存せず、Plugin再読込で常にOPERATORに戻る)
-- [ ] `npm run test:app` / `npm run build`で確認
-- [ ] `integration/dev-ja`にコミット・push
-- [ ] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
+- [x] `git worktree`(同じ`.claude/worktrees/agent-af3adeb91b76d108d`)で作業。開始前に`git pull --ff-only`
+- [x] TDDで進める → 新規18テスト、T2-T6の97件と合わせてplugin内合計117件全PASS
+- [x] `mode`(NORMAL/ROUTINE)フラグをstorageに永続化、ROUTINE開始時にファイル名記録
+- [x] `routine.active`の自動解除(ファイル名不一致時)
+- [x] サイクルカウンターをstorageに記録・UI表示
+- [x] JOB_DONE後、mode=ROUTINEの場合は確定2項目の短縮チェックリストを表示 → `cycleCount===0`なら常にフルチェック、`>=1`なら短縮版、という単一ルールで実装
+- [x] 非常停止(ALARM/ERROR)からの復旧 → **T2の`deriveWorkflowState`・T5の`runStartupSequence`/`StartupPanel`は一切無改修**。既存のF-05修正(ALARM:6-9で`hasHomed`自動リセット)によりALARM解除後は自然に`CONNECTED_UNHOMED`へ遷移しT5が機能、READY復帰後は`cycleCount`(storage永続化)を読む単一ルールが自然にルーチン継続をカバーするため、ステートマシンへの特別な接続は不要だったとのこと(優れた設計判断、承認)。ALARM中バナー表示を実装
+- [x] ROUTINEモードからの離脱を長押し(1.5秒、進捗バー付き自前実装)+確認ダイアログ+PIN入力(設定時のみ)の3段階で実装
+- [x] 管理者PIN(WebCrypto SHA-256でハッシュ化、storageにはハッシュのみ保存。未設定なら自由/設定済みならPIN要求を、Admin Mode切替とROUTINE離脱の両方で共通利用)
+- [x] `role`はセッション限定(storageに保存せず)
+- [x] 副次対応: T3で未実装だった「現在位置を新スロットとして保存」のAdmin権限ゲートもこのタイミングで解消(`OriginPanel.tsx`修正)
+- [x] `npm run test:app` / `npm run build`で確認 → 新規失敗なし
+- [x] `integration/dev-ja`にコミット・push → コミット`cd7f35727`
+- [x] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新(指揮AI側で実施)
 
 ### 将来タスク(今回は実装しない、記録のみ)
 - 複数プログラム工程対応: ルーチン定義に複数ステップ(ファイル)を持たせる設計
