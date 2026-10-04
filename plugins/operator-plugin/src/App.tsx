@@ -2,6 +2,8 @@ import { machine, storage } from '@sienci/gsender-plugin-sdk';
 import { useTypedSelector } from '@sienci/gsender-plugin-sdk/react';
 import { useState } from 'react';
 
+import { useWorkflowState } from './workflow/useWorkflowState';
+
 type RootState = {
     connection?: {
         isConnected?: boolean;
@@ -16,6 +18,7 @@ const App = () => {
     const isConnected = useTypedSelector<boolean, RootState>(
         (state) => state.connection?.isConnected ?? false,
     );
+    const workflow = useWorkflowState();
 
     const [queryLines, setQueryLines] = useState<string[] | null>(null);
     const [queryError, setQueryError] = useState<string | null>(null);
@@ -66,9 +69,19 @@ const App = () => {
             <header>
                 <h1 className="text-xl font-semibold">Operator Plugin</h1>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                    T1: scaffolding and SDK connectivity check.
+                    T2: workflow state machine skeleton.
                 </p>
             </header>
+
+            <section className="rounded-md border border-gray-300 p-4 dark:border-gray-700">
+                <h2 className="mb-2 font-medium">Workflow state</h2>
+                <p className="font-mono text-lg font-semibold">
+                    {workflow.state}
+                </p>
+                <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    {workflow.reason}
+                </p>
+            </section>
 
             <section className="rounded-md border border-gray-300 p-4 dark:border-gray-700">
                 <h2 className="mb-2 font-medium">Connection</h2>
