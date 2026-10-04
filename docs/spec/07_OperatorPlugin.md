@@ -193,6 +193,13 @@ ALARM/ERROR(全状態から遷移) → [確認] → unlock/reset → CONNECTED_U
 ```
 `mode`(NORMAL/ROUTINE)と`role`(OPERATOR/ADMIN)は直交フラグ。ROUTINE離脱は長押し+確認(管理者PIN設定時はPIN要求)。
 
+### T7確定仕様(発注者確認、2026-10-04)
+
+- **短縮チェックリスト(ROUTINE_SWAP)は2項目**: 「ワークが固定されているか」「固定具の締め具合は確認したか」。刃物交換・集塵機・干渉物・非常停止の4項目は、同一ジョブの繰り返しでは状態が変わらない(ルーチン開始時のフルチェックで確認済み)という理由で省略
+- **サイクルカウンター**: ルーチンモード中に何サイクル実行したかをstorageに記録する。ALARM/ERROR発生時もこの値は保持される
+- **非常停止(ALARM/ERROR)からの復旧**: ルーチンモードの進行状況(mode=ROUTINE、サイクル数、対象ファイル名)を保持したまま、既存のステートマシン経路(`ALARM/ERROR → [確認] → unlock/reset → CONNECTED_UNHOMED`)をそのまま通り、通常のホーミング・原点復元(T5)を経てルーチンへ復帰する設計にする。ALARM発生時はルーチンモード中であることと現在のサイクル数をUIに案内すること
+- **複数プログラム工程(プログラムA実行→人間が配置変更→プログラムB実行→1個完成、というサイクル)は今回のT7スコープ外**。発注者が「特殊なケースなので後回し」と明言(2026-10-04)。将来対応する場合、ルーチン定義に複数ステップ(ファイル)を持たせる設計と、非常停止復旧時に「どのステップから再開するか」を人間に選ばせるUIが必要になる
+
 ## 実装の置き場所
 
 `integration/dev-ja`ブランチの`plugins/operator-plugin/`に新規Pluginとして作る。`react-ts-app`サンプルをテンプレに、Tailwindは`basic-cam`サンプルを参考にする。manifest `id`は`com.fujiruki.operator`。capabilities: `machine:get:context, machine:command, machine:query, machine:busy:set, redux:get:state, storage:*`、topics `redux, controller, parser`、PRBパーサ。
