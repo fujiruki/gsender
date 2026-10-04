@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import OriginPanel from './origin/OriginPanel';
 import ProbePanel from './probe/ProbePanel';
+import StartupPanel from './startup/StartupPanel';
 import { useWorkflowState } from './workflow/useWorkflowState';
 
 type RootState = {
@@ -71,7 +72,7 @@ const App = () => {
             <header>
                 <h1 className="text-xl font-semibold">Operator Plugin</h1>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                    T4: probe migration (Z/XY/XYZ).
+                    T5: morning startup workflow.
                 </p>
             </header>
 
@@ -84,6 +85,8 @@ const App = () => {
                     {workflow.reason}
                 </p>
             </section>
+
+            <StartupPanel />
 
             <OriginPanel />
 
