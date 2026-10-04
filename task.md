@@ -412,6 +412,7 @@
 
 - **jest設定の`.claude/worktrees`除外漏れ**: `jest.config.js`の`testPathIgnorePatterns`が`.claude/worktrees`配下を除外しておらず、並行worktree作業中に他Agentの作業ファイルをjestが誤って巻き込み`npm run test:app`が不安定になることがある(F-07 Agent報告、2026-09-17)。次にworktreeを使うAgentタスクの際にでも合わせて修正する
 - **ゾンビ化したworktree(`agent-aa3c45ae337d7315f`, `contrib/homing-safety-fix`用)**: 過去の「Codex-F-05 本家contrib準備」タスクの残骸とみられ、`claude.exe`(PID 20768、このセッションのteammateには存在しない孤立プロセス)にロックされたまま`49395374d`で停止している(2026-09-18確認)。発注者判断で当面放置。次にこのworktreeを使う/触る際は、originが`ea1128c50`まで進んでいることを踏まえ`git pull --ff-only`してから作業すること
+- **`GcodeStepper.test.tsx`のフレーキーな失敗**: Operator Plugin T4完了確認時、`npm run test:app`の1回目実行でこのテストが失敗したが再実行で解消(2026-10-04 T4 Agent報告)。タイミング依存のモック検証が原因と推測され、T4の変更ファイルとは無関係。頻発するようなら原因調査する
 
 ---
 
@@ -596,19 +597,41 @@ export function confirmUnlockAfterHomingFailure(code, onUnlock) {
 - **Grbl 1.1固有の注意**: `G91`(相対座標)モード中の`G53`は増分として扱われるため、`G53`移動は必ず`G90`に切り替えてから発行し、直後に`G91`へ戻すこと
 
 ### タスク
+- [x] `git worktree`(同じ`.claude/worktrees/agent-af3adeb91b76d108d`)で作業。開始前に`git pull --ff-only`
+- [x] TDDで進める → 新規28テスト、T2/T3の55件と合わせてplugin内合計75件全PASS
+- [x] ゴールデンテストを先に書く → マクロ1・2それぞれでG92関連行(開始`G92 X0 Y0 Z0`+絶対移動1箇所)を`G53`置換に差し替えた上で、それ以外の全行の計算値が元マクロの`%VAR`算術と一致することを検証(行の生テキスト一致ではなくspec/07の整理済み構造準拠+計算値一致という解釈。元マクロがcncjs固有記法を含むため妥当と判断)
+- [x] XYZ一括プローブ生成関数を実装 → G92依存の絶対移動を`G90/G53 G0 X[H.x+keepoutX] Y[H.y-20·dirY]/G91`に置換、`G10 L20`は常時`P1`
+- [x] XYのみプローブ生成関数を実装 → `includeZ`フラグでXYZ版と共有、Z接触ブロックのみ省略、側面探査深さ-10、送信前ガード`mpos.z+10≤0`
+- [x] Zのみプローブ生成関数を実装(マクロ4、P0→P1、先頭`G21 G54`、末尾`G90`)
+- [x] PRBパーサで完了判定実装(接触回数カウント+`activeState==='Idle'`かつ`modal.distance==='G90'`のポーリング待機、250ms間隔・60秒タイムアウト)
+- [x] `machine.setBusy(true,'Probing')`実装
+- [x] 失敗時(ALARM:4/5)案内文言+unlock回復導線実装(`machine.addListener('error', ...)`で検知)
+- [x] プローブ結果を新規原点スロットとして保存する導線追加(T3の`saveOriginSlot`を再利用)
+- [x] `npm run test:app` / `npm run build`で確認 → 新規失敗なし(1回目`GcodeStepper.test.tsx`が失敗したが再実行で解消、フレーキーと判断し残課題メモに記録)
+- [x] `integration/dev-ja`にコミット・push → コミット`65f1367b0`
+- [x] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新(指揮AI側で実施)
+
+---
+
+## Agent-Operator Plugin T5: 朝の起動Workflow
+
+> 対応spec: `docs/spec/07_OperatorPlugin.md`の「加工原点の保存・復元」節の「復元フロー(最終版)」および全体の状態遷移図。T3の`restoreOrigin`をそのまま呼び出す。`integration/dev-ja`ブランチ限定
+
+### 概要
+CNCjsマクロ3「ホーミング＋いつもの左前XY0に設定する」(`$H` → `G10 L2 ...`)の`$H`部分をWorkflow側に分離した2段構成。「接続確認→安全確認(可動域確認ダイアログ)→ホーミング→加工原点復元(T3)→READY」という一連の手順を1つの画面で案内する。
+
+### タスク
 - [ ] `git worktree`(同じ`.claude/worktrees/agent-af3adeb91b76d108d`)で作業。開始前に`git pull --ff-only`
 - [ ] TDDで進める
-- [ ] **ゴールデンテストを先に書く**: マクロ1(「XYZ Probe右奥 軸径必要！」φ3.20)・マクロ2(「XYZプローブ左奥 軸径必要！」φ3.16)の定数を入力したとき、G92関連行(開始の`G92 X0 Y0 Z0`と、それに依存していた絶対移動2箇所)以外は元マクロと行単位で一致することを検証するテストを用意
-- [ ] **XYZ一括プローブ生成関数**を実装。spec/07の「XYZ一括プローブ(マクロ1・2のG92排除版)」セクションのG-code構造をそのまま使う。入力パラメータ: エンドミル径(プリセットφ3.20/φ3.16、または数値入力)、治具バリアント(`right-rear`: keepoutX=-13 / `left-rear`: keepoutX=+13、keepoutY=-13共通)、プレート厚(Z=5.01/Y=10.03/X=10.00、デフォルト値・変更可)、送り(A=70/B=30)、退避10、XY開始距離20
-  - G92が担っていた絶対移動2箇所は`G53`(機械座標系、`H`=開始時MPos基準)に置換。`G90`→`G53 G0 ...`→`G91`の順を厳守
-  - `G10 L20`は常に明示`P1`
-- [ ] **XYのみプローブ生成関数**を実装。XYZ版と`includeZ: boolean`フラグで共有すること。Z方向の接触・退避区間を**丸ごと行わない**。開始時の先端深さをそのまま側面探査の深さとして使う(Z下降量は`-10`、XYZ版の`-13`とは異なる)
-  - 送信前ガード: `mpos.z + 10 ≤ 0`(Z上限超過なし)、`activeState==='Idle'`、G92=0
-- [ ] **Zのみプローブ生成関数**を実装(マクロ4の移植)。`G10 L20 P0`→`P1`に変更、先頭に`G21 G54`、末尾`G90`を維持
-- [ ] PRBパーサ(T1で登録済みの正規表現)を使い、完了判定を実装: 接触回数のカウント+`activeState==='Idle'`復帰+モーダル(`G90`)復帰の確認
-- [ ] プローブ実行中は`machine.setBusy(true, 'Probing')`を呼ぶこと
-- [ ] 失敗時(ALARM:4/5)の案内文言と、`unlock`コマンドでの回復導線を実装
-- [ ] プローブ完了後、結果(接触位置から計算した原点候補値)をT3の原点スロットとして保存するか提案するUIを追加(「プローブ結果を新スロットとして保存しますか?」程度の簡単な導線でよい)
+- [ ] 接続状態の表示(T1/T2で既に購読している`connection.isConnected`を利用。未接続時は本体側での接続操作を促す案内のみ、Pluginから接続操作はしない)
+- [ ] 安全確認ダイアログ: ホーミング実行前に「周囲に障害物がないか」等の確認を人間に求める(本格的なチェックリスト機構はT6だが、ここでは簡易な1項目確認でよい)。承認後のみホーミングへ進む
+- [ ] ホーミング実行: `machine.command('homing')`を送信
+- [ ] `homing:has-homed`イベント(または`hasHomed`状態の変化)を監視し、`activeState==='Idle'`への復帰も合わせて待つ。**60秒タイムアウト**でALARM扱いとし、エラー文言を表示する
+- [ ] ホーミング完了後、T3の`restoreOrigin`を呼び出す(どのスロットを復元するか選ばせる。デフォルトは「いつもの左前XY0」)
+- [ ] `deriveWorkflowState`が`ORIGIN_SET`→`READY`(ファイルロード済みの場合)まで進んだことをUIに表示
+- [ ] 一連の手順(接続確認→安全確認→ホーミング→復元→READY)を1つの画面にまとめたWorkflow UIを作成。各ステップの進行状況が視覚的にわかるようにする(ステッパー等、過度に凝ったものは不要)
 - [ ] `npm run test:app` / `npm run build`で確認
+- [ ] `integration/dev-ja`にコミット・push
+- [ ] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
 - [ ] `integration/dev-ja`にコミット・push
 - [ ] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
