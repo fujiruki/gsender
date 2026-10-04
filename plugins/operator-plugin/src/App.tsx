@@ -2,6 +2,7 @@ import { machine, storage } from '@sienci/gsender-plugin-sdk';
 import { useTypedSelector } from '@sienci/gsender-plugin-sdk/react';
 import { useState } from 'react';
 
+import OriginPanel from './origin/OriginPanel';
 import { useWorkflowState } from './workflow/useWorkflowState';
 
 type RootState = {
@@ -69,7 +70,7 @@ const App = () => {
             <header>
                 <h1 className="text-xl font-semibold">Operator Plugin</h1>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                    T2: workflow state machine skeleton.
+                    T3: origin save/restore.
                 </p>
             </header>
 
@@ -82,6 +83,8 @@ const App = () => {
                     {workflow.reason}
                 </p>
             </section>
+
+            <OriginPanel />
 
             <section className="rounded-md border border-gray-300 p-4 dark:border-gray-700">
                 <h2 className="mb-2 font-medium">Connection</h2>
