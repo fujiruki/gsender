@@ -561,25 +561,25 @@ export function confirmUnlockAfterHomingFailure(code, onUnlock) {
 > 対応spec: `docs/spec/07_OperatorPlugin.md`の「加工原点の保存・復元」節(必読)。T2の`deriveWorkflowState`に乗せる形で実装する。`integration/dev-ja`ブランチ限定
 
 ### タスク
-- [ ] `git worktree`(同じ`.claude/worktrees/agent-af3adeb91b76d108d`)で作業。開始前に`git pull --ff-only`
-- [ ] TDDで進める
-- [ ] 原点スロットのCRUD(storage永続化)を実装。初期データとして`docs/spec/reference/cncjs-probe-macros-source.md`のマクロ3・5の値を投入:
-  - 「いつもの左前XY0」: X=-345.801, Y=-213.302, Z=-57.665(XYZ全軸)
-  - 「NC底面Z0」: Z=-100.118(Zのみ、材料厚み入力つき運用。適用時は`Z=-100.118+材料厚み`で計算)
-- [ ] `$#`応答のパース(G54〜G59, G92, PRB)を実装(T2で未使用だった`$#`レスポンスの本格活用)
-- [ ] G92検出ダイアログ: 原点操作の直前に`$#`でG92を検出し、非ゼロなら「一時オフセット(G92)が残っています。クリアしますか?」ダイアログを表示。**承認後のみ**`G92.1`を送信(無条件実行は禁止)。拒否時は原点操作を中断
-- [ ] 復元フロー(spec/07の擬似コード通り)を実装:
-  ```
-  restoreOrigin(slot):
-    guard: connected && activeState==='Idle' && workflow idle && hasHomed && !pluginBusy
-    res = machine.query('$#')
-    if G92≠0 → G92検出ダイアログ → 承認時のみ ['G92.1','$#'] → 続行 / 拒否なら中断
-    machine.command('gcode', ['G21','G90','G54', `G10 L2 P1 X${x} Y${y} Z${z}`, '$#'])
-    (Zのみスロット: `G10 L2 P1 Z${z + thickness}`)
-    verify = machine.query('$#') → G54が±0.01mm以内で一致 → ORIGIN_SET / 不一致 → ORIGIN_MISMATCH(人間判断を促す表示)
-  ```
-- [ ] 「現在のG54を新スロットとして保存」機能(Admin限定、`G10 L20`で現在位置基準に保存。位置依存のため名称に注意喚起を添える)
-- [ ] ガード条件(`connected && activeState==='Idle' && workflow idle && hasHomed && !pluginBusy`)を満たさない場合は操作ボタンを無効化し理由を表示
-- [ ] `npm run test:app` / `npm run build`で確認
+- [x] `git worktree`(同じ`.claude/worktrees/agent-af3adeb91b76d108d`)で作業。開始前に`git pull --ff-only`
+- [x] TDDで進める → 新規29テストケース、T2の24件と合わせてplugin内合計55件全PASS
+- [x] 原点スロットのCRUD(storage永続化)を実装。マクロ3・5の初期データ投入
+- [x] `$#`応答のパース(G54〜G59, G92, PRB)を実装
+- [x] G92検出ダイアログ: `window.confirm`はPlugin iframeの`sandbox`に`allow-modals`が無いため動作しないと判明、自前モーダル(`ConfirmDialog`+`useConfirmDialog`)で実装。承認後のみ`G92.1`送信
+- [x] 復元フロー実装(擬似コード通り)
+- [x] 「現在のG54を新スロットとして保存」機能実装 → **要修正、下記参照**
+- [x] ガード条件によるボタン無効化+理由表示
+- [x] `npm run test:app` / `npm run build`で確認 → 新規失敗なし
+- [x] `integration/dev-ja`にコミット・push → コミット`88a5577d6`
+- [x] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新(指揮AI側で実施)
+
+### 既知のギャップ(発注者確認済み、対応不要)
+- Zのみスロット(「NC底面Z0」)復元後は`deriveWorkflowState`のORIGIN_SET判定(X/Y/Z全軸一致)にかからず`HOMED_UNVERIFIED`のままになる。発注者確認の結果、現状のままでよいとの判断(T8実機試験で実際の運用パターンを見てから、マッチャー拡張の要否を判断する)
+
+### 要修正: 「現在のG54を新スロットとして保存」の実装
+`G10 L20 P1 X0 Y0 Z0`を実際に送信してから`$#`で値を読み取る実装になっているが、これは不要かつ危険と判断。「現在のG54を保存」は`machine.query('$#')`でアクティブなG54の値を読んで記録するだけでよく、`G10 L20`コマンドを実機に送信する必要はない(数学的には同じ値になるはずでも、実機のWCS設定を実際に書き換えてしまう操作をわざわざ行うべきではない)。`machine.command('gcode', [...])`でのG10 L20送信を削除し、`$#`の読み取りのみで実装し直すこと。T3タスク定義(本ファイル)の「`G10 L20`で現在位置基準に保存」という記載自体が誤解を招く書き方だったため、指示を訂正する。
+- [ ] `restoreOrigin.ts`または該当モジュールから`G10 L20`送信処理を削除し、`$#`読み取りのみに修正
+- [ ] 関連テストを修正(G10 L20送信を検証していたテストがあれば、`$#`読み取りのみの検証に変更)
+- [ ] `npm run test:app` / `npm run build`で再確認
 - [ ] `integration/dev-ja`にコミット・push
 - [ ] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
