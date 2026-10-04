@@ -536,23 +536,50 @@ export function confirmUnlockAfterHomingFailure(code, onUnlock) {
 > 対応spec: `docs/spec/07_OperatorPlugin.md`の「ステートマシン設計」節(必読)。T1で作った`plugins/operator-plugin/`に追加実装する。`integration/dev-ja`ブランチ限定
 
 ### タスク
-- [ ] `git worktree`(T1と同じ`.claude/worktrees/agent-af3adeb91b76d108d`)で作業。開始前に`git pull --ff-only`
-- [ ] TDDで進める(プロジェクト既定の開発方式)。まずテーブル駆動テストを書き、失敗を確認してからロジックを実装する
-- [ ] `MachineSnapshot`型を定義。フィールド: `connection.isConnected` / `controller.hasHomed` / `controller.state.status.activeState`(Idle/Run/Hold/Alarm/Home/Jog) / `controller.workflow.state`(idle/running/paused) / `controller.modal`(wcs, distance, units) / `controller.settings.parameters`(G54..G59, G92, PRB) / `mpos, wpos, wco` / `fileInfo.fileLoaded, fileName` / `pluginState.busy`
-- [ ] `aux`型(storage由来の補助データ)を定義: 原点スロット一覧 / チェックリスト履歴 / `routine.{active,fileName}` / 管理者PINハッシュ(任意) / Plugin設定(プレート寸法等)。**状態名(HOMED/READY等)はstorageに保存しない**
-- [ ] `deriveWorkflowState(snapshot, aux)`純関数を実装。導出順(上から優先、spec/07の記載通り):
-  1. `!connected` → DISCONNECTED
-  2. `activeState==='Alarm'` → ALARM
-  3. `workflow==='running'` → RUNNING / `'paused'` → PAUSED
-  4. `activeState==='Home'` → HOMING / `!hasHomed` → CONNECTED_UNHOMED
-  5. `pluginBusy` → PROBING
-  6. `params.G92 ≠ 0` → G92_PRESENT
-  7. `params.G54`が保存スロットのどれかと±0.01mmで一致 → ORIGIN_SET / 不一致 → HOMED_UNVERIFIED
-  8. `fileLoaded` → FILE_LOADED → `Idle`なら READY
-- [ ] テーブル駆動テストで上記8分岐すべて(境界値含む)を検証。導出順の優先度(例: ALARMはhasHomed等より優先される)も検証
-- [ ] `controller.settings.parameters`は`$#`発行時のみ更新されるため、Pluginマウント時・接続時に`machine.query('$#')`を発行し、取得結果をsnapshotへ反映する処理を実装
-- [ ] `subscribeSelector`で上記snapshotの各フィールドをredux/workspaceから購読し、状態が変わるたびに`deriveWorkflowState`を再評価するフックを実装
-- [ ] UIはT1の疎通確認画面を拡張し、現在の導出状態名(DISCONNECTED/ALARM/HOMING/CONNECTED_UNHOMED/PROBING/G92_PRESENT/ORIGIN_SET/HOMED_UNVERIFIED/FILE_LOADED/READY等)とその理由を表示するだけでよい(原点保存復元・プローブ等の操作UIはT3/T4)
+- [x] `git worktree`(T1と同じ`.claude/worktrees/agent-af3adeb91b76d108d`)で作業。開始前に`git pull --ff-only`
+- [x] TDDで進める(プロジェクト既定の開発方式)。まずテーブル駆動テストを書き、失敗を確認してからロジックを実装する → `deriveWorkflowState.test.ts`を先に作成(24ケース)→RED確認→実装→GREEN
+- [x] `MachineSnapshot`型を定義
+- [x] `aux`型(storage由来の補助データ)を定義。**状態名(HOMED/READY等)はstorageに保存しない**設計を徹底
+- [x] `deriveWorkflowState(snapshot, aux)`純関数を実装。導出順7・8は「7でG54がスロットに一致した場合のみ8へ継続、不一致ならHOMED_UNVERIFIEDで終端」という入れ子構造として実装(design docの状態遷移図`ORIGIN_SET → FILE_LOADED → READY`と整合させる解釈。spec/07も明確化済み)
+- [x] テーブル駆動テストで8分岐+境界値+優先順位を検証 → 24ケース全PASS
+- [x] `controller.settings.parameters`は`$#`発行時のみ更新されるため、マウント時・接続時に`machine.query('$#')`を発行(fire-and-forget。ホスト側reduxが自動更新するためレスポンスは直接使わず、`useTypedSelector`購読で反映される)
+- [x] `subscribeSelector`(`useTypedSelector`)で状態変化ごとに再評価するフックを実装
+- [x] UIに導出状態名と理由を表示
+- [x] `npm run test:app` / `npm run build`で確認 → 新規失敗なし(既知の3件のみ)
+- [x] `integration/dev-ja`にコミット・push → コミット`c0c93cf46`
+- [x] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新(指揮AI側で実施)
+
+### 補足(実装上の発見)
+- `controller.settings.parameters`のG54/G92は実サーバー実装上、軸値が文字列で届く(`{x:"...", y:"...", z:"..."}`)。型・比較ロジックとも文字列前提+`Number.parseFloat`で実装
+- G54とスロットの一致判定は軸ごとの絶対差±0.01mm以内(ユークリッド距離ではなく各軸独立判定)
+- aux型は5フィールド定義したが、T2で実際に読むのは`originSlots`のみ。他(`checklistHistory`/`routine`/`adminPinHash`/`pluginSettings`)はT3以降で使うプレースホルダー
+
+---
+
+## Agent-Operator Plugin T3: 加工原点保存/復元
+
+> 対応spec: `docs/spec/07_OperatorPlugin.md`の「加工原点の保存・復元」節(必読)。T2の`deriveWorkflowState`に乗せる形で実装する。`integration/dev-ja`ブランチ限定
+
+### タスク
+- [ ] `git worktree`(同じ`.claude/worktrees/agent-af3adeb91b76d108d`)で作業。開始前に`git pull --ff-only`
+- [ ] TDDで進める
+- [ ] 原点スロットのCRUD(storage永続化)を実装。初期データとして`docs/spec/reference/cncjs-probe-macros-source.md`のマクロ3・5の値を投入:
+  - 「いつもの左前XY0」: X=-345.801, Y=-213.302, Z=-57.665(XYZ全軸)
+  - 「NC底面Z0」: Z=-100.118(Zのみ、材料厚み入力つき運用。適用時は`Z=-100.118+材料厚み`で計算)
+- [ ] `$#`応答のパース(G54〜G59, G92, PRB)を実装(T2で未使用だった`$#`レスポンスの本格活用)
+- [ ] G92検出ダイアログ: 原点操作の直前に`$#`でG92を検出し、非ゼロなら「一時オフセット(G92)が残っています。クリアしますか?」ダイアログを表示。**承認後のみ**`G92.1`を送信(無条件実行は禁止)。拒否時は原点操作を中断
+- [ ] 復元フロー(spec/07の擬似コード通り)を実装:
+  ```
+  restoreOrigin(slot):
+    guard: connected && activeState==='Idle' && workflow idle && hasHomed && !pluginBusy
+    res = machine.query('$#')
+    if G92≠0 → G92検出ダイアログ → 承認時のみ ['G92.1','$#'] → 続行 / 拒否なら中断
+    machine.command('gcode', ['G21','G90','G54', `G10 L2 P1 X${x} Y${y} Z${z}`, '$#'])
+    (Zのみスロット: `G10 L2 P1 Z${z + thickness}`)
+    verify = machine.query('$#') → G54が±0.01mm以内で一致 → ORIGIN_SET / 不一致 → ORIGIN_MISMATCH(人間判断を促す表示)
+  ```
+- [ ] 「現在のG54を新スロットとして保存」機能(Admin限定、`G10 L20`で現在位置基準に保存。位置依存のため名称に注意喚起を添える)
+- [ ] ガード条件(`connected && activeState==='Idle' && workflow idle && hasHomed && !pluginBusy`)を満たさない場合は操作ボタンを無効化し理由を表示
 - [ ] `npm run test:app` / `npm run build`で確認
 - [ ] `integration/dev-ja`にコミット・push
 - [ ] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新

@@ -171,8 +171,8 @@ Plugin storageに保存した状態名(HOMED/READY等)だけから復元する�
 4. `activeState==='Home'` → HOMING / `!hasHomed` → CONNECTED_UNHOMED
 5. `pluginBusy` → PROBING(自分が出した処理の継続中)
 6. `params.G92 ≠ 0` → G92_PRESENT(ブロッカー)
-7. `params.G54`が保存スロットのどれかと±0.01mmで一致 → ORIGIN_SET / 不一致 → HOMED_UNVERIFIED(選択肢: 復元/プローブ/現在のG54を新スロットとして保存=Admin限定)
-8. `fileLoaded` → FILE_LOADED → `Idle`なら READY
+7. `params.G54`が保存スロットのどれかと軸ごとの絶対差±0.01mm以内(ユークリッド距離ではなく各軸独立判定)で一致 → 8へ継続 / 不一致 → HOMED_UNVERIFIED(選択肢: 復元/プローブ/現在のG54を新スロットとして保存=Admin限定)で終端
+8. (7がORIGIN_SETの場合のみ到達) `fileLoaded` → FILE_LOADED → `Idle`なら READY
 
 補足ルール: チェックリスト確認は機械から導出できないため、Plugin再読込後は常に再確認を要求する(安全側デフォルト)。履歴はstorageに記録のみ。`routine.active`はstorageから読むが、`fileName`が現在ロード中のファイルと一致しない場合は自動解除。`role`(Operator/Admin)はセッション限定(再読込で常にOperatorに戻る)。
 
