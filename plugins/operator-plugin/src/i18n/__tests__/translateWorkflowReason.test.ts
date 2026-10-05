@@ -24,7 +24,9 @@ describe('translateWorkflowReason', () => {
                 'ORIGIN_SET',
                 'G54 matches saved origin slot "いつもの左前XY0".',
             ),
-        ).toBe('原点が「いつもの左前XY0」と一致しています。');
+        ).toBe(
+            '原点が「いつもの左前XY0」と一致しています。続けるにはG-codeファイルを読み込んでください。',
+        );
         expect(
             translateWorkflowReason(
                 'READY',

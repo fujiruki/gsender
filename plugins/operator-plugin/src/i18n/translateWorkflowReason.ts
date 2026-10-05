@@ -23,7 +23,12 @@ const FIXED_REASONS: Partial<Record<WorkflowState, string>> = {
 // in Japanese) name avoids touching deriveWorkflowState.ts itself.
 const SLOT_NAME_TEMPLATES: Partial<Record<WorkflowState, (name: string) => string>> =
     {
-        ORIGIN_SET: (name) => `原点が「${name}」と一致しています。`,
+        // spec/07: READY requires fileLoaded in addition to ORIGIN_SET, but
+        // the startup stepper has no step of its own for "load a file" --
+        // without this hint ORIGIN_SET looks identical to a stuck/broken
+        // step 5 (see T8's real-machine report).
+        ORIGIN_SET: (name) =>
+            `原点が「${name}」と一致しています。続けるにはG-codeファイルを読み込んでください。`,
         READY: (name) =>
             `原点が「${name}」と一致し、ファイルが読み込まれ、マシンは待機中です。`,
         FILE_LOADED: (name) =>
