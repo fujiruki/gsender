@@ -48,3 +48,6 @@ cypress/downloads/
 # Feedback widget (F-06): attached images, stored next to the user's config file
 .gsender-feedback-images/
 
+# Local dev launcher scripts (machine-specific paths, not for distribution)
+/*.bat
+
