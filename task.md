@@ -780,8 +780,10 @@ T4の`runProbe.ts`(プローブ実行)も同じ「`sendGcode`で送信→`waitFo
 - **ただし新たな表示不整合バグを発見**: 復元成功メッセージのすぐ下に「現在の状態: 原点未確認 -- G54が保存済みの原点スロットと一致しません。」という矛盾したメッセージが同時に表示される。画面上部の「ワークフロー状態」も「原点未確認」のまま。「朝の起動」ステッパーが4番目「原点復元」で止まり、5番目「準備完了」に進まない
 
 ### タスク(追加)
-- [ ] 上記の表示不整合を調査する。仮説: `restoreOrigin.ts`内の最終検証`query('$#')`の応答は、Plugin側ローカルの`parseParameterLines`結果としてのみ使われており、**ホストのreduxストア(`controller.settings.parameters.G54`)を更新するトリガーになっていない**可能性がある。T2の`deriveWorkflowState`はredux由来のsnapshotを見ているため、reduxが更新されない限り「原点未確認」のまま
-- [ ] `machine.query()`経由で送った`$#`の応答が、サーバー側で`controller:settings`イベント等としてreduxへ反映される経路を実際に通るか確認する(T2設計時点の前提「`$#`発行をトリガーに誰が発行したかに関わらずサーバー側パーサーが自動更新する」は`machine.command`(feeder経由)の場合のみ成り立ち、`machine.query`(シリアル直接書き込み)には当てはまらない可能性がある)
-- [ ] 根本原因を特定し修正する。復元成功後にreduxが正しく更新され、ワークフロー状態が「準備完了(READY)」まで正しく進むようにする
-- [ ] 修正後、発注者に再度実機で確認してもらう
-- [ ] `integration/dev-ja`にコミット・push、task.md更新
+- [x] 指揮AI提示の仮説(reduxが`machine.query`経由だと更新されない)を検証 → **反証・否定**。サーバー側`GrblController.js`の受信処理(`connectionEventListener.data`→`runner.parse()`→`settings.parameters`更新→250ms`queryTimer`差分検出→`controller:settings`emit)は書き込みチャネル(`command`/`query`どちらか)に一切依存しないことをコードで確認。reduxは正しく更新されていた
+- [x] 真の原因を特定: **`plugins/operator-plugin/src/workflow/useWorkflowState.ts`が原点スロット一覧を独自ロジックで読んでおり、デフォルトが空配列(`storage.get(..., [])`)だった**。一方`restoreOrigin.ts`/`OriginPanel.tsx`/`StartupPanel.tsx`は`origin/originSlotsStorage.ts`の`listOriginSlots()`(デフォルト値=「いつもの左前XY0」等あり)を使っていた。**同じstorageキーに対し2ファイルが食い違うデフォルト値を持っていた単純な実装ミス**で、レースコンディションでも実機固有のタイミング問題でもなかった。出荷時デフォルトのまま(まだ独自スロットを保存したことがない)環境でのみ発現: `deriveWorkflowState`に渡る`aux.originSlots`が常に空になり、G54がどんな値でも`matchedSlot`が絶対に見つからず`HOMED_UNVERIFIED`から進めなくなる
+- [x] 修正: `useWorkflowState.ts`の独自読み込みを削除し`listOriginSlots()`に統一(1ファイル・10行)
+- [x] テスト: 新規単体テストは追加せず(判断: `useWorkflowState.ts`は元々単体テストの無いSDKフック配線層で、委譲先の分岐ロジック自体は既存の`originSlotsStorage.test.ts`/`deriveWorkflowState.test.ts`でカバー済みのため、1箇所のためだけの新規モック基盤は過剰と判断。妥当)。`tsc --noEmit`エラーなし、vitest 126/126 PASS(既存のまま)、`npm run build`成功
+- [x] `integration/dev-ja`にコミット・push → コミット`6e32a4905`
+- [x] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新(指揮AI側で実施)
+- [ ] **発注者による実機再検証待ち**: 「朝の起動シーケンス」再実行後、「現在の状態」表示が正しく準備完了まで進むか確認
