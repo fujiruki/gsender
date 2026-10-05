@@ -36,8 +36,8 @@ const makeProbeDeps = (
     confirmClearG92: RestoreDeps['confirmClearG92'],
     waitForSettle: (timeoutMs: number) => Promise<boolean>,
 ) => ({
-    query: (cmd: string) => machine.query(cmd),
-    sendGcode: (lines: string[]) => machine.command('gcode', lines),
+    query: (cmd: string, opts?: { until?: RegExp; timeout?: number }) =>
+        machine.query(cmd, opts),
     confirmClearG92,
     setBusy: (busy: boolean, label?: string) => machine.setBusy(busy, label),
     waitForSettle,
@@ -51,6 +51,8 @@ const formatResult = (kind: ProbeKind, result: RunProbeResult): string => {
                 : `${kind.toUpperCase()}プローブは完了しましたが、検証の$#応答にG54の行がありませんでした。`;
         case 'TIMEOUT':
             return 'マシンの静定(Idle + G90)待ちでタイムアウトしました。再試行する前にコンソールを確認してください。';
+        case 'ALARM':
+            return 'プローブ中にアラームが発生したため中断しました(詳細は上の案内を参照してください)。';
         case 'CANCELLED':
         case 'BLOCKED':
             return result.reason;
