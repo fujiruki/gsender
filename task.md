@@ -786,4 +786,7 @@ T4の`runProbe.ts`(プローブ実行)も同じ「`sendGcode`で送信→`waitFo
 - [x] テスト: 新規単体テストは追加せず(判断: `useWorkflowState.ts`は元々単体テストの無いSDKフック配線層で、委譲先の分岐ロジック自体は既存の`originSlotsStorage.test.ts`/`deriveWorkflowState.test.ts`でカバー済みのため、1箇所のためだけの新規モック基盤は過剰と判断。妥当)。`tsc --noEmit`エラーなし、vitest 126/126 PASS(既存のまま)、`npm run build`成功
 - [x] `integration/dev-ja`にコミット・push → コミット`6e32a4905`
 - [x] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新(指揮AI側で実施)
-- [ ] **発注者による実機再検証待ち**: 「朝の起動シーケンス」再実行後、「現在の状態」表示が正しく準備完了まで進むか確認
+- [x] **発注者による実機再検証完了**: 表示不整合バグ解消を確認(「原点設定済み -- 原点が「いつもの左前XY0」と一致しています。」と正しく表示)
+
+### 補足確認: ステッパーが4番目「原点復元」で止まる件 → 仕様通り、UI案内文を追加
+発注者から「準備完了まで進まない」と再度報告があったが、調査の結果**バグではなく仕様通り**と判明。spec/07のステートマシン設計(`ORIGIN_SET → FILE_LOADED → READY`)通り、READYにはG-codeファイルのロードも必要で、今回は単に発注者がまだファイルをロードしていなかっただけ。ただしUIがその区別を示せていなかった(ORIGIN_SET正常時とバグで止まっている時が画面上で見分けられない)ため、`translateWorkflowReason.ts`のORIGIN_SET用メッセージに「続けるにはG-codeファイルを読み込んでください。」という案内を追加。TDD(テスト先行→RED→実装→GREEN)で実施、`integration/dev-ja`にコミット・push(`9f83f78c3`)。126/126 PASS、ビルド成功。
