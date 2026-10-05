@@ -1,7 +1,8 @@
-import { machine, storage } from '@sienci/gsender-plugin-sdk';
+import { machine } from '@sienci/gsender-plugin-sdk';
 import { useTypedSelector } from '@sienci/gsender-plugin-sdk/react';
 import { useEffect, useRef, useState } from 'react';
 
+import { listOriginSlots } from '../origin/originSlotsStorage';
 import { deriveWorkflowState } from './deriveWorkflowState';
 import type {
     ActiveState,
@@ -57,8 +58,6 @@ const buildSnapshot = (state: RootState): MachineSnapshot => ({
     pluginState: { busy: state.pluginState?.busy ?? false },
 });
 
-const ORIGIN_SLOTS_STORAGE_KEY = 'originSlots';
-
 /**
  * Derives the operator workflow state from live redux state, re-querying
  * `$#` whenever the host's cached G54/G92 parameters might be stale (on
@@ -73,9 +72,14 @@ export const useWorkflowState = (): WorkflowDerivation => {
     const [originSlots, setOriginSlots] = useState<OriginSlot[]>([]);
 
     useEffect(() => {
-        storage.get<OriginSlot[]>(ORIGIN_SLOTS_STORAGE_KEY, []).then((slots) => {
-            setOriginSlots(slots ?? []);
-        });
+        // Reuses origin/originSlotsStorage's own default (DEFAULT_ORIGIN_SLOTS)
+        // instead of a second, divergent `storage.get(..., [])` read: that
+        // divergent default was the actual root cause of a real-machine
+        // report where a *successful, verified* restore still left the
+        // workflow banner stuck on HOMED_UNVERIFIED -- on an operator who
+        // never explicitly re-saved a slot, this hook's own read returned []
+        // forever, so deriveWorkflowState's slot match could never succeed.
+        void listOriginSlots().then(setOriginSlots);
     }, []);
 
     useEffect(() => {
