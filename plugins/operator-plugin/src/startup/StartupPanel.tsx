@@ -148,7 +148,6 @@ const StartupPanel = () => {
                     getGuard: () => guardRef.current,
                     restoreDeps: {
                         query: (cmd) => machine.query(cmd),
-                        sendGcode: (lines) => machine.command('gcode', lines),
                         confirmClearG92,
                     },
                 },

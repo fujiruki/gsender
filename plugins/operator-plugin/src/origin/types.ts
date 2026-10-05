@@ -48,7 +48,16 @@ export type ParsedParameters = Partial<
 };
 
 export type RestoreDeps = {
+    /**
+     * The ONLY way restoreOrigin sends anything to the machine -- never the
+     * feeder/sendGcode. See T8's real-machine finding (ORIGIN_MISMATCH with
+     * X0 Y0 Z0): machine.command('gcode', [...]) only resolves once lines
+     * are DELIVERED to the feeder queue, not once the firmware has actually
+     * processed them, while machine.query() writes directly to the serial
+     * port and waits for Grbl's real "ok"/response. Mixing the two let a
+     * verification query race ahead of the feeder's still-queued G10 L2,
+     * sometimes reading back a stale (or entirely missing) G54.
+     */
     query: (cmd: string) => Promise<{ lines: string[] }>;
-    sendGcode: (lines: string[]) => Promise<unknown>;
     confirmClearG92: () => Promise<boolean>;
 };

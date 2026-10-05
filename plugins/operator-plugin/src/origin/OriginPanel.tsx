@@ -20,7 +20,6 @@ const makeRestoreDeps = (
     confirmClearG92: RestoreDeps['confirmClearG92'],
 ): RestoreDeps => ({
     query: (cmd) => machine.query(cmd),
-    sendGcode: (lines) => machine.command('gcode', lines),
     confirmClearG92,
 });
 

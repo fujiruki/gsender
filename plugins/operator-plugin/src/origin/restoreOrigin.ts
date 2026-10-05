@@ -19,6 +19,9 @@ const isOffsetNonZero = (offset: ParameterOffset): boolean =>
 
 const formatNumber = (value: number): string => value.toFixed(3);
 
+// No trailing '$#' here anymore: restoreOrigin always issues its own,
+// explicit final query('$#') afterward (see below) -- baking one into this
+// batch would just be a second, unused response.
 const buildRestoreGcode = (target: RestoreTarget): string[] => {
     if (target.kind === 'xyz') {
         const { x, y, z } = target.slot;
@@ -27,12 +30,11 @@ const buildRestoreGcode = (target: RestoreTarget): string[] => {
             'G90',
             'G54',
             `G10 L2 P1 X${formatNumber(x)} Y${formatNumber(y)} Z${formatNumber(z)}`,
-            '$#',
         ];
     }
 
     const z = target.slot.z + target.materialThicknessMm;
-    return ['G21', 'G90', 'G54', `G10 L2 P1 Z${formatNumber(z)}`, '$#'];
+    return ['G21', 'G90', 'G54', `G10 L2 P1 Z${formatNumber(z)}`];
 };
 
 const expectedOffset = (target: RestoreTarget): Partial<ParameterOffset> =>
@@ -58,6 +60,33 @@ const matchesTarget = (g54: ParameterOffset, target: RestoreTarget): boolean => 
 };
 
 /**
+ * Sends every line through `query()`, awaiting each one before the next.
+ *
+ * T8 real-machine finding: `machine.command('gcode', lines)` only resolves
+ * once the lines are DELIVERED to the feeder queue (server comment: "The ack
+ * signals DELIVERY, not completion"), while `machine.query()` writes
+ * directly to the serial port (`GrblController.pluginQuery` -> `writeln()`)
+ * and only resolves once Grbl's actual response ("ok"/matching line)
+ * arrives. The two go through completely different channels with no mutual
+ * exclusion between them, so firing a feeder-queued restore batch and then
+ * immediately issuing a *separate* direct verification query could race the
+ * feeder -- sometimes winning, reading back a stale (pre-restore) G54, or a
+ * response with no G54 line at all. That is exactly what ORIGIN_MISMATCH
+ * with X0 Y0 Z0 was: parseParameterLines.G54 came back undefined and
+ * restoreOrigin fell through to its `{ x: '0', y: '0', z: '0' }` fallback.
+ * Routing every line through `query()` keeps the whole sequence on the one
+ * channel that actually waits for Grbl, eliminating the race entirely.
+ */
+const sendSequentially = async (
+    query: RestoreDeps['query'],
+    lines: string[],
+): Promise<void> => {
+    for (const line of lines) {
+        await query(line);
+    }
+};
+
+/**
  * Implements spec/07's restore flow verbatim: guard -> detect/clear a
  * leftover G92 (only after human approval, never unconditionally) -> send
  * the G10 L2 restore -> re-query and verify. Never generates G92 itself.
@@ -80,10 +109,10 @@ export const restoreOrigin = async (
         if (!approved) {
             return { outcome: 'CANCELLED', reason: 'G92のクリアが承認されませんでした。' };
         }
-        await deps.sendGcode(['G92.1']);
+        await deps.query('G92.1');
     }
 
-    await deps.sendGcode(buildRestoreGcode(target));
+    await sendSequentially(deps.query, buildRestoreGcode(target));
 
     const after = await deps.query('$#');
     const afterParams = parseParameterLines(after.lines);

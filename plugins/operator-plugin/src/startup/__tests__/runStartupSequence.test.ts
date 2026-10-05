@@ -29,6 +29,23 @@ const okResponse = (...lines: string[]) =>
 const matchingG54Line = (x: number, y: number, z: number) =>
     `[G54:${x.toFixed(3)},${y.toFixed(3)},${z.toFixed(3)}]`;
 
+// Keyed on the command rather than call order, matching restoreOrigin's own
+// per-line query() sequence (see origin/restoreOrigin.ts and T8's
+// real-machine ORIGIN_MISMATCH finding) -- the first `$#` is the leading
+// G92 check, the second is the final verify.
+const makeQueryMock = () => {
+    let hashCallCount = 0;
+    return vi.fn((cmd: string) => {
+        if (cmd === '$#') {
+            hashCallCount += 1;
+            return hashCallCount === 1
+                ? okResponse('[G92:0.000,0.000,0.000]')
+                : okResponse(matchingG54Line(-345.801, -213.302, -57.665));
+        }
+        return okResponse();
+    });
+};
+
 describe('runStartupSequence', () => {
     let deps: StartupSequenceDeps;
 
@@ -39,17 +56,7 @@ describe('runStartupSequence', () => {
             waitForHomed: vi.fn().mockResolvedValue(true),
             getGuard: vi.fn().mockReturnValue(homedGuard),
             restoreDeps: {
-                query: vi
-                    .fn()
-                    .mockImplementationOnce(() =>
-                        okResponse('[G92:0.000,0.000,0.000]'),
-                    )
-                    .mockImplementationOnce(() =>
-                        okResponse(
-                            matchingG54Line(-345.801, -213.302, -57.665),
-                        ),
-                    ),
-                sendGcode: vi.fn().mockResolvedValue(undefined),
+                query: makeQueryMock(),
                 confirmClearG92: vi.fn(),
             },
         };
@@ -77,7 +84,7 @@ describe('runStartupSequence', () => {
         const result = await runStartupSequence(USUAL_FRONT_LEFT, deps);
 
         expect(result).toEqual({ outcome: 'HOMING_TIMEOUT' });
-        expect(deps.restoreDeps.sendGcode).not.toHaveBeenCalled();
+        expect(deps.restoreDeps.query).not.toHaveBeenCalled();
     });
 
     it('runs safety confirm -> homing -> restoreOrigin end to end and returns its ORIGIN_SET result', async () => {
@@ -87,7 +94,9 @@ describe('runStartupSequence', () => {
         expect(deps.sendHomingCommand).toHaveBeenCalledTimes(1);
         expect(deps.getGuard).toHaveBeenCalled();
         expect(result.outcome).toBe('ORIGIN_SET');
-        expect(deps.restoreDeps.sendGcode).toHaveBeenCalledWith([
+        const queryMock = deps.restoreDeps.query as ReturnType<typeof vi.fn>;
+        expect(queryMock.mock.calls.map((call) => call[0])).toEqual([
+            '$#',
             'G21',
             'G90',
             'G54',
