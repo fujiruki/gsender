@@ -698,3 +698,23 @@ CNCjsマクロ3「ホーミング＋いつもの左前XY0に設定する」(`$H`
 ### 将来タスク(今回は実装しない、記録のみ)
 - 複数プログラム工程対応: ルーチン定義に複数ステップ(ファイル)を持たせる設計
 - 非常停止復旧時に「どのステップ(プログラムA/B等)から再開するか」を人間に選ばせるUI(複数プログラム対応とセットで必要になる)
+
+## Agent-Operator Plugin デバッグ: Tools→Operatorが真っ白になる問題
+
+### 背景(指揮AI側で確認済み)
+- T1〜T7実装後、発注者が`integration/dev-ja`のworktree(`.claude/worktrees/agent-af3adeb91b76d108d`)で`npm run dev:electron`を実際に起動して確認したところ、本体メニューは正しく日本語化されているが、**Tools→Operatorを開くと画面が真っ白**になる
+- 本体のElectron/サーバー/Vite起動、Plugin registryでの`operator-plugin`認識・配信(`/plugins/operator-plugin`)は正常。`GSENDER_FORCE_PLUGIN_BUILD=1`で強制リビルドしても同じ結果
+- `App.tsx`は`StartupPanel`/`ChecklistPanel`/`OriginPanel`/`ProbePanel`/`AdminControls`/`AdminRoleProvider`を正しくimport・レンダリングしている(コード上は配線済み)
+- ビルド自体は成功(エラーなし)、`tsc --noEmit`もエラーなし、`vitest`もplugin単体で117件全PASS
+- → ビルドエラーではなく、**実行時にReactツリーがクラッシュしている**可能性が高い(React 18はエラーバウンダリが無い場合、例外発生でツリー全体がアンマウントされ画面が真っ白になる)
+- F12 / Ctrl+Shift+I / Altキーでのメニュー表示、いずれも効かずDevToolsを開けなかった(`--remote-debugging-port`フラグ・`ELECTRON_EXTRA_LAUNCH_ARGS`環境変数も不発)。原因不明(gSender本体のキーボードショートカット処理と干渉している可能性あり、深追いはしていない)
+
+### タスク
+- [ ] 発生源の切り分け: `AdminRoleProvider`の初期化(PINのstorage読み込み等)、`useWorkflowState()`、各Panel(`StartupPanel`/`ChecklistPanel`/`OriginPanel`/`ProbePanel`)の初期化処理(useEffect等)のどこで例外が発生しているか特定する
+- [ ] 診断のため、開発モード限定(`NODE_ENV === 'development'`)で`mainWindow.webContents.openDevTools()`相当を一時的に追加してコンソールエラーを確認してよい。**ただし原因特定後はこの診断用コードを必ず元に戻すこと**(本来の実装ではない一時コード)
+- [ ] 代替手段: Reactの`ErrorBoundary`を`App.tsx`のルートに一時的に追加し、エラーメッセージを画面に直接表示させてDevTools無しでも原因を特定する、でも可(どちらでもよい、やりやすい方で)
+- [ ] 根本原因を特定し、修正する(root causeで直す。症状を隠すtry-catchでごまかさない)
+- [ ] 修正後、`integration/dev-ja`のworktreeで`npm run dev:electron`を実行し、Tools→Operatorで実際に画面が表示されることを目視確認する(スクリーンショット等で報告)
+- [ ] `npm run test:app` / `npm run build`で確認
+- [ ] `integration/dev-ja`にコミット・push
+- [ ] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
