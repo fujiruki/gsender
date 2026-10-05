@@ -179,16 +179,20 @@ See `controller-events-demo/` for a working example.
 
 ### Vite Config
 
-Make sure that your vite config includes these rollup options:
-```vite
-rollupOptions: {
-	external: [
-		"@sienci/gsender-plugin-sdk",
-		"@sienci/gsender-plugin-sdk/react",
-	],
-},
-```
-If it doesn't, gSender will assume there are no permissions needed and won't give your plugin access to the sdk at runtime.
+`gsenderPlugin()` (from `@sienci/gsender-plugin-sdk/vite`) already externalizes the SDK
+entry points *and* `react`/`react-dom`/the JSX runtimes for you, and wires the runtime
+import map so all of them resolve correctly in the browser. **Do not also list
+`"@sienci/gsender-plugin-sdk"` / `"@sienci/gsender-plugin-sdk/react"` in your own
+`rollupOptions.external`** — Vite's config merging lets a plugin's own `external`
+function override the host app's, so re-declaring it here silently drops
+`gsenderPlugin()`'s react externalization too, bundling a second copy of React
+into your plugin. That second copy's hooks run against their own, separate
+React internals — any `@sienci/gsender-plugin-sdk/react` hook (`useTypedSelector`,
+`useWorkspaceState`, ...) then crashes with `Cannot read properties of null
+(reading 'useCallback')` the moment it mounts, which looks like (and used to
+cause) the whole plugin rendering blank. If your `build.rollupOptions` doesn't
+need anything else, you can drop it entirely — see `react-ts-app/vite.config.ts`
+for the minimal working config.
 
 ### Building a plugin
 

@@ -9,11 +9,5 @@ export default defineConfig({
     build: {
         outDir: 'ui',
         emptyOutDir: true,
-        rollupOptions: {
-            external: [
-                '@sienci/gsender-plugin-sdk',
-                '@sienci/gsender-plugin-sdk/react',
-            ],
-        },
     },
 });
