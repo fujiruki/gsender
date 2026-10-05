@@ -723,3 +723,26 @@ Agentの提案により、診断用に追加した`ErrorBoundary`(`plugins/opera
 
 ### 副次発見(今回は対応していない、記録のみ)
 - `plugins/corner-finder/vite.config.ts`が`gsenderPlugin()`自体をimportしていない(SDK連携設定が丸ごと欠落)。今回のバグとは別件、スコープ外のため未対応
+
+---
+
+## Agent-Operator Plugin UI日本語化
+
+> 発注者確認済み(2026-10-05): T1〜T7で実装した画面はまだ英語のまま。本体メニューは日本語化済みなので、画面内の表記統一のため日本語化する
+
+### 方針
+- Operator Pluginは独立したバンドル(iframe内、別Reactツリー)のため、本体の`app/i18n`(`t()`/`ja.json`)を直接importすることはできない。Plugin SDKにi18n機能が提供されているか確認した上で、無ければ**本体のi18n基盤を模倣した機構は作らず、UI文字列を直接日本語に書き換える**方針とする(Operator Pluginは藤田建具店フォーク専用で本家contribに出す予定がなく、英語版を併存させる必要性が無いため。ponytail方針: このためだけにi18n機構を新設しない)
+- 対象: `App.tsx`・`StartupPanel.tsx`・`ChecklistPanel.tsx`・`OriginPanel.tsx`・`ProbePanel.tsx`・`AdminControls.tsx`・`AdminRoleContext.tsx`・`PinPromptDialog.tsx`・`ConfirmDialog.tsx`・`ErrorBoundary.tsx`等、画面に表示される全ての文字列(ラベル・説明文・ボタン・プレースホルダー・エラーメッセージ・確認ダイアログ文言)
+- **Workflow状態名(`DISCONNECTED`/`CONNECTED_UNHOMED`/`HOMING`/`READY`等)は内部のenum値のまま変更しない。** 画面表示する際だけ日本語ラベルにマッピングする表示層を追加する(T2の`deriveWorkflowState`本体・テストは変更しない)
+- コード中のコメント・変数名・テストの説明文(`describe`/`it`)は英語のまま(コードは触らない方針を踏襲、変えるのはUIに表示される文字列のみ)
+- 既存spec(`docs/spec/07_OperatorPlugin.md`)の状態遷移図や擬似コード中の英語表記はそのままでよい(仕様書は英語/日本語混在の既存スタイルを踏襲)
+
+### タスク
+- [ ] Plugin SDK(`@sienci/gsender-plugin-sdk`)にi18n関連の機能(`t()`やlocale取得等)が無いか確認する。あれば活用、無ければ上記方針通りUI文字列を直接日本語に置き換える
+- [ ] 画面に表示される全文字列を日本語に置き換える(ラベル・説明文・ボタン・プレースホルダー・エラーメッセージ・確認ダイアログ)
+- [ ] Workflow状態名の表示用日本語マッピング(例: `DISCONNECTED`→「未接続」、`CONNECTED_UNHOMED`→「原点復帰待ち」等)を追加。内部のenum・テストは無改修
+- [ ] 安全チェックリストの6項目(刃物交換/集塵機/干渉物/ワーク固定/固定具締め具合/非常停止)は既存の日本語訳(`docs/spec/07_OperatorPlugin.md`またはrequest_log.mdの発注者ヒアリング原文)と表現を揃える
+- [ ] `npm run test:app` / `npm run build`で確認(UI文字列変更のみなのでロジックテストへの影響は無いはずだが、スナップショット等があれば更新)
+- [ ] `integration/dev-ja`のworktreeで`npm run dev:electron`を実行し、Tools→Operatorで実際に日本語表示されることを目視確認(スクリーンショット等で報告)
+- [ ] `integration/dev-ja`にコミット・push
+- [ ] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
