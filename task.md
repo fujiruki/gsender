@@ -738,11 +738,12 @@ Agentの提案により、診断用に追加した`ErrorBoundary`(`plugins/opera
 - 既存spec(`docs/spec/07_OperatorPlugin.md`)の状態遷移図や擬似コード中の英語表記はそのままでよい(仕様書は英語/日本語混在の既存スタイルを踏襲)
 
 ### タスク
-- [ ] Plugin SDK(`@sienci/gsender-plugin-sdk`)にi18n関連の機能(`t()`やlocale取得等)が無いか確認する。あれば活用、無ければ上記方針通りUI文字列を直接日本語に置き換える
-- [ ] 画面に表示される全文字列を日本語に置き換える(ラベル・説明文・ボタン・プレースホルダー・エラーメッセージ・確認ダイアログ)
-- [ ] Workflow状態名の表示用日本語マッピング(例: `DISCONNECTED`→「未接続」、`CONNECTED_UNHOMED`→「原点復帰待ち」等)を追加。内部のenum・テストは無改修
-- [ ] 安全チェックリストの6項目(刃物交換/集塵機/干渉物/ワーク固定/固定具締め具合/非常停止)は既存の日本語訳(`docs/spec/07_OperatorPlugin.md`またはrequest_log.mdの発注者ヒアリング原文)と表現を揃える
-- [ ] `npm run test:app` / `npm run build`で確認(UI文字列変更のみなのでロジックテストへの影響は無いはずだが、スナップショット等があれば更新)
-- [ ] `integration/dev-ja`のworktreeで`npm run dev:electron`を実行し、Tools→Operatorで実際に日本語表示されることを目視確認(スクリーンショット等で報告)
-- [ ] `integration/dev-ja`にコミット・push
-- [ ] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新
+- [x] Plugin SDKにi18n関連の機能が無いことを確認(`packages/plugin-sdk/src`をgrep、該当なし) → 方針通りUI文字列を直接日本語に置き換え
+- [x] 画面に表示される全文字列を日本語化(31ファイル変更、新規6ファイル: `src/i18n/workflowStateLabel.ts`・`activeStateLabel.ts`・`translateWorkflowReason.ts`等の表示用マッピング層を新設)
+- [x] Workflow状態名の表示用日本語マッピングを追加 → **T2の`deriveWorkflowState`本体・テストは完全に無改修**。enum値は内部では引き続き英語のまま、表示層でのみ変換。原点スロット名が埋め込まれる`reason`文字列(ORIGIN_SET/READY/FILE_LOADED)は正規表現でスロット名を抽出し日本語テンプレートに再埋め込みする方式
+- [x] 安全チェックリスト6項目を発注者ヒアリング原文(task.md記載)に統一
+- [x] `gsender-plugin.json`のname/description/label、原点スロットのデフォルト名(「いつもの左前XY0」「NC底面Z0」)も仕様書の表記に統一
+- [x] `npm run test:app` / `npm run build`で確認 → 新規失敗なし(T3〜T7のロジックモジュールの英語文字列を検証していたテストのみアサーション更新、T2は無改修)
+- [x] `npm run dev:electron`実行、Tools→Operatorで日本語表示を確認(Chrome DevTools MCP経由、全セクション・管理者モード切替含め確認、コンソールエラーなし)
+- [x] `integration/dev-ja`にコミット・push → コミット`c5d7579de`
+- [x] `C:\Fujiruki\Projects\gSender\task.md`本セクションを更新(指揮AI側で実施)
