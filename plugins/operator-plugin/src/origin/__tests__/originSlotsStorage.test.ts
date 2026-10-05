@@ -73,7 +73,7 @@ describe('listOriginSlots', () => {
         expect(slots).toEqual(DEFAULT_ORIGIN_SLOTS);
         expect(DEFAULT_ORIGIN_SLOTS[0]).toEqual({
             id: 'usual-front-left',
-            name: 'Usual front-left',
+            name: 'いつもの左前XY0',
             x: -345.801,
             y: -213.302,
             z: -57.665,
@@ -111,7 +111,7 @@ describe('saveOriginSlot / deleteOriginSlot', () => {
 describe('DEFAULT_Z_ORIGIN_SLOTS', () => {
     it('matches macro 5 ("NC bottom Z0")', () => {
         expect(DEFAULT_Z_ORIGIN_SLOTS).toEqual([
-            { id: 'nc-bottom-z0', name: 'NC bottom Z0', z: -100.118 },
+            { id: 'nc-bottom-z0', name: 'NC底面Z0', z: -100.118 },
         ]);
     });
 });

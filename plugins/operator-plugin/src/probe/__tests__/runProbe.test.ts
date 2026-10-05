@@ -39,7 +39,7 @@ describe('runProbe', () => {
 
         expect(result).toEqual({
             outcome: 'BLOCKED',
-            reason: 'Machine has not been homed yet.',
+            reason: 'まだ原点復帰していません。',
         });
         expect(deps.query).not.toHaveBeenCalled();
         expect(deps.setBusy).not.toHaveBeenCalled();
@@ -61,7 +61,7 @@ describe('runProbe', () => {
         expect(deps.confirmClearG92).not.toHaveBeenCalled();
         expect(deps.sendGcode).toHaveBeenCalledWith(PROBE_LINES);
         const setBusyMock = deps.setBusy as ReturnType<typeof vi.fn>;
-        expect(setBusyMock.mock.calls[0]).toEqual([true, 'Probing']);
+        expect(setBusyMock.mock.calls[0]).toEqual([true, 'プローブ中']);
         expect(setBusyMock.mock.calls[1]).toEqual([false]);
     });
 
@@ -95,7 +95,7 @@ describe('runProbe', () => {
 
         expect(result).toEqual({
             outcome: 'CANCELLED',
-            reason: 'G92 clear was not approved.',
+            reason: 'G92のクリアが承認されませんでした。',
         });
         expect(deps.sendGcode).not.toHaveBeenCalled();
         expect(deps.setBusy).not.toHaveBeenCalled();

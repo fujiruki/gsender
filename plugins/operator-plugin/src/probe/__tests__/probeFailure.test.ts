@@ -18,13 +18,13 @@ describe('describeProbeFailure', () => {
     it('explains ALARM:4 (probe already triggered) and mentions recovery', () => {
         const message = describeProbeFailure(4);
         expect(message).toContain('4');
-        expect(message.toLowerCase()).toContain('unlock');
+        expect(message).toContain('ロック解除');
     });
 
     it('explains ALARM:5 (probe never triggered) and mentions recovery', () => {
         const message = describeProbeFailure(5);
         expect(message).toContain('5');
-        expect(message.toLowerCase()).toContain('unlock');
+        expect(message).toContain('ロック解除');
     });
 
     it('falls back to a generic message for anything else', () => {

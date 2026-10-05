@@ -1,3 +1,4 @@
+import { activeStateLabel } from '../i18n/activeStateLabel';
 import type { RestoreGuardResult, RestoreGuardState } from './types';
 
 /**
@@ -10,24 +11,24 @@ export const canRestoreOrigin = (
     guard: RestoreGuardState,
 ): RestoreGuardResult => {
     if (!guard.isConnected) {
-        return { allowed: false, reason: 'Machine is not connected.' };
+        return { allowed: false, reason: 'マシンが接続されていません。' };
     }
     if (guard.workflowState !== 'idle') {
-        return { allowed: false, reason: 'A job is currently running or paused.' };
+        return { allowed: false, reason: 'ジョブが実行中または一時停止中です。' };
     }
     if (guard.activeState !== 'Idle') {
         return {
             allowed: false,
-            reason: `Machine is not idle (current state: ${guard.activeState}).`,
+            reason: `マシンが待機状態ではありません(現在の状態: ${activeStateLabel(guard.activeState)})。`,
         };
     }
     if (!guard.hasHomed) {
-        return { allowed: false, reason: 'Machine has not been homed yet.' };
+        return { allowed: false, reason: 'まだ原点復帰していません。' };
     }
     if (guard.pluginBusy) {
         return {
             allowed: false,
-            reason: 'Another plugin-driven operation is still in progress.',
+            reason: '別の処理が進行中です。',
         };
     }
     return { allowed: true };

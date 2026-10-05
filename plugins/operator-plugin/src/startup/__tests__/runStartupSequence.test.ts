@@ -64,7 +64,7 @@ describe('runStartupSequence', () => {
 
         expect(result).toEqual({
             outcome: 'CANCELLED',
-            reason: 'Safety check was not confirmed.',
+            reason: '安全確認が承認されませんでした。',
         });
         expect(deps.sendHomingCommand).not.toHaveBeenCalled();
     });

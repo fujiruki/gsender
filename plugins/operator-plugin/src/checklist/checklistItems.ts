@@ -1,41 +1,40 @@
 import type { ChecklistItem, ChecklistState } from './types';
 
-// Verbatim from the client's own interview notes (2026-10-03), not reworded.
-// `imageSrc` is intentionally left unset on every item: no real illustration
-// assets exist yet (separate task). Setting `imageSrc` later on any item is
-// the entire integration -- no component change needed.
+// Descriptions are verbatim from the client's own interview notes
+// (2026-10-03, see task.md), not reworded. `imageSrc` is intentionally left
+// unset on every item: no real illustration assets exist yet (separate
+// task). Setting `imageSrc` later on any item is the entire integration --
+// no component change needed.
 export const CHECKLIST_ITEMS: ChecklistItem[] = [
     {
         id: 'tool-change',
-        label: 'Tool change',
-        description: 'Confirm the correct tool/endmill is installed and tightened.',
+        label: '刃物交換',
+        description: '刃物交換が正しく行われているか',
     },
     {
         id: 'dust-collection',
-        label: 'Dust collection',
-        description: 'Confirm the dust collector is running.',
+        label: '集塵機',
+        description: '集塵機が動いているか',
     },
     {
         id: 'clearance',
-        label: 'Clearance',
-        description:
-            'Confirm no metal clamps or other fixtures sit inside the travel range.',
+        label: '干渉物',
+        description: '移動範囲に金属製の固定具等の干渉物がないか',
     },
     {
         id: 'workpiece-secured',
-        label: 'Workpiece secured',
-        description: 'Confirm the workpiece itself is secured to the table.',
+        label: 'ワーク固定',
+        description: 'ワークが固定されているか',
     },
     {
         id: 'clamp-tightness',
-        label: 'Clamp tightness',
-        description: 'Confirm clamps/fixtures are tightened.',
+        label: '固定具の締め具合',
+        description: '固定具の締め具合は確認したか',
     },
     {
         id: 'estop-reachable',
-        label: 'E-stop reachable',
-        description:
-            'Confirm the pause/emergency-stop button can be reached immediately.',
+        label: '非常停止・一時停止',
+        description: '一時停止・緊急停止ボタンがすぐ押せる体制か',
     },
 ];
 

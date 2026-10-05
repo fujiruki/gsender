@@ -3,6 +3,8 @@ import { useTypedSelector } from '@sienci/gsender-plugin-sdk/react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { useConfirmDialog } from '../components/useConfirmDialog';
+import { translateWorkflowReason } from '../i18n/translateWorkflowReason';
+import { workflowStateLabel } from '../i18n/workflowStateLabel';
 import { listOriginSlots } from '../origin/originSlotsStorage';
 import type { OriginSlot, RestoreDeps, RestoreGuardState } from '../origin/types';
 import { useRestoreGuardState } from '../origin/useRestoreGuardState';
@@ -25,11 +27,11 @@ const HOMING_TIMEOUT_MS = 60_000;
 const formatResult = (result: StartupSequenceResult): string => {
     switch (result.outcome) {
         case 'ORIGIN_SET':
-            return `Ready: origin restored to G54 X${result.g54.x} Y${result.g54.y} Z${result.g54.z}.`;
+            return `準備完了: 原点をG54 X${result.g54.x} Y${result.g54.y} Z${result.g54.z}に復元しました。`;
         case 'ORIGIN_MISMATCH':
-            return `Homed, but the restored origin does not match after verification (got X${result.g54.x} Y${result.g54.y} Z${result.g54.z}). Treat as a human judgement call, not an auto-retry.`;
+            return `原点復帰しましたが、復元後の検証で原点が一致しませんでした(実測値 X${result.g54.x} Y${result.g54.y} Z${result.g54.z})。自動再試行はせず、人による判断が必要です。`;
         case 'HOMING_TIMEOUT':
-            return 'Homing did not complete within 60 seconds. Treat this like an alarm: check limit switches and wiring, Unlock, then retry.';
+            return '原点復帰が60秒以内に完了しませんでした。アラームと同様に扱い、リミットスイッチと配線を確認してロック解除後に再試行してください。';
         case 'BLOCKED':
         case 'CANCELLED':
             return result.reason;
@@ -113,20 +115,20 @@ const StartupPanel = () => {
 
     const confirmClearG92: RestoreDeps['confirmClearG92'] = () =>
         requestConfirm({
-            title: 'Clear leftover G92 offset?',
+            title: '一時オフセット(G92)をクリアしますか?',
             message:
-                'A temporary G92 offset is present and must be cleared before the origin can be restored. Clear it now (G92.1)?',
-            confirmLabel: 'Clear G92',
-            cancelLabel: 'Cancel',
+                '一時オフセット(G92)が残っています。原点の復元の前にクリアする必要があります。今すぐクリアしますか(G92.1)?',
+            confirmLabel: 'G92をクリア',
+            cancelLabel: 'キャンセル',
         });
 
     const confirmSafety = () =>
         requestConfirm({
-            title: 'Safety check',
+            title: '安全確認',
             message:
-                'Confirm the work area is clear of obstacles and the machine is free to move on all axes before homing.',
-            confirmLabel: 'Confirmed, start homing',
-            cancelLabel: 'Cancel',
+                '原点復帰の前に、作業エリアに障害物がないこと、マシンが全軸で自由に動けることを確認してください。',
+            confirmLabel: '確認しました。原点復帰を開始',
+            cancelLabel: 'キャンセル',
         });
 
     const handleStart = async () => {
@@ -163,7 +165,7 @@ const StartupPanel = () => {
 
     return (
         <section className="rounded-md border border-gray-300 p-4 dark:border-gray-700">
-            <h2 className="mb-2 font-medium">Morning startup</h2>
+            <h2 className="mb-2 font-medium">朝の起動</h2>
 
             <ol className="mb-4 flex flex-wrap gap-2 text-xs">
                 {STARTUP_STEPS.map((label, index) => (
@@ -184,14 +186,13 @@ const StartupPanel = () => {
 
             {!isConnected && (
                 <p className="mb-3 text-sm text-amber-600 dark:text-amber-400">
-                    Not connected. Connect to the machine from the host's own
-                    Connect control first -- this plugin does not drive the
-                    connection itself.
+                    未接続です。本体側のConnect(接続)操作でマシンに接続してください
+                    -- このPluginからは接続操作を行いません。
                 </p>
             )}
 
             <label className="mb-3 flex flex-col gap-1 text-sm">
-                <span>Origin slot to restore after homing</span>
+                <span>原点復帰後に復元する原点スロット</span>
                 <select
                     value={selectedSlotId}
                     onChange={(event) => setSelectedSlotId(event.target.value)}
@@ -212,7 +213,7 @@ const StartupPanel = () => {
                 disabled={!isConnected || running || slots.length === 0}
                 className="rounded-md bg-blue-600 px-3 py-1.5 text-sm text-white disabled:opacity-50"
             >
-                {running ? 'Running startup…' : 'Start morning sequence'}
+                {running ? '起動処理中…' : '朝の起動シーケンスを開始'}
             </button>
 
             {lastResult && (
@@ -228,8 +229,11 @@ const StartupPanel = () => {
             )}
 
             <p className="mt-3 text-xs text-gray-500 dark:text-gray-400">
-                Current state: <span className="font-mono">{workflow.state}</span>{' '}
-                -- {workflow.reason}
+                現在の状態:{' '}
+                <span className="font-mono">
+                    {workflowStateLabel(workflow.state)}
+                </span>{' '}
+                -- {translateWorkflowReason(workflow.state, workflow.reason)}
             </p>
 
             {dialog}

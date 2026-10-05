@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { useAdminRole } from '../admin/AdminRoleContext';
 import { useConfirmDialog } from '../components/useConfirmDialog';
+import { translateWorkflowReason } from '../i18n/translateWorkflowReason';
 import LongPressButton from '../routine/LongPressButton';
 import {
     checklistKindToShow,
@@ -153,16 +154,16 @@ const ChecklistPanel = () => {
 
     const handleExitRoutine = async () => {
         const confirmed = await requestConfirm({
-            title: 'Exit routine mode?',
-            message: `This ends the routine at cycle ${routine.cycleCount}. The full checklist will be required again next time.`,
-            confirmLabel: 'Exit routine',
-            cancelLabel: 'Stay in routine',
+            title: 'ルーチンモードを終了しますか?',
+            message: `${routine.cycleCount}サイクル目でルーチンを終了します。次回は再度フルのチェックリストが必要になります。`,
+            confirmLabel: 'ルーチンを終了',
+            cancelLabel: 'ルーチンを続ける',
         });
         if (!confirmed) {
             return;
         }
         const pinOk = await requirePin(
-            'Enter the admin PIN to exit routine mode.',
+            'ルーチンモードを終了するには管理者PINを入力してください。',
         );
         if (!pinOk) {
             return;
@@ -176,21 +177,20 @@ const ChecklistPanel = () => {
             <div className="mb-2 flex items-center justify-between">
                 <h2 className="font-medium">
                     {checklistKind === 'full'
-                        ? 'Safety checklist'
-                        : 'Material swap checklist'}
+                        ? '安全チェックリスト'
+                        : '材料交換チェックリスト'}
                 </h2>
                 {routine.active && (
                     <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-mono text-blue-700 dark:bg-blue-900 dark:text-blue-300">
-                        ROUTINE -- cycle {routine.cycleCount}
+                        ルーチン中 -- {routine.cycleCount}サイクル目
                     </span>
                 )}
             </div>
 
             {workflow.state === 'ALARM' && routine.active && (
                 <p className="mb-3 rounded border border-red-300 p-2 text-sm text-red-600 dark:border-red-800 dark:text-red-400">
-                    Stopped during routine mode (cycle {routine.cycleCount}).
-                    Confirm safety and recover (Unlock / re-home / restore
-                    origin) to continue the routine.
+                    ルーチンモード中に停止しました({routine.cycleCount}サイクル目)。
+                    安全確認・復旧(ロック解除/再原点復帰/原点復元)後、ルーチンを継続します。
                 </p>
             )}
 
@@ -264,16 +264,20 @@ const ChecklistPanel = () => {
                         disabled={!canExecute || starting}
                         className="mt-4 rounded-md bg-blue-600 px-3 py-1.5 text-sm text-white disabled:opacity-50"
                     >
-                        {starting ? 'Starting…' : 'Execute'}
+                        {starting ? '開始中…' : '実行'}
                     </button>
                     {!canExecute && workflow.state !== 'READY' && (
                         <p className="mt-2 text-sm text-amber-600 dark:text-amber-400">
-                            Not ready yet: {workflow.reason}
+                            まだ準備できていません:{' '}
+                            {translateWorkflowReason(
+                                workflow.state,
+                                workflow.reason,
+                            )}
                         </p>
                     )}
                     {!canExecute && workflow.state === 'READY' && !complete && (
                         <p className="mt-2 text-sm text-amber-600 dark:text-amber-400">
-                            Check every item above before executing.
+                            実行する前に上記の全項目を確認してください。
                         </p>
                     )}
 
@@ -284,7 +288,7 @@ const ChecklistPanel = () => {
                             disabled={!fileName}
                             className="mt-3 block rounded-md border border-gray-300 px-3 py-1.5 text-sm disabled:opacity-50 dark:border-gray-700"
                         >
-                            Start routine mode (repeat this file)
+                            ルーチンモードを開始(このファイルを繰り返す)
                         </button>
                     )}
                     {routine.active && (
@@ -292,7 +296,7 @@ const ChecklistPanel = () => {
                             onComplete={() => void handleExitRoutine()}
                             className="mt-3 block rounded-md border border-red-300 px-3 py-1.5 text-sm text-red-600 dark:border-red-800 dark:text-red-400"
                         >
-                            Hold to exit routine mode
+                            長押しでルーチンモードを終了
                         </LongPressButton>
                     )}
                 </>
@@ -300,14 +304,16 @@ const ChecklistPanel = () => {
 
             {(jobPhase === 'running' || jobPhase === 'paused') && (
                 <div className="flex items-center gap-3 text-sm">
-                    <p className="font-mono">{jobPhase.toUpperCase()}</p>
+                    <p className="font-mono">
+                        {jobPhase === 'running' ? '実行中' : '一時停止中'}
+                    </p>
                     {jobPhase === 'running' ? (
                         <button
                             type="button"
                             onClick={() => machine.command('gcode:pause')}
                             className="rounded-md border border-gray-300 px-3 py-1.5 dark:border-gray-700"
                         >
-                            Pause
+                            一時停止
                         </button>
                     ) : (
                         <button
@@ -315,7 +321,7 @@ const ChecklistPanel = () => {
                             onClick={() => machine.command('gcode:resume')}
                             className="rounded-md bg-blue-600 px-3 py-1.5 text-white"
                         >
-                            Resume
+                            再開
                         </button>
                     )}
                 </div>
@@ -324,7 +330,7 @@ const ChecklistPanel = () => {
             {jobPhase === 'done' && (
                 <div className="text-sm">
                     <p className="font-medium text-green-600 dark:text-green-400">
-                        Job done.
+                        ジョブが完了しました。
                     </p>
                     <button
                         type="button"
@@ -332,8 +338,8 @@ const ChecklistPanel = () => {
                         className="mt-2 rounded-md border border-gray-300 px-3 py-1.5 dark:border-gray-700"
                     >
                         {routine.active
-                            ? 'Next cycle (material swap check required)'
-                            : 'Start next job (re-check required)'}
+                            ? '次のサイクルへ(材料交換チェックが必要)'
+                            : '次のジョブを開始(要再チェック)'}
                     </button>
                 </div>
             )}

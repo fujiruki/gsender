@@ -17,7 +17,7 @@ export const runStartupSequence = async (
 ): Promise<StartupSequenceResult> => {
     const approved = await deps.confirmSafety();
     if (!approved) {
-        return { outcome: 'CANCELLED', reason: 'Safety check was not confirmed.' };
+        return { outcome: 'CANCELLED', reason: '安全確認が承認されませんでした。' };
     }
 
     const homingResult = await runHoming(deps, homingTimeoutMs);

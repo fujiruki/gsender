@@ -27,9 +27,9 @@ const makeRestoreDeps = (
 const formatResult = (result: RestoreResult): string => {
     switch (result.outcome) {
         case 'ORIGIN_SET':
-            return `Origin set: X${result.g54.x} Y${result.g54.y} Z${result.g54.z}`;
+            return `原点を設定しました: X${result.g54.x} Y${result.g54.y} Z${result.g54.z}`;
         case 'ORIGIN_MISMATCH':
-            return `Mismatch after restore: got X${result.g54.x} Y${result.g54.y} Z${result.g54.z}, expected ${JSON.stringify(result.expected)}. Treat this as a human judgement call, not an auto-retry.`;
+            return `復元後に不一致が発生しました: 実測値 X${result.g54.x} Y${result.g54.y} Z${result.g54.z}、期待値 ${JSON.stringify(result.expected)}。自動再試行はせず、人による判断が必要です。`;
         case 'CANCELLED':
         case 'BLOCKED':
             return result.reason;
@@ -61,11 +61,11 @@ const OriginPanel = () => {
 
     const confirmClearG92: RestoreDeps['confirmClearG92'] = () =>
         requestConfirm({
-            title: 'Clear leftover G92 offset?',
+            title: '一時オフセット(G92)をクリアしますか?',
             message:
-                'A temporary G92 offset is present and must be cleared before the origin can be restored or verified. Clear it now (G92.1)?',
-            confirmLabel: 'Clear G92',
-            cancelLabel: 'Cancel',
+                '一時オフセット(G92)が残っています。原点の復元・検証の前にクリアする必要があります。今すぐクリアしますか(G92.1)?',
+            confirmLabel: 'G92をクリア',
+            cancelLabel: 'キャンセル',
         });
 
     const runRestore = async (
@@ -98,7 +98,7 @@ const OriginPanel = () => {
         ) {
             setLastResult({
                 outcome: 'BLOCKED',
-                reason: `Material thickness must be between 0 and ${MAX_MATERIAL_THICKNESS_MM}mm.`,
+                reason: `材料厚みは0〜${MAX_MATERIAL_THICKNESS_MM}mmの範囲で入力してください。`,
             });
             return;
         }
@@ -125,10 +125,10 @@ const OriginPanel = () => {
 
     return (
         <section className="rounded-md border border-gray-300 p-4 dark:border-gray-700">
-            <h2 className="mb-2 font-medium">Origin slots</h2>
+            <h2 className="mb-2 font-medium">原点スロット</h2>
             {!guardResult.allowed && (
                 <p className="mb-3 text-sm text-amber-600 dark:text-amber-400">
-                    Restore disabled: {guardResult.reason}
+                    復元を無効化しています: {guardResult.reason}
                 </p>
             )}
 
@@ -153,8 +153,8 @@ const OriginPanel = () => {
                             className="rounded-md bg-blue-600 px-3 py-1.5 text-white disabled:opacity-50"
                         >
                             {busySlotId === slot.id
-                                ? 'Restoring…'
-                                : 'Restore'}
+                                ? '復元中…'
+                                : '復元'}
                         </button>
                     </li>
                 ))}
@@ -163,14 +163,14 @@ const OriginPanel = () => {
             {role === 'ADMIN' ? (
                 <div className="mt-4 flex items-end gap-2 border-t border-gray-200 pt-3 text-sm dark:border-gray-800">
                     <label className="flex flex-col gap-1">
-                        <span>New slot name (admin)</span>
+                        <span>新規スロット名(管理者)</span>
                         <input
                             type="text"
                             value={newSlotName}
                             onChange={(event) =>
                                 setNewSlotName(event.target.value)
                             }
-                            placeholder="e.g. Jig B front-left"
+                            placeholder="例: 治具B左前"
                             className="rounded-md border border-gray-300 px-2 py-1.5 dark:border-gray-700 dark:bg-gray-800"
                         />
                     </label>
@@ -184,13 +184,12 @@ const OriginPanel = () => {
                         }
                         className="rounded-md border border-gray-300 px-3 py-1.5 disabled:opacity-50 dark:border-gray-700"
                     >
-                        {savingSlot ? 'Saving…' : 'Save current position'}
+                        {savingSlot ? '保存中…' : '現在位置を保存'}
                     </button>
                 </div>
             ) : (
                 <p className="mt-4 border-t border-gray-200 pt-3 text-sm text-gray-500 dark:border-gray-800 dark:text-gray-400">
-                    Switch to Admin mode to save the current position as a
-                    new slot.
+                    現在位置を新規スロットとして保存するには管理者モードに切り替えてください。
                 </p>
             )}
 
@@ -206,7 +205,7 @@ const OriginPanel = () => {
                         </p>
                     </div>
                     <label className="flex flex-col gap-1">
-                        <span>Material thickness (mm)</span>
+                        <span>材料厚み(mm)</span>
                         <input
                             type="number"
                             min={0}
@@ -227,7 +226,7 @@ const OriginPanel = () => {
                         }
                         className="rounded-md bg-blue-600 px-3 py-1.5 text-white disabled:opacity-50"
                     >
-                        {busySlotId === slot.id ? 'Applying…' : 'Apply Z'}
+                        {busySlotId === slot.id ? '適用中…' : 'Zを適用'}
                     </button>
                 </div>
             ))}

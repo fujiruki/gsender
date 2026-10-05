@@ -5,6 +5,8 @@ import { useState } from 'react';
 import AdminControls from './admin/AdminControls';
 import { AdminRoleProvider } from './admin/AdminRoleContext';
 import ChecklistPanel from './checklist/ChecklistPanel';
+import { translateWorkflowReason } from './i18n/translateWorkflowReason';
+import { workflowStateLabel } from './i18n/workflowStateLabel';
 import OriginPanel from './origin/OriginPanel';
 import ProbePanel from './probe/ProbePanel';
 import StartupPanel from './startup/StartupPanel';
@@ -74,19 +76,19 @@ const App = () => {
         <AdminRoleProvider>
         <main className="mx-auto flex max-w-xl flex-col gap-6">
             <header>
-                <h1 className="text-xl font-semibold">Operator Plugin</h1>
+                <h1 className="text-xl font-semibold">オペレーター Plugin</h1>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                    T7: routine mode.
+                    日常のCNC操作を標準化するPluginです。
                 </p>
             </header>
 
             <section className="rounded-md border border-gray-300 p-4 dark:border-gray-700">
-                <h2 className="mb-2 font-medium">Workflow state</h2>
+                <h2 className="mb-2 font-medium">ワークフロー状態</h2>
                 <p className="font-mono text-lg font-semibold">
-                    {workflow.state}
+                    {workflowStateLabel(workflow.state)}
                 </p>
                 <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                    {workflow.reason}
+                    {translateWorkflowReason(workflow.state, workflow.reason)}
                 </p>
             </section>
 
@@ -101,9 +103,9 @@ const App = () => {
             <ProbePanel />
 
             <section className="rounded-md border border-gray-300 p-4 dark:border-gray-700">
-                <h2 className="mb-2 font-medium">Connection</h2>
+                <h2 className="mb-2 font-medium">接続</h2>
                 <p>
-                    Status:{' '}
+                    状態:{' '}
                     <span
                         className={
                             isConnected
@@ -111,20 +113,20 @@ const App = () => {
                                 : 'font-medium text-red-600 dark:text-red-400'
                         }
                     >
-                        {isConnected ? 'Connected' : 'Disconnected'}
+                        {isConnected ? '接続済み' : '未接続'}
                     </span>
                 </p>
             </section>
 
             <section className="rounded-md border border-gray-300 p-4 dark:border-gray-700">
-                <h2 className="mb-2 font-medium">WCS (G54) via $#</h2>
+                <h2 className="mb-2 font-medium">WCS(G54)を$#で確認</h2>
                 <button
                     type="button"
                     onClick={handleQueryWcs}
                     disabled={queryLoading}
                     className="rounded-md bg-blue-600 px-3 py-1.5 text-white disabled:opacity-50"
                 >
-                    {queryLoading ? 'Querying…' : 'Query $#'}
+                    {queryLoading ? '問い合わせ中…' : '$#を問い合わせ'}
                 </button>
                 {g54 && (
                     <dl className="mt-3 grid grid-cols-3 gap-2 text-sm">
@@ -150,12 +152,12 @@ const App = () => {
                 )}
                 {queryLines && !g54 && (
                     <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">
-                        No G54 line in response.
+                        応答にG54の行がありません。
                     </p>
                 )}
                 {queryError && (
                     <p className="mt-3 text-sm text-red-600 dark:text-red-400">
-                        Error: {queryError}
+                        エラー: {queryError}
                     </p>
                 )}
                 {queryLines && (
@@ -166,7 +168,7 @@ const App = () => {
             </section>
 
             <section className="rounded-md border border-gray-300 p-4 dark:border-gray-700">
-                <h2 className="mb-2 font-medium">Storage round-trip</h2>
+                <h2 className="mb-2 font-medium">ストレージ読み書き確認</h2>
                 <div className="flex gap-2">
                     <input
                         type="text"
@@ -174,7 +176,7 @@ const App = () => {
                         onChange={(event) =>
                             setStorageInput(event.target.value)
                         }
-                        placeholder="value to store"
+                        placeholder="保存する値"
                         className="flex-1 rounded-md border border-gray-300 px-2 py-1.5 dark:border-gray-700 dark:bg-gray-800"
                     />
                     <button
@@ -183,7 +185,7 @@ const App = () => {
                         disabled={storageLoading}
                         className="rounded-md bg-blue-600 px-3 py-1.5 text-white disabled:opacity-50"
                     >
-                        Save
+                        保存
                     </button>
                     <button
                         type="button"
@@ -191,12 +193,12 @@ const App = () => {
                         disabled={storageLoading}
                         className="rounded-md border border-gray-300 px-3 py-1.5 dark:border-gray-700"
                     >
-                        Load
+                        読込
                     </button>
                 </div>
                 {storageValue !== null && (
                     <p className="mt-3 text-sm">
-                        Stored value: <code>{storageValue}</code>
+                        保存された値: <code>{storageValue}</code>
                     </p>
                 )}
             </section>

@@ -47,7 +47,7 @@ export const AdminRoleProvider = ({ children }: { children: ReactNode }) => {
             return true;
         }
         const entered = await requestPin({
-            title: 'Enter admin PIN',
+            title: '管理者PINを入力',
             message: promptMessage,
         });
         return isPinAccepted(entered, pinHash);
@@ -55,7 +55,7 @@ export const AdminRoleProvider = ({ children }: { children: ReactNode }) => {
 
     const requestAdminMode = async (): Promise<boolean> => {
         const accepted = await requirePin(
-            'Enter the admin PIN to switch to Admin mode.',
+            '管理者モードに切り替えるには管理者PINを入力してください。',
         );
         if (accepted) {
             setRole('ADMIN');
@@ -96,7 +96,7 @@ export const AdminRoleProvider = ({ children }: { children: ReactNode }) => {
 export const useAdminRole = (): AdminRoleContextValue => {
     const value = useContext(AdminRoleContext);
     if (!value) {
-        throw new Error('useAdminRole must be used within an AdminRoleProvider');
+        throw new Error('useAdminRoleはAdminRoleProviderの内側で使用してください');
     }
     return value;
 };

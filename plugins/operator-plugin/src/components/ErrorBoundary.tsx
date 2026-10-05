@@ -35,7 +35,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
         return (
             <main className="mx-auto flex max-w-xl flex-col gap-3 p-4">
                 <h1 className="text-lg font-semibold text-red-600 dark:text-red-400">
-                    Operator Plugin crashed
+                    Operator Pluginでエラーが発生しました
                 </h1>
                 <pre className="overflow-auto rounded bg-gray-100 p-3 text-xs text-red-700 dark:bg-gray-800 dark:text-red-300">
                     {error.message}

@@ -1,11 +1,11 @@
 import type { WorkflowState } from '../workflow/types';
 
 export const STARTUP_STEPS = [
-    'Connect',
-    'Safety check',
-    'Homing',
-    'Restore origin',
-    'Ready',
+    '接続',
+    '安全確認',
+    '原点復帰',
+    '原点復元',
+    '準備完了',
 ] as const;
 
 /**

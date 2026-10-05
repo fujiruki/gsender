@@ -46,13 +46,13 @@ const PinPromptDialog = ({
                         onClick={onCancel}
                         className="rounded-md border border-gray-300 px-3 py-1.5 text-sm dark:border-gray-700"
                     >
-                        Cancel
+                        キャンセル
                     </button>
                     <button
                         type="submit"
                         className="rounded-md bg-blue-600 px-3 py-1.5 text-sm text-white"
                     >
-                        Confirm
+                        OK
                     </button>
                 </div>
             </form>

@@ -35,12 +35,12 @@ export const runProbe = async (
     if (beforeParams.G92 && isOffsetNonZero(beforeParams.G92)) {
         const approved = await deps.confirmClearG92();
         if (!approved) {
-            return { outcome: 'CANCELLED', reason: 'G92 clear was not approved.' };
+            return { outcome: 'CANCELLED', reason: 'G92のクリアが承認されませんでした。' };
         }
         await deps.sendGcode(['G92.1']);
     }
 
-    await deps.setBusy(true, 'Probing');
+    await deps.setBusy(true, 'プローブ中');
     try {
         await deps.sendGcode(lines);
 

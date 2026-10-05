@@ -6,11 +6,12 @@ export const ORIGIN_SLOTS_STORAGE_KEY = 'originSlots';
 export const Z_ORIGIN_SLOTS_STORAGE_KEY = 'zOriginSlots';
 
 // Macro 3 "Homing + usual front-left XY0" constants — see
-// docs/spec/reference/cncjs-probe-macros-source.md.
+// docs/spec/reference/cncjs-probe-macros-source.md. Name matches spec/07's
+// own Japanese naming for this slot.
 export const DEFAULT_ORIGIN_SLOTS: OriginSlot[] = [
     {
         id: 'usual-front-left',
-        name: 'Usual front-left',
+        name: 'いつもの左前XY0',
         x: -345.801,
         y: -213.302,
         z: -57.665,
@@ -19,7 +20,7 @@ export const DEFAULT_ORIGIN_SLOTS: OriginSlot[] = [
 
 // Macro 5 "NC bottom = Z0, then offset by material thickness".
 export const DEFAULT_Z_ORIGIN_SLOTS: ZOriginSlot[] = [
-    { id: 'nc-bottom-z0', name: 'NC bottom Z0', z: -100.118 },
+    { id: 'nc-bottom-z0', name: 'NC底面Z0', z: -100.118 },
 ];
 
 export const upsertSlot = <T extends { id: string }>(

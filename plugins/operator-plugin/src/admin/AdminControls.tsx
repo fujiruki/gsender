@@ -31,7 +31,7 @@ const AdminControls = () => {
 
     return (
         <section className="rounded-md border border-gray-300 p-4 dark:border-gray-700">
-            <h2 className="mb-2 font-medium">Role</h2>
+            <h2 className="mb-2 font-medium">役割</h2>
             <div className="flex items-center gap-3 text-sm">
                 <span
                     className={`rounded-full px-3 py-1 font-mono ${
@@ -40,7 +40,7 @@ const AdminControls = () => {
                             : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300'
                     }`}
                 >
-                    {role}
+                    {role === 'ADMIN' ? '管理者' : '作業者'}
                 </span>
                 <button
                     type="button"
@@ -48,7 +48,7 @@ const AdminControls = () => {
                     disabled={switching}
                     className="rounded-md border border-gray-300 px-3 py-1.5 disabled:opacity-50 dark:border-gray-700"
                 >
-                    {role === 'ADMIN' ? 'Exit admin mode' : 'Enter admin mode'}
+                    {role === 'ADMIN' ? '管理者モードを終了' : '管理者モードに入る'}
                 </button>
             </div>
 
@@ -56,7 +56,9 @@ const AdminControls = () => {
                 <div className="mt-3 flex items-end gap-2 border-t border-gray-200 pt-3 text-sm dark:border-gray-800">
                     <label className="flex flex-col gap-1">
                         <span>
-                            {hasPinSet ? 'Change admin PIN' : 'Set admin PIN (optional)'}
+                            {hasPinSet
+                                ? '管理者PINを変更'
+                                : '管理者PINを設定(任意)'}
                         </span>
                         <input
                             type="password"
@@ -72,7 +74,7 @@ const AdminControls = () => {
                         disabled={!newPin.trim()}
                         className="rounded-md bg-blue-600 px-3 py-1.5 text-white disabled:opacity-50"
                     >
-                        Save
+                        保存
                     </button>
                     {hasPinSet && (
                         <button
@@ -80,7 +82,7 @@ const AdminControls = () => {
                             onClick={() => void clearPin()}
                             className="rounded-md border border-gray-300 px-3 py-1.5 dark:border-gray-700"
                         >
-                            Clear PIN
+                            PINを削除
                         </button>
                     )}
                 </div>

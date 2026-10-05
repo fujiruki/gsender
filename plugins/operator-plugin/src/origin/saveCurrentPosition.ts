@@ -27,7 +27,7 @@ export const saveCurrentPositionAsOriginSlot = async (
     const response = await deps.query('$#');
     const { G54 } = parseParameterLines(response.lines);
     if (!G54) {
-        throw new Error('No G54 line in the $# response.');
+        throw new Error('$#の応答にG54の行がありません。');
     }
 
     return {

@@ -17,8 +17,8 @@ type ConfirmDialogProps = {
 const ConfirmDialog = ({
     title,
     message,
-    confirmLabel = 'Confirm',
-    cancelLabel = 'Cancel',
+    confirmLabel = 'OK',
+    cancelLabel = 'キャンセル',
     onConfirm,
     onCancel,
 }: ConfirmDialogProps) => (

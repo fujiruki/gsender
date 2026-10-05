@@ -54,7 +54,7 @@ describe('restoreOrigin', () => {
 
         expect(result).toEqual({
             outcome: 'BLOCKED',
-            reason: 'Machine is not connected.',
+            reason: 'マシンが接続されていません。',
         });
         expect(deps.query).not.toHaveBeenCalled();
         expect(deps.sendGcode).not.toHaveBeenCalled();
@@ -115,7 +115,7 @@ describe('restoreOrigin', () => {
 
         expect(result).toEqual({
             outcome: 'CANCELLED',
-            reason: 'G92 clear was not approved.',
+            reason: 'G92のクリアが承認されませんでした。',
         });
         expect(deps.sendGcode).not.toHaveBeenCalled();
     });

@@ -1,7 +1,7 @@
 {
   "id": "com.fujiruki.operator",
-  "name": "Operator Plugin",
-  "description": "Standardizes daily CNC operation (origin restore, startup sequence, probing, safety checklist, routine mode) so part-time operators can run the machine safely.",
+  "name": "オペレーター Plugin",
+  "description": "日常のCNC操作(原点保存・復元、起動シーケンス、プローブ、安全チェックリスト、ルーチンモード)を標準化し、パート作業者を含め誰でも安全にマシンを操作できるようにするPluginです。",
   "version": "0.1.0",
   "engine": ">=1.6.0",
   "ui": {
@@ -10,14 +10,14 @@
       {
         "slot": "tools-page",
         "route": "operator-plugin",
-        "label": "Operator"
+        "label": "オペレーター"
       }
     ]
   },
   "parsers": [
     {
       "id": "probe",
-      "label": "Probe result",
+      "label": "プローブ結果",
       "mode": "line",
       "match": {
         "source": "^\\[PRB:(?<x>[-\\d.]+),(?<y>[-\\d.]+),(?<z>[-\\d.]+)(?:,[-\\d.]+)*:(?<ok>[01])\\]$"

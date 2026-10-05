@@ -78,7 +78,7 @@ export const restoreOrigin = async (
     if (beforeParams.G92 && isOffsetNonZero(beforeParams.G92)) {
         const approved = await deps.confirmClearG92();
         if (!approved) {
-            return { outcome: 'CANCELLED', reason: 'G92 clear was not approved.' };
+            return { outcome: 'CANCELLED', reason: 'G92のクリアが承認されませんでした。' };
         }
         await deps.sendGcode(['G92.1']);
     }

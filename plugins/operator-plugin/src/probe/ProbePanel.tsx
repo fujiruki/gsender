@@ -47,10 +47,10 @@ const formatResult = (kind: ProbeKind, result: RunProbeResult): string => {
     switch (result.outcome) {
         case 'DONE':
             return result.g54
-                ? `${kind.toUpperCase()} probe done: G54 X${result.g54.x} Y${result.g54.y} Z${result.g54.z}`
-                : `${kind.toUpperCase()} probe done, but no G54 line came back in the verify $#.`;
+                ? `${kind.toUpperCase()}プローブ完了: G54 X${result.g54.x} Y${result.g54.y} Z${result.g54.z}`
+                : `${kind.toUpperCase()}プローブは完了しましたが、検証の$#応答にG54の行がありませんでした。`;
         case 'TIMEOUT':
-            return 'Timed out waiting for the machine to settle (Idle + G90). Check the console before retrying.';
+            return 'マシンの静定(Idle + G90)待ちでタイムアウトしました。再試行する前にコンソールを確認してください。';
         case 'CANCELLED':
         case 'BLOCKED':
             return result.reason;
@@ -154,11 +154,11 @@ const ProbePanel = () => {
 
     const confirmClearG92: RestoreDeps['confirmClearG92'] = () =>
         requestConfirm({
-            title: 'Clear leftover G92 offset?',
+            title: '一時オフセット(G92)をクリアしますか?',
             message:
-                'A temporary G92 offset is present and must be cleared before probing. Clear it now (G92.1)?',
-            confirmLabel: 'Clear G92',
-            cancelLabel: 'Cancel',
+                '一時オフセット(G92)が残っています。プローブの前にクリアする必要があります。今すぐクリアしますか(G92.1)?',
+            confirmLabel: 'G92をクリア',
+            cancelLabel: 'キャンセル',
         });
 
     const runAndReport = async (kind: ProbeKind, lines: string[]) => {
@@ -201,7 +201,7 @@ const ProbePanel = () => {
                 kind: 'xy',
                 result: {
                     outcome: 'BLOCKED',
-                    reason: 'Z is too close to the top of travel for a safe -10mm side-probe descent (mpos.z + 10 must be <= 0).',
+                    reason: 'Zが可動範囲上限に近すぎるため、-10mmの側面探査降下が安全に行えません(mpos.z + 10 は0以下である必要があります)。',
                 },
             });
             return;
@@ -241,16 +241,16 @@ const ProbePanel = () => {
 
     return (
         <section className="rounded-md border border-gray-300 p-4 dark:border-gray-700">
-            <h2 className="mb-2 font-medium">Probing</h2>
+            <h2 className="mb-2 font-medium">プローブ</h2>
             {!guardResult.allowed && (
                 <p className="mb-3 text-sm text-amber-600 dark:text-amber-400">
-                    Probing disabled: {guardResult.reason}
+                    プローブを無効化しています: {guardResult.reason}
                 </p>
             )}
 
             <div className="flex flex-wrap items-end gap-3 text-sm">
                 <label className="flex flex-col gap-1">
-                    <span>Endmill diameter (mm)</span>
+                    <span>エンドミル径(mm)</span>
                     <select
                         value={endmillDiameterMm}
                         onChange={(event) =>
@@ -259,15 +259,15 @@ const ProbePanel = () => {
                         className="rounded-md border border-gray-300 px-2 py-1.5 dark:border-gray-700 dark:bg-gray-800"
                     >
                         <option value={ENDMILL_DIAMETER_PRESETS_MM['phi3.20']}>
-                            phi3.20
+                            φ3.20
                         </option>
                         <option value={ENDMILL_DIAMETER_PRESETS_MM['phi3.16']}>
-                            phi3.16
+                            φ3.16
                         </option>
                     </select>
                 </label>
                 <label className="flex flex-col gap-1">
-                    <span>Jig variant</span>
+                    <span>治具バリアント</span>
                     <select
                         value={jigVariant}
                         onChange={(event) =>
@@ -275,8 +275,8 @@ const ProbePanel = () => {
                         }
                         className="rounded-md border border-gray-300 px-2 py-1.5 dark:border-gray-700 dark:bg-gray-800"
                     >
-                        <option value="right-rear">right-rear</option>
-                        <option value="left-rear">left-rear</option>
+                        <option value="right-rear">右奥</option>
+                        <option value="left-rear">左奥</option>
                     </select>
                 </label>
             </div>
@@ -288,7 +288,7 @@ const ProbePanel = () => {
                     disabled={!guardResult.allowed || running !== null}
                     className="rounded-md bg-blue-600 px-3 py-1.5 text-white disabled:opacity-50"
                 >
-                    {running === 'xyz' ? 'Probing XYZ…' : 'Run XYZ probe'}
+                    {running === 'xyz' ? 'XYZプローブ中…' : 'XYZ一括プローブ実行'}
                 </button>
                 <button
                     type="button"
@@ -296,7 +296,7 @@ const ProbePanel = () => {
                     disabled={!guardResult.allowed || running !== null}
                     className="rounded-md bg-blue-600 px-3 py-1.5 text-white disabled:opacity-50"
                 >
-                    {running === 'xy' ? 'Probing XY…' : 'Run XY-only probe'}
+                    {running === 'xy' ? 'XYプローブ中…' : 'XYのみプローブ実行'}
                 </button>
                 <button
                     type="button"
@@ -304,13 +304,13 @@ const ProbePanel = () => {
                     disabled={!guardResult.allowed || running !== null}
                     className="rounded-md bg-blue-600 px-3 py-1.5 text-white disabled:opacity-50"
                 >
-                    {running === 'z' ? 'Probing Z…' : 'Run Z-only probe'}
+                    {running === 'z' ? 'Zプローブ中…' : 'Zのみプローブ実行'}
                 </button>
             </div>
 
             {running && (
                 <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                    Contacts so far: {contactCount}
+                    接触回数: {contactCount}
                 </p>
             )}
 
@@ -322,7 +322,7 @@ const ProbePanel = () => {
                         onClick={() => machine.command('unlock')}
                         className="rounded-md border border-red-300 px-2 py-1 dark:border-red-800"
                     >
-                        Unlock
+                        ロック解除
                     </button>
                 </div>
             )}
@@ -341,14 +341,14 @@ const ProbePanel = () => {
                     {lastResult.result.outcome === 'DONE' && (
                         <div className="mt-2 flex items-end gap-2">
                             <label className="flex flex-col gap-1">
-                                <span>Save as new origin slot</span>
+                                <span>新規原点スロットとして保存</span>
                                 <input
                                     type="text"
                                     value={newSlotName}
                                     onChange={(event) =>
                                         setNewSlotName(event.target.value)
                                     }
-                                    placeholder="e.g. Jig corner probe"
+                                    placeholder="例: 治具コーナープローブ"
                                     className="rounded-md border border-gray-300 px-2 py-1.5 dark:border-gray-700 dark:bg-gray-800"
                                 />
                             </label>
@@ -358,7 +358,7 @@ const ProbePanel = () => {
                                 disabled={!newSlotName.trim()}
                                 className="rounded-md border border-gray-300 px-3 py-1.5 disabled:opacity-50 dark:border-gray-700"
                             >
-                                Save
+                                保存
                             </button>
                         </div>
                     )}
