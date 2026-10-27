@@ -3,57 +3,56 @@
 | 項目 | 内容 |
 |:--|:--|
 | プロジェクト | gSender日本語化フォーク (`C:\Fujiruki\Projects\gSender`) |
-| 作成日 | 2026-09-18 |
-| 引き継ぎ理由 | コンテキストクリアのためセッション区切り（作業自体は継続中、次にやるべきことは確認不要で進めてよい） |
+| 作成日 | 2026-10-27 |
+| 引き継ぎ理由 | 次回セッションは`C:\Fujiruki\Projects\gSender`ディレクトリでClaude Codeを新規に起動する想定のため（作業自体は継続中、次にやるべきことは確認不要で進めてよい） |
 
 ---
 
-## 完了した作業(前回2026-09-17分からの続き)
+## 重要: Agentは全員セッション終了済み
 
-- **F-07: Electronウィンドウ実起動確認**完了。ポート8000ハードコードを`GSENDER_DEV_PORT`環境変数化(未設定時は従来通り8000で後方互換)、`vite.config.js`のAPI/socket.ioプロキシ先も同環境変数に対応(見落としがちな箇所)。別ポート(8199)でelectron.exe正常起動・レンダラー接続を確認、実機用サーバー(ポート8000, PID 9080)は無傷。`master`にコミット(`866fd5c9c`)・push済み
-- **本家PR #953(F-05)へのメンテナー指摘対応**: メンテナーkglovern氏から「ホーミング失敗後、HomeもUnlockも警告されて詰む」という指摘を受け、以下の流れで対応:
-  1. fableに調査依頼 → ダイアログをRehome(既定)/Unlock Anywayに変更する案を提示。合わせて副次課題（`$22`有効+リミットスイッチ物理故障の機体はUnlock後も恒久的にジョグ不可のまま、Config画面での`$22`無効化以外に脱出路が無くGUI案内も無い）を発見
-  2. ユーザー指示でAI専門家会議(kaigi)を開催し再検討 → 会議録`docs/kaigi/2026-09-18-Homing失敗時UX再検討.md`。結論は段階分け: 段階1=ダイアログ変更+ALARM:8/9限定の案内文言(Config操作手順込み)を即実装、段階2=本家へIssue提起(実装と並行、急がない)、段階3=`hasHomed`の3値化等は将来のOperator Plugin構想時に再検討して今回は見送り
-  3. fableに段階1の詳細設計を再依頼 → 変更箇所・文言案（日英）・影響範囲・テスト観点を具体化
-  4. 実装Agentが`master`(`05662c4e4`)・`integration/dev-ja`(`8bd49b953`)・`contrib/homing-safety-fix`=PR #953用ブランチ(`ea1128c50`、シグネチャの違いを踏まえ手移植)の3ブランチに実装。テスト新規作成(8件)、`docs/spec/02_機能仕様.md`更新、i18n:sync確認済み
-  5. kglovern氏へのPR返信コメントをユーザー承認の上で投稿済み（https://github.com/Sienci-Labs/gsender/pull/953#issuecomment-5727733027 ）
-  - 図解(フローチャート)をArtifactとして作成・更新: https://claude.ai/artifact/URkpiAhTEVmsiBbmDG75Sp （kaigi前の詰み経路→段階1実装後の経路の変化を可視化）
-- **ゾンビ化したworktree発見**: `.claude/worktrees/agent-aa3c45ae337d7315f`(`contrib/homing-safety-fix`用、コミット`49395374d`固定)が、このセッションのteammateには存在しない孤立プロセス`claude.exe`(PID 20768)にロックされたまま。ユーザー判断で当面放置。次に触る際は`git pull --ff-only`が必要（originは`ea1128c50`まで進んでいる）
-- **残課題メモ追加**: jest設定が`.claude/worktrees`配下を除外しておらず並行worktree作業でテストが不安定になる問題（F-07 Agent報告分、対応は次にworktreeを使う機会にまとめて）
+前回までOperator Pluginの実装・デバッグを担当していたAgent(`gsender-operator-plugin-t1`等)は、このセッションが長期間空いた間に全員セッション終了している(`ListAgents`で確認済み、2026-10-27時点でteammateゼロ)。次回作業を再開する際は、**過去のコンテキストはこの引き継ぎ資料・`task.md`・`docs/spec/`から読み直し、新規にAgentを起動する**必要がある。
+
+また、このセッション自体の名前が`oldgsender`になっている（新しいgsenderセッションが既に別に存在する可能性がある）。次回起動時に`ListAgents`で確認すること。
+
+## 完了した作業(前回2026-09-18分からの続き、ロードマップ6・7番目)
+
+- **ロードマップ6番目「Plugin SDK配下のUI日本語化」完了**。Plugin管理UI本体(`features/Plugins/`)を`t()`化、サンプルPlugin・SDK本体は対象外というスコープで実装・コミット済み
+- **Operator Plugin構想フェーズ1(ロードマップ7番目)を仕様策定〜実装〜実機試験まで推進**。流れ:
+  1. 発注者ヒアリング(加工原点保存・復元、プローブ、安全チェックリスト、ルーチンモード、管理者モード)→ fable調査(Plugin SDKの機能範囲、本体UIロックの限界)→ kaigi的な再検討を経て仕様確定
+  2. 発注者が実際にCNCjsで使っていたプローブマクロ(XYZ/XY/Zの3種、具体的な数値含む)を`.cncrc`から発掘し、これを正本として移植する方針に転換
+  3. fableが詳細設計(G92問題の解明、ステートマシン設計、復元フロー)を作成、`docs/spec/07_OperatorPlugin.md`として正式化
+  4. 実装Agent(`gsender-operator-plugin-t1`)がT1〜T7を順次実装（足場→ステートマシン→原点保存復元→プローブ移植→朝の起動Workflow→安全チェックリスト→ルーチンモード）。すべて`integration/dev-ja`ブランチ、`plugins/operator-plugin/`配下
+  5. **真っ白バグ発見・修正**: Tools→Operatorを開くと画面が真っ白になる重大バグが発生。原因はReactの二重バンドル（各Pluginの`vite.config.ts`が書いていた`rollupOptions.external`配列が、SDKの自動外部化処理を上書きしていた）。**operator-plugin固有ではなくSDK全体・README記載の公式手順自体のバグ**と判明し、5つのPlugin全部とREADMEを修正
+  6. **Operator Plugin UI日本語化完了**（本体は日本語化済みだがPlugin自体は英語のままだったため）
+  7. **T8実機試験を開始**、以下のバグを発見・修正(いずれも「実機でしか顕在化しない」系統):
+     - 原点復元が`ORIGIN_MISMATCH`(実測値0,0,0)になる → `restoreOrigin.ts`のレースコンディション(feeder経由の`sendGcode`と直接書き込みの`query`が別チャネルで競合)。`query()`一本に統一して修正(コミット`0869da28d`)
+     - 復元成功後も「原点未確認」のまま表示が進まない → `useWorkflowState.ts`が原点スロット一覧を独自ロジック(デフォルト空配列)で読んでいて、`restoreOrigin.ts`側の正しいデフォルト値と食い違っていた単純な実装ミス。`listOriginSlots()`に統一して修正(コミット`6e32a4905`)
+     - ステッパーが「原点復元」で止まり「準備完了」に進まない件 → **これは仕様通り**(READYにはファイルロードも必要)。ただしUIが分かりにくかったため案内文を追加(コミット`9f83f78c3`)
+     - **朝の起動Workflow、実機フルフロー確認完了**（接続→安全確認→ホーミング→原点復元→準備完了まで到達、発注者確認済み）
+     - プローブ(Zのみ)で同じ「検証の$#応答にG54の行がない」エラー発生 → `runProbe.ts`にも`restoreOrigin.ts`と同じレースコンディションがあり修正(コミット`4e38aefa0`)。**副次的に、G38.2失敗時のALARM応答を`query()`が正しく終端として認識できておらず、「1回目の失敗が誤って成功扱いになる」安全上重要なバグも発見・修正**。「error:9」連続通知の原因(ALARM中もfeederが残り行を送り続けていた)も解明・解消
 
 ## 進行中・待ち状態
 
-- **未翻訳25件(実質20件)の翻訳タスク**: `integration/dev-ja`ブランチ、Agent`gsender-untranslated-25`が担当。`npm run i18n:sync`で`new:0 untranslated:0`まで確認済み（orphan20件中13件削除、残り7件は未t()化の生文字列に紐づくため維持と判断）だが、**test:app/build確認・コミット・pushが未完了のまま止まっている**。2026-09-18時点で状況確認メッセージを送信し返信待ち。次セッション開始時にまず`ListAgents`でこのAgentの状態を確認し、返信が無ければ再度状況確認するか、必要ならタスクを引き継いで完了させること
+- **Operator Plugin T8実機試験、プローブ修正後の再検証待ち**: 上記`runProbe.ts`修正(コミット`4e38aefa0`)後、発注者に「Zのみプローブ」の再検証をお願いしたところで時間が空いた。`task.md`の該当タスクも未チェックのまま。**次回セッション開始時、まず発注者に進捗(試したかどうか)を確認すること**
+- **未処理の要望が`docs/requests.md`に残っている(未コミット差分)**: 2026-10-19受付「SdDD v1.0 を v1.0 に更新する」。他プロジェクト横展開の一環で、`git diff docs/requests.md`で確認できる。内容: `/sddd-update`を実行し、更新元`C:\Fujiruki\Projects\SDDD`の`templates`から反映。新設`docs/quality.md`・`docs/adr/ADR-0000-template.md`も追加。晴樹さん承認済み(2026-10-18)、まずLISUで試験運用し問題なければ他プロジェクトへ、という位置づけ
 
-## 次にやるべきこと（優先順、発注者指定、確認不要で進めてよい）
+## 次にやるべきこと（優先順、確認不要で進めてよい）
 
-1. **未翻訳25件タスクの完了確認・フォロー**（上記「進行中」参照。最優先、ほぼ完了間際）
-2. **Codex-本家PR: pendant:electron:devのbash -lc修正**（task.md記載済み、未着手）。F-07(`scripts/wait-for-url.mjs`)と同じアプローチをupstream/dev側の`pendant:electron:dev`スクリプトに適用し、`contrib/pendant-electron-windows-fix`ブランチからPR作成。ポート競合に注意（pendant用の別ポートのはずだが事前確認要）
-3. **本家Issueの提起**（kaigi結論の段階2）: ALARM:8/9が繰り返し発生するケース（リミットスイッチ物理故障）をどう考えるか、kglovern氏に方針を尋ねる。実装をブロックしない・急がない。文面はfableかOSS戦略観点で下書きしてから投稿前にユーザー確認を取ること
-4. **既存の未翻訳25件の翻訳**（項番1と同一、完了確認後はクローズ）
-5. **Plugin SDK配下のUI日本語化**（`scripts/i18n-sync.mjs`のDATA_SOURCES拡張が前提、約300〜355件の見込み。詳細は`docs/spec/05_技術設計.md`参照）
-6. **Operator Plugin構想**（本家`packages/plugin-sdk/`上に構築する具体アプリ。まだ何も着手していない大きな将来構想なので、まず仕様策定（Phase2）から始める。CLAUDE.mdの新機能追加方針（まずアドオン的アプローチを検討→本体改造は最終手段）に従うこと）
+1. **`docs/requests.md`のSdDD v1.0アップデート要望に対応**（上記参照。`/sddd-update`を実行）
+2. **Operator Plugin T8実機試験の続き**（発注者と一緒に進める）:
+   - a. 「Zのみプローブ」修正の実機再検証（G54が正しく表示されるか）
+   - b. 「XYのみ」「XYZ一括」プローブも同じ修正が適用済みなので確認
+   - c. 意図的にALARM:5を起こした場合、即座に案内が出て`error:9`連続通知が出ないことも確認
+   - d. 安全チェックリストの実機動作確認(まだ未実施)
+   - e. ルーチンモードの実機動作確認(まだ未実施、サイクルカウンター・短縮チェックリスト・長押し離脱・管理者PIN)
+   - f. T8完了後、T9(実機試験から見つかった不足APIを整理し本家提案を検討するか判断)に進む
+3. T8が一段落したら、Operator Plugin構想のフェーズ2(商品レシピDB、まだ仕様策定すらしていない)も発注者と相談
 
 ## 注意点・ハマりポイント
 
-- **実機CNC接続用サーバーがポート8000を使用中**（このマシン上、`node ./bin/gsender -p 8000`、`start-gsender.bat`経由）。F-07対応で`GSENDER_DEV_PORT`環境変数化したので、開発時は`GSENDER_DEV_PORT=<別ポート>`を指定すればポート8000と衝突しない。ただし念のため使用前に`netstat -ano | grep ":<使用予定ポート>"`で確認する習慣は継続
-- **「すり合わせ」と言われたら絶対にファイル編集せず、まず理解確認のみ行う**（メモリ`feedback-sumiawase-no-edit-first`参照）
-- **AI間共有地点は「カンガルー」**（Google Drive `AI共有庫 カンガルー`）。通常の実装記録には使わない、他AIへの明示的な申し送りのみ。今回のHoming UX再検討の経緯はユーザー指示でカンガルーにも保存する
-- Codexへの調査委託は`codex:codex-rescue`エージェント経由。完了確認は仕組み化した`wait-codex-job.mjs`を使う
-- worktree運用: 並列作業には`git worktree`を使う。削除に失敗する場合（別ユーザー権限で作成されたもの等）は無理せず放置してよい。**ロック中のworktreeを見つけたら、そのプロセスがこのセッションのteammateかどうか`ListAgents`で必ず確認してから対応方針をユーザーに相談する**（今回のゾンビworktreeの教訓）
-- 開発サーバー起動は`start-gsender.bat`（ポート8000）。実機CNC接続確認に使われている可能性があるため、むやみに再起動・停止しないこと
-- 本家への実際の発信（PR/issue/コメント）は3パターン（①日本語化共有=控えめ、②バグ修正PR=淡々、③Plugin活用+提案=提案調）の使い分けを徹底し、GitHub初心者の発注者に代わって指揮AIがマナー面をチェックする
-- **手戻りコストが高い設計判断はfableに相談し、必要なら/kaigiで多角的に検証する運用が今回確立した**（ダイアログ改善だけでなく副次課題まで含めた統合的な再検討ができた好例）
-- ユーザーの運用方針: 「自社開発なので指揮AIの判断でどんどん進めてよい。ただし後戻りコストが高い設計判断はfableに相談すること」「並列化・Codex活用でトークン節約」「通常のcommit/pushは確認不要」「本家への実発信(PR/Issue/コメント投稿)は事前確認」
-
-## 現在のブランチ状態（2026-09-18時点）
-
-- `master`: origin/masterと同期済み（最新コミット`866fd5c9c`→`05662c4e4`→`d85ce587d`(task.md)）
-- `integration/dev-ja`: 最新コミット`8bd49b953`。未翻訳タスクの追加コミットが上に乗る見込み（進行中）
-- `contrib/homing-safety-fix`(PR #953用): 最新コミット`ea1128c50`、origin push済み
-- 本家PR: #953（F-05、追加コミット+返信コメント投稿済み、メンテナー再反応待ち）、#954・#955（未マージ、催促しない）
-
-## i18n:sync直近状態
-
-- `master`: `npm run i18n:sync`で`new:0 untranslated:0 orphan:0`確認済み（F-05追加分反映後）
-- `integration/dev-ja`: 未翻訳タスクで`new:0 untranslated:0`まで確認済み（コミット未完了）
+- **gSenderを起動するには`C:\Fujiruki\Projects\gSender\gSender開発版を起動.bat`をダブルクリック**（`integration/dev-ja`のworktree`.claude\worktrees\agent-af3adeb91b76d108d`で`npm run dev:electron`を実行、既存プロセスの後片付けも自動）。**バッチファイルの中身は絶対に日本語を含めないこと**（UTF-8で書くとWindowsのデフォルトコードページで文字化けし、コマンド自体が壊れて実行不能になる実例あり）
+- **原点復元・プローブ共通の教訓**: `machine.command`(feederキュー経由、送信完了のみ保証)と`machine.query`(シリアル直接書き込み、実際の応答を待つ)という2つの独立した送信経路があり、これらを混在させるとレースコンディションになる。**今後Operator Plugin内で新しい送信処理を書く際は、`query()`に統一する**のが安全（`restoreOrigin.ts`/`runProbe.ts`で実例あり）
+- **`machine.query()`でG38.2(プローブ)のような失敗時に"ALARM:n"を返すコマンドを送る場合、デフォルトのok-or-error終端パターンでは検知できない**。ALARM応答も終端として認識するカスタムパターンが必要（`runProbe.ts`参照）
+- `.claude/worktrees/agent-aa3c45ae337d7315f`(`contrib/homing-safety-fix`用)は過去にゾンビ化していたworktree。発注者判断で当面放置中、触る際は`git pull --ff-only`が必要
+- 実機CNC接続用サーバーがポート8000を使うことがあるため、開発サーバー起動前は`netstat`で衝突確認する習慣を継続
+- 「すり合わせ」と言われたら絶対にファイル編集せず、まず理解確認のみ行う（メモリ`feedback-sumiawase-no-edit-first`参照）
